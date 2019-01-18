@@ -28,6 +28,8 @@ int ei_main(int argc, char** argv)
         points.push_back(Point(coords[i * 2], coords[i * 2 + 1]));
 	}
 
+    // comment
+
     // fill surface, draw polygon, update screen.
     fill(main_window, &red, EI_FALSE);
     draw_polygon(main_window, points, transp_blue, NULL);
