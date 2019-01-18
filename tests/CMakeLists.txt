@@ -16,7 +16,7 @@
 
 
 # Unit tests
-add_executable(unit_tests unit_tests.cpp frame.cpp)
+add_executable(unit_tests unit_tests.cpp)
 target_link_libraries(unit_tests ei eibase ${Allegro_LIBRARIES} m)
 
 enable_testing()
