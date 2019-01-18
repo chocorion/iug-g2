@@ -26,9 +26,7 @@ int ei_main(int argc, char** argv)
 	// Define the polygon vertices.
     for (int i = 0; i < 4; i++) {
         points.push_back(Point(coords[i * 2], coords[i * 2 + 1]));
-	}
-
-    // comment
+    }
 
     // fill surface, draw polygon, update screen.
     fill(main_window, &red, EI_FALSE);
