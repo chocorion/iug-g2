@@ -49,23 +49,46 @@ public:
 };
 
 
+class WidgetPlacerData
+{
+    private:
+        anchor_t _anchor;
+
+        int _x;
+        int _y;
+        float _width;
+        float _height;
+
+        float _rel_x;
+        float _rel_y;
+        float _rel_width;
+        float _rel_height;
+
+        WidgetPlacerData();
+
+        void set(
+            anchor_t *anchor,
+            int *x,
+            int *y,
+            float *width,
+            float *height,
+            float *rel_x,
+            float *rel_y,
+            float *rel_width,
+            float *rel_height
+        );
+
+        //Only placer can access to this class
+        friend Placer;
+};
+
 /**
  * @brief The Placer class
  */
 class Placer : public GeometryManager
 {
 private:
-    anchor_t anchor;
     
-    int x;
-    int y;
-    float width;
-    float height;
-
-    float rel_x;
-    float rel_y;
-    float rel_width;
-    float rel_height;
 
 public:
 
@@ -112,6 +135,7 @@ public:
     virtual void run (Widget* widget);
 
     virtual void release (Widget* widget);
+
 };
 
 }

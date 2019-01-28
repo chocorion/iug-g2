@@ -42,12 +42,50 @@ namespace ei
                     float*     rel_width,
                     float*     rel_height)
     {
-
-    	if (widget->getGeometryManager() != this) {
+        if (widget->getGeometryManager() != this) {
             //The widget is already managed by another geometry manager.
             widget->getGeometryManager()->release(widget);
+            //We need to add this widget to the list...
         }
-
         
     }
+
+    WidgetPlacerData::WidgetPlacerData()
+    {
+        //Set all value to default
+        _anchor = ei_anc_northwest;
+        _x = 0;
+        _y = 0;
+        _width  = 0;
+        _height = 0;
+
+        _rel_x = 0.0:
+        _rel_y = 0.0;
+        _rel_width  = 0.0;
+        _rel_height = 0.0;
+    }
+
+    void WidgetPlacerData::set(
+            anchor_t*  anchor,
+            int*       x,
+            int*       y,
+            float*     width,
+            float*     height,
+            float*     rel_x,
+            float*     rel_y,
+            float*     rel_width,
+            float*     rel_height)
+    {
+        if (anchor) {   _anchor = *anchor ; } 
+        if (x)      {   _x      = *x ;      } 
+        if (y)      {   _y      = *y ;      } 
+        if (width)  {   _width  = *width ;  }
+        if (height) {   _height = *height ; }
+        if (rel_x)  {   _rel_x  = *rel_x ;  }
+        if (rel_y)  {   _rel_y  = *rel_y ;  }
+
+        if (rel_width) {  _rel_width  = *rel_width ;  }
+        if (rel_height){  _rel_height = *rel_height;  }
+    }
+
 }
