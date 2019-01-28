@@ -140,7 +140,10 @@ endif (PKGCONFIG_FOUND)
 #------------------------------------------------------------------------------
 # Make the lists unique
 #------------------------------------------------------------------------------
-list(REMOVE_DUPLICATES Allegro_INCLUDE_DIRS)
+if(Allegro_INCLUDE_DIRS)
+  list(REMOVE_DUPLICATES Allegro_INCLUDE_DIRS)
+endif()
+
 list(REMOVE_DUPLICATES Allegro_LIBRARIES)
 if(Allegro_LIBRARY_DIRS)
   list(REMOVE_DUPLICATES Allegro_LIBRARY_DIRS)
