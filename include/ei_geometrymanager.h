@@ -64,7 +64,7 @@ class WidgetPlacerData
         float _rel_width;
         float _rel_height;
 
-        WidgetPlacerData();
+        WidgetPlacerData(Widget* widget);
 
         void set(
             anchor_t *anchor,

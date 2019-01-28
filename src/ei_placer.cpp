@@ -52,21 +52,32 @@ namespace ei
                 rel_height
             );
         }
-
-        
     }
+
+    void Placer::run(Widget* widget)
+    {
+        //Une importance ?
+        Widget* parent = widget->getParent();
+        
+        //Faire attention aux paramêtres de taille du widget !
+        // Placer::configure > widget::requestedSize > defaultSize 
+        //                                              Ou est-elle ?
+
+
+    }
+
     void Placer::release(Widget *widget)
     {
         if (_dataMap.find(widget->getPick_id) == _dataMap.end())
         {
-            //The widget is not managed by this
+            //The widget is not managed by this manager
             return;
         }
         
         _dataMap.erase(widget->getPick_id());
     }
 
-        WidgetPlacerData::WidgetPlacerData()
+    WidgetPlacerData::WidgetPlacerData(Widget* widget)
     {
         //Set all value to default
         _anchor = ei_anc_northwest;
@@ -77,8 +88,11 @@ namespace ei
 
         _rel_x = 0.0;
         _rel_y = 0.0;
-        _rel_width  = 0.0;
-        _rel_height = 0.0;
+
+        Size* size = widget->get_requested_size();
+        
+        _rel_width  = size->width;
+        _rel_height = size->height;
     }
 
     void WidgetPlacerData::set(

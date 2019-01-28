@@ -81,6 +81,7 @@ public:
      *      is currently managed.
      */
     GeometryManager *getGeometryManager() const;
+    Size* get_requested_size() const;
 
 protected:
     widgetclass_name_t name; ///< The string name of this class of widget.
