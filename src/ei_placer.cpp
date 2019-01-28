@@ -42,10 +42,43 @@ namespace ei
                     float*     rel_width,
                     float*     rel_height)
     {
-        if (widget->getGeometryManager() != this) {
-            //The widget is already managed by another geometry manager.
-            widget->getGeometryManager()->release(widget);
+        GeometryManager* currendWidgetManager = widget->getGeometryManager();
+
+        if (currendWidgetManager)
+        {
+            if (currendWidgetManager != this)
+            {
+                //The widget is already managed by another geometry manager.
+                widget->getGeometryManager()->release(widget);
+            }
+            else
+            {
+                _dataMap[widget->getPick_id].set(
+                    anchor,
+                    x,
+                    y,
+                    width,
+                    height,
+                    rel_x,
+                    rel_y,
+                    rel_width,
+                    rel_height
+                );
+                return;
+            }
             //We need to add this widget to the list...
+
+            _dataMap[widget->getPick_id](
+                anchor,
+                x,
+                y,
+                width,
+                height,
+                rel_x,
+                rel_y,
+                rel_width,
+                rel_height
+            );
         }
         
     }
@@ -59,7 +92,7 @@ namespace ei
         _width  = 0;
         _height = 0;
 
-        _rel_x = 0.0:
+        _rel_x = 0.0;
         _rel_y = 0.0;
         _rel_width  = 0.0;
         _rel_height = 0.0;
