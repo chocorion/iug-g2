@@ -54,6 +54,19 @@ public:
  */
 class Placer : public GeometryManager
 {
+private:
+    anchor_t anchor;
+    
+    int x;
+    int y;
+    float width;
+    float height;
+
+    float rel_x;
+    float rel_y;
+    float rel_width;
+    float rel_height;
+
 public:
 
     /**

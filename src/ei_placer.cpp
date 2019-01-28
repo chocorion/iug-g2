@@ -42,9 +42,12 @@ namespace ei
                     float*     rel_width,
                     float*     rel_height)
     {
-    	if (widget->) // Comment je sais s'il est en train d'être modifié par un autre gestionnaire de géométrie ?
-    				  // Et pourquoi configure est public ? Qui l'appel ?
 
-    		// Pas accès aux enfants !
+    	if (widget->getGeometryManager() != this) {
+            //The widget is already managed by another geometry manager.
+            widget->getGeometryManager()->release(widget);
+        }
+
+        
     }
 }
