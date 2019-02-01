@@ -24,7 +24,7 @@ namespace ei
             }
             else
             {
-                _dataMap[widget->getPick_id].set(
+                _dataMap[widget->getPick_id()].set(
                     anchor,
                     x,
                     y,
@@ -40,17 +40,22 @@ namespace ei
 
             //We need to add this widget to the list
             //The place is normaly free because widget id is uniq
-            _dataMap[widget->getPick_id](
-                anchor,
-                x,
-                y,
-                width,
-                height,
-                rel_x,
-                rel_y,
-                rel_width,
-                rel_height
+            _dataMap.insert(
+                std::make_pair<uint32_t, WidgetPlacerData>(widget->getPick_id(), WidgetPlacerData(widget))
             );
+
+            //On le fait deux fois, redondance de code à corriger !
+            _dataMap[widget->getPick_id()].set(
+                    anchor,
+                    x,
+                    y,
+                    width,
+                    height,
+                    rel_x,
+                    rel_y,
+                    rel_width,
+                    rel_height
+                );
         }
     }
 
@@ -62,13 +67,15 @@ namespace ei
         //Faire attention aux paramêtres de taille du widget !
         // Placer::configure > widget::requestedSize > defaultSize 
         //                                              Ou est-elle ?
+        // Mouvement dépend si taille relative donnée ?
+        // Sinon ne pas bouger ?
 
 
     }
 
     void Placer::release(Widget *widget)
     {
-        if (_dataMap.find(widget->getPick_id) == _dataMap.end())
+        if (_dataMap.find(widget->getPick_id()) == _dataMap.end())
         {
             //The widget is not managed by this manager
             return;
@@ -76,6 +83,17 @@ namespace ei
         
         _dataMap.erase(widget->getPick_id());
     }
+
+    WidgetPlacerData::WidgetPlacerData(): 
+        _anchor(ei_anc_northwest),
+        _x(0),
+        _y(0),
+        _width(0),
+        _height(0),
+        _rel_x(0),
+        _rel_y(0),
+        _rel_width(0.0f),
+        _rel_height(0.0f) {}
 
     WidgetPlacerData::WidgetPlacerData(Widget* widget)
     {
@@ -86,13 +104,13 @@ namespace ei
         _width  = 0;
         _height = 0;
 
-        _rel_x = 0.0;
-        _rel_y = 0.0;
+        _rel_x = 0.0f;
+        _rel_y = 0.0f;
 
         Size* size = widget->get_requested_size();
-        
-        _rel_width  = size->width;
-        _rel_height = size->height;
+
+        _rel_width  = size->width();
+        _rel_height = size->height();
     }
 
     void WidgetPlacerData::set(

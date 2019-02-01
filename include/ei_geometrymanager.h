@@ -14,6 +14,9 @@
 #include "ei_types.h"
 #include "ei_widget.h"
 
+#include <unordered_map>
+
+
 namespace ei {
 
 /**
@@ -22,8 +25,9 @@ namespace ei {
 class GeometryManager
 {
 public:
-    GeometryManager();
-    virtual ~GeometryManager();
+    // Je ne vois pas pourquoi il y en aurait besoin maintenant
+    // GeometryManager();
+    // virtual ~GeometryManager();
 
     /**
      * \brief Method that runs the geometry computation for this widget. This may trigger
@@ -48,6 +52,7 @@ public:
     virtual void release (Widget* widget) = 0;
 };
 
+class Placer;
 
 class WidgetPlacerData
 {
@@ -64,7 +69,7 @@ class WidgetPlacerData
         float _rel_width;
         float _rel_height;
 
-        WidgetPlacerData(Widget* widget);
+        
 
         void set(
             anchor_t *anchor,
@@ -80,6 +85,11 @@ class WidgetPlacerData
 
         //Only placer can access to this class
         friend Placer;
+    
+    public:
+    //Pourquoi si je les mets private ça merde ?????
+        WidgetPlacerData();
+        WidgetPlacerData(Widget* widget);
 };
 
 /**
