@@ -2,30 +2,6 @@
 
 namespace ei
 {
-    template<class T> Value<T>::Value() {
-        return;
-    }
-    template<class T> Value<T>::Value(T value, bool dft): 
-    _value(value),
-     _default(dft) {}
-
-    template<class T> T Value<T>::getValue() const
-    {
-        return _value;
-    }
-
-    template<class T> void Value<T>::setValue(T new_value)
-    {
-        _value = new_value;
-    }
-
-    template<class T> bool Value<T>::isDefault() const
-    {
-        return _default;
-    }
-
-
-
     void Placer::configure (Widget*    widget,
                     anchor_t*  anchor,
                     int*       x,

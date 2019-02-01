@@ -26,12 +26,25 @@ template<class T> class Value
         bool _default;
 
     public:
-        Value();
-        Value(T value, bool dft);
+        //Comprendre pourquoi il faut forcement mettre ceci....
+        Value() {
+            return;
+        }
+        Value(T value, bool dft): _value(value), _default(dft){}
 
-        bool isDefault() const;
-        T getValue() const;
-        void setValue(T new_value);
+        bool isDefault() const
+        {
+            return _default;
+        }
+
+        T getValue() const {
+            return _value;
+        }
+
+        void setValue(T new_value)
+        {
+            _value = new_value;
+        }
 };
 
 /**
