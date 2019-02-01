@@ -19,6 +19,20 @@
 
 namespace ei {
 
+template<class T> class Value
+{
+    private:
+        T _value;
+        bool _default;
+
+    public:
+        Value(T value, bool dft=false);
+
+        T getValue() const;
+        void setValue(T new_value);
+        bool isDefault() const;
+};
+
 /**
  * \brief Abstract class that represent a geometry manager.
  */
