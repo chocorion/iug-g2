@@ -2,7 +2,12 @@
 
 namespace ei
 {
-    template<class T> Value<T>::Value(T value, bool dft): _value(value), _default(dft) {}
+    template<class T> Value<T>::Value() {
+        return;
+    }
+    template<class T> Value<T>::Value(T value, bool dft): 
+    _value(value),
+     _default(dft) {}
 
     template<class T> T Value<T>::getValue() const
     {
@@ -107,10 +112,10 @@ namespace ei
         _anchor(ei_anc_northwest, true),
         _x(0, true),
         _y(0, true),
-        _width(0, true),
-        _height(0, true),
-        _rel_x(0, true),
-        _rel_y(0, true),
+        _width(0.0f, true),
+        _height(0.0f, true),
+        _rel_x(0.0f, true),
+        _rel_y(0.0f, true),
         _rel_width(0.0f, true),
         _rel_height(0.0f, true) {}
 
@@ -118,17 +123,15 @@ namespace ei
         _anchor(ei_anc_northwest, true),
         _x(0, true),
         _y(0, true),
-        _width(0, true),
-        _height(0, true),
-        _rel_x(0, true),
-        _rel_y(0, true),
+        _width(0.0f, true),
+        _height(0.0f, true),
+        _rel_x(0.0f, true),
+        _rel_y(0.0f, true)
     {
-        
-
         Size* size = widget->get_requested_size();
 
-        _rel_width  = Value(size->width(), false);
-        _rel_height = Value(size->height(), false);
+        _rel_width  = Value<float>(size->width(), false);
+        _rel_height = Value<float>(size->height(), false);
     }
 
     void WidgetPlacerData::set(

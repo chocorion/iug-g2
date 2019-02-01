@@ -26,7 +26,8 @@ template<class T> class Value
         bool _default;
 
     public:
-        Value(T value, bool dft=false);
+        Value();
+        Value(T value, bool dft);
 
         bool isDefault() const;
         T getValue() const;

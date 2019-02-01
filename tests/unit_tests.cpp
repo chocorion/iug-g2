@@ -56,7 +56,8 @@ TEST_CASE("fill_window", "[unit]")
 
 TEST_CASE("Simple_geometryManager" , "[unit]")
 {
-    Placer p = Placer();
+    Value<int> v = Value<int>(42, true);
+    std::cout << v.getValue() << " " << v.isDefault() << std::endl;
 
     //Juste histoire que make me lance la compilation du géométrie manager
     REQUIRE(true);
