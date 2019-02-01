@@ -28,9 +28,9 @@ template<class T> class Value
     public:
         Value(T value, bool dft=false);
 
+        bool isDefault() const;
         T getValue() const;
         void setValue(T new_value);
-        bool isDefault() const;
 };
 
 /**
@@ -71,17 +71,17 @@ class Placer;
 class WidgetPlacerData
 {
     private:
-        anchor_t _anchor;
+        Value<anchor_t> _anchor;
 
-        int _x;
-        int _y;
-        float _width;
-        float _height;
+        Value<int> _x;
+        Value<int> _y;
+        Value<float> _width;
+        Value<float> _height;
 
-        float _rel_x;
-        float _rel_y;
-        float _rel_width;
-        float _rel_height;
+        Value<float> _rel_x;
+        Value<float> _rel_y;
+        Value<float> _rel_width;
+        Value<float> _rel_height;
 
         
 

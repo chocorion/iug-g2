@@ -104,32 +104,31 @@ namespace ei
     }
 
     WidgetPlacerData::WidgetPlacerData(): 
-        _anchor(ei_anc_northwest),
-        _x(0),
-        _y(0),
-        _width(0),
-        _height(0),
-        _rel_x(0),
-        _rel_y(0),
-        _rel_width(0.0f),
-        _rel_height(0.0f) {}
+        _anchor(ei_anc_northwest, true),
+        _x(0, true),
+        _y(0, true),
+        _width(0, true),
+        _height(0, true),
+        _rel_x(0, true),
+        _rel_y(0, true),
+        _rel_width(0.0f, true),
+        _rel_height(0.0f, true) {}
 
-    WidgetPlacerData::WidgetPlacerData(Widget* widget)
+    WidgetPlacerData::WidgetPlacerData(Widget* widget):
+        _anchor(ei_anc_northwest, true),
+        _x(0, true),
+        _y(0, true),
+        _width(0, true),
+        _height(0, true),
+        _rel_x(0, true),
+        _rel_y(0, true),
     {
-        //Set all value to default
-        _anchor = ei_anc_northwest;
-        _x = 0;
-        _y = 0;
-        _width  = 0;
-        _height = 0;
-
-        _rel_x = 0.0f;
-        _rel_y = 0.0f;
+        
 
         Size* size = widget->get_requested_size();
 
-        _rel_width  = size->width();
-        _rel_height = size->height();
+        _rel_width  = Value(size->width(), false);
+        _rel_height = Value(size->height(), false);
     }
 
     void WidgetPlacerData::set(
@@ -143,16 +142,16 @@ namespace ei
             float*     rel_width,
             float*     rel_height)
     {
-        if (anchor) {   _anchor = *anchor ; } 
-        if (x)      {   _x      = *x ;      } 
-        if (y)      {   _y      = *y ;      } 
-        if (width)  {   _width  = *width ;  }
-        if (height) {   _height = *height ; }
-        if (rel_x)  {   _rel_x  = *rel_x ;  }
-        if (rel_y)  {   _rel_y  = *rel_y ;  }
+        if (anchor) {   _anchor.setValue(*anchor) ; } 
+        if (x)      {   _x.setValue(*x) ;      } 
+        if (y)      {   _y.setValue(*y) ;      } 
+        if (width)  {   _width.setValue(*width) ;  }
+        if (height) {   _height.setValue(*height) ; }
+        if (rel_x)  {   _rel_x.setValue(*rel_x) ;  }
+        if (rel_y)  {   _rel_y.setValue(*rel_y) ;  }
 
-        if (rel_width) {  _rel_width  = *rel_width ;  }
-        if (rel_height){  _rel_height = *rel_height;  }
+        if (rel_width) {  _rel_width.setValue(*rel_width) ;  }
+        if (rel_height){  _rel_height.setValue(*rel_height);  }
     }
 
 }
