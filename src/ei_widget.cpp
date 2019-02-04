@@ -31,6 +31,8 @@ namespace ei {
 		{
 			this.widgetclass_name_t = class_name;
 			this.parent = parent;
+
+			// TODO: root ?
 		}
 
 		/**
@@ -43,46 +45,23 @@ namespace ei {
 			{
 				delete child;
 			}
-		}
-
-		/**
-		 * \brief   Method that draws the widget.
-		 *
-		 * @param   surface     Where to draw the widget. The actual location of the widget in the
-		 *                      surface is stored in its "screen_location" field.
-		 * @param   pick_surface  Offscreen buffer to draw the widget \ref pick_id
-		 * @param   clipper     If not NULL, the drawing is restricted within this rectangle
-		 *                      (expressed in the surface reference frame).
-		 */
-		virtual void draw(surface_t surface, surface_t pick_surface, Rect* clipper) 
-		{
-
-		}
-
-		/**
-		 * \brief   Method that is called to notify the widget that its geometry has been modified
-		 *      by its geometry manager.
-		 *
-		 * @param   rect        The new rectangular screen location of the widget
-		 *                      (i.e., = widget->screen_location).
-		 */
-		virtual void geomnotify(Rect rect)
-		{
-
+			// TODO: actual cleaning
 		}
 
 		Widget* pick(uint32_t id)
 		{
-
+			if (this.pick_id == id) {
+				// TODO: pick
+			} 
 		}
 		uint32_t getPick_id() const
 		{
-
+			return pick_id;
 		}
 
 		Widget *getParent() const
 		{
-
+			return this.parent;
 		}
 	};
 }
