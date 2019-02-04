@@ -11,20 +11,9 @@
 #include <functional>
 
 namespace ei {
-
-	struct Event;
-
-	/**
-	 * \brief   A name of a class of widget.
-	 */
-	typedef std::string widgetclass_name_t;
-
-
-	class GeometryManager;
-
 	/**
 	 * \brief   Abstract class representing a widget
-	 *          Every widget class specializes this base class by adding its own attributs.
+	 *          Every widget class specializes this base class by adding its own attributes.
 	 */
 	class Widget
 	{
@@ -40,7 +29,8 @@ namespace ei {
 		 */
 		Widget(const widgetclass_name_t& class_name, Widget* parent) 
 		{
-
+			this.widgetclass_name_t = class_name;
+			this.parent = parent;
 		}
 
 		/**
@@ -49,7 +39,10 @@ namespace ei {
 		 */
 		virtual ~Widget()
 		{
-
+			foreach(Widget child : this.children)
+			{
+				delete child;
+			}
 		}
 
 		/**
