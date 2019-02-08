@@ -7,6 +7,10 @@
 
 namespace ei {
 
+/**
+ * @brief Manage a unordered_map of all widget's data
+ * 
+ */
 class WidgetDataBank
 {
     private:
@@ -14,8 +18,22 @@ class WidgetDataBank
     
     public:
         ~WidgetDataBank();
+
+        /**
+         * @param widget widget we want the data
+         * @return WidgetPlacerData* The widgetPlacerData associated
+         */
         WidgetPlacerData* get(Widget* widget);
+
+        /**
+         * @param widget widget we want to set the datas
+         * @param data   pointer to the new datas
+         */
         void  set(Widget* widget, WidgetPlacerData* data);
+
+        /**
+         * @param widget widget we want remove and delete datas
+         */
         void remove(Widget* widget);
 
 };
