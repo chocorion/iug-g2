@@ -4,9 +4,9 @@ namespace ei {
 
 WidgetDataBank::~WidgetDataBank()
 {
-    for (std::unordered_map<uint32_t, WidgetPlacerData>::iterator it = _dataMap.begin(); it != _dataMap.end(); it++) //Post-inccrémentation dans la doc !
+    for (std::unordered_map<uint32_t, WidgetPlacerData*>::iterator it = _dataMap.begin(); it != _dataMap.end(); it++) //Post-inccrémentation dans la doc !
     {
-        //delete &it;//A vérifier
+        delete it->second;//A vérifier
         break;
     }
 }
@@ -18,14 +18,14 @@ WidgetPlacerData* WidgetDataBank::get(Widget* widget)
             return nullptr;
         }
         
-        return &_dataMap.at(widget->getPick_id());
+        return _dataMap.at(widget->getPick_id());
 }
 
 
 void  WidgetDataBank::set(Widget* widget, WidgetPlacerData* data)
 {
     _dataMap.insert(
-            {widget->getPick_id(), *data}
+            {widget->getPick_id(), data}
         );
 }
 void WidgetDataBank::remove(Widget* widget)
@@ -34,7 +34,7 @@ void WidgetDataBank::remove(Widget* widget)
         {
             return;
         }
-        //delete &_dataMap.at(widget->getPick_id());
+        delete _dataMap.at(widget->getPick_id());
         _dataMap.erase(widget->getPick_id());
     }
 }
