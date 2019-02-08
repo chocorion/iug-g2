@@ -16,7 +16,7 @@
 
 
 # Unit tests
-add_executable(unit_tests unit_tests.cpp ../src/ei_placer.cpp ../include/ei_geometrymanager.h)
+add_executable(unit_tests unit_tests.cpp ../src/ei_placer.cpp ../include/ei_geometrymanager.h ../src/ei_widget.cpp ../include/ei_widget.h)
 target_link_libraries(unit_tests ei eibase ${Allegro_LIBRARIES} m)
 
 enable_testing()

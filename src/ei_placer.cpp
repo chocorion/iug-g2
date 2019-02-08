@@ -64,11 +64,12 @@ namespace ei
         //Une importance ?
         Widget* parent = widget->getParent();
         
-        //Faire attention aux paramêtres de taille du widget !
-        // Placer::configure > widget::requestedSize > defaultSize 
-        //                                              Ou est-elle ?
-        // Mouvement dépend si taille relative donnée ?
-        // Sinon ne pas bouger ?
+        std::list<Widget*> children = widget->getChildren();
+
+        for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++) //Post-inccrémentation dans la doc !
+        {
+            //Bien lire le cahier des charges
+        }
 
 
     }
@@ -104,10 +105,10 @@ namespace ei
         _rel_x(0.0f, true),
         _rel_y(0.0f, true)
     {
-        Size* size = widget->get_requested_size();
+        Size size = widget->get_requested_size();
 
-        _rel_width  = Value<float>(size->width(), false);
-        _rel_height = Value<float>(size->height(), false);
+        _rel_width  = Value<float>(size.width(), false);
+        _rel_height = Value<float>(size.height(), false);
     }
 
     void WidgetPlacerData::set(

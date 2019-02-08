@@ -59,7 +59,7 @@ public:
      * @param   clipper     If not NULL, the drawing is restricted within this rectangle
      *                      (expressed in the surface reference frame).
      */
-    virtual void draw (surface_t surface, surface_t pick_surface, Rect* clipper);
+    //virtual void draw (surface_t surface, surface_t pick_surface, Rect* clipper);
 
     /**
      * \brief   Method that is called to notify the widget that its geometry has been modified
@@ -68,12 +68,13 @@ public:
      * @param   rect        The new rectangular screen location of the widget
      *                      (i.e., = widget->screen_location).
      */
-    virtual void geomnotify (Rect rect);
+    //virtual void geomnotify (Rect rect);
 
     Widget* pick(uint32_t id);
     uint32_t getPick_id() const;
 
     Widget *getParent() const;
+    std::list<Widget *> getChildren() const;
 
     /**
      * \brief Return the current geometry manager of the widget.
@@ -81,9 +82,9 @@ public:
      *      is currently managed.
      */
     GeometryManager *getGeometryManager() const;
-    Size* get_requested_size() const;
-
-protected:
+    Size get_requested_size() const;
+    
+    protected: 
     widgetclass_name_t name; ///< The string name of this class of widget.
 
     static uint32_t s_idGenerator; ///< Static counter to assure the uniqueness of the generated Ids
@@ -96,6 +97,7 @@ protected:
 
     /* Geometry Management */
     GeometryManager* geom_manager; ///< Pointer to the geometry management for this widget.
+    
                                    ///  If NULL, the widget is not currently managed and thus, is not mapped on the screen.
     Size  requested_size;  ///< Size requested by the widget (big enough for its label, for example), or by the programmer. This can be different than its screen size defined by the placer.
     Rect  screen_location; ///< Position and size of the widget expressed in the root window reference.
