@@ -83,6 +83,8 @@ public:
      */
     GeometryManager *getGeometryManager() const;
     Size get_requested_size() const;
+    Rect* getContentRect() const;
+    const Rect* getScreenLocation() const;
 
     void setGeometryManager(GeometryManager* geometryManager);
     

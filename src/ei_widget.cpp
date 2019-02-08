@@ -80,4 +80,14 @@ namespace ei {
 	{
 		geom_manager = geometryManager;
 	}
+
+	Rect* Widget::getContentRect() const
+	{
+		return content_rect;
+	}
+
+	const Rect* Widget::getScreenLocation() const
+	{
+		return &screen_location;
+	}
 }

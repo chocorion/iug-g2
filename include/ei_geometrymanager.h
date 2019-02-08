@@ -13,38 +13,10 @@
 
 #include "ei_types.h"
 #include "ei_widget.h"
-
-#include <unordered_map>
+#include "ei_widgetdatabank.h"
 
 
 namespace ei {
-
-template<class T> class Value
-{
-    private:
-        T _value;
-        bool _default;
-
-    public:
-        Value() {
-            return;
-        }
-        Value(T value, bool dft): _value(value), _default(dft){}
-
-        bool isDefault() const
-        {
-            return _default;
-        }
-
-        T getValue() const {
-            return _value;
-        }
-
-        void setValue(T new_value)
-        {
-            _value = new_value;
-        }
-};
 
 /**
  * \brief Abstract class that represent a geometry manager.
@@ -79,53 +51,13 @@ public:
     virtual void release (Widget* widget) = 0;
 };
 
-class Placer;
-
-class WidgetPlacerData
-{
-    private:
-        Value<anchor_t> _anchor;
-
-        Value<int> _x;
-        Value<int> _y;
-        Value<float> _width;
-        Value<float> _height;
-
-        Value<float> _rel_x;
-        Value<float> _rel_y;
-        Value<float> _rel_width;
-        Value<float> _rel_height;
-
-        
-
-        void set(
-            anchor_t *anchor,
-            int *x,
-            int *y,
-            float *width,
-            float *height,
-            float *rel_x,
-            float *rel_y,
-            float *rel_width,
-            float *rel_height
-        );
-
-        //Only placer can access to this class
-        friend Placer;
-    
-    public:
-    //Pourquoi si je les mets private ça merde ?????
-        WidgetPlacerData();
-        WidgetPlacerData(Widget* widget);
-};
-
 /**
  * @brief The Placer class
  */
 class Placer : public GeometryManager
 {
 private:
-    std::unordered_map<uint32_t, WidgetPlacerData> _dataMap;
+    WidgetDataBank _widgetData;
 
 public:
 
