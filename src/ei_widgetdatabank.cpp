@@ -6,7 +6,8 @@ WidgetDataBank::~WidgetDataBank()
 {
     for (std::unordered_map<uint32_t, WidgetPlacerData>::iterator it = _dataMap.begin(); it != _dataMap.end(); it++) //Post-inccrémentation dans la doc !
     {
-        delete &it;//A vérifier
+        //delete &it;//A vérifier
+        break;
     }
 }
     
@@ -33,7 +34,7 @@ void WidgetDataBank::remove(Widget* widget)
         {
             return;
         }
-        delete &_dataMap.at(widget->getPick_id());
+        //delete &_dataMap.at(widget->getPick_id());
         _dataMap.erase(widget->getPick_id());
     }
 }

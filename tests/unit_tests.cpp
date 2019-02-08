@@ -80,6 +80,30 @@ TEST_CASE("placer", "[unit]")
         );
         REQUIRE( w.getGeometryManager() == &p);
     }
+    
+    SECTION("remove")
+    {
+        cout << "\tSection configure" << endl;
+        Widget w = Widget("test", nullptr);
+        Placer p = Placer();
+
+        p.configure(
+            &w, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr
+        );
+        p.release(&w);
+
+        //Just look if it crash due to pointers
+        REQUIRE(true);
+    }
 
 }
 
