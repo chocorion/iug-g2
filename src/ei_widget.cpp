@@ -9,6 +9,9 @@
 #include "ei_widget.h"
 
 #include <functional>
+#include <iostream>
+
+using namespace std;
 
 namespace ei {
 	/**
@@ -17,8 +20,12 @@ namespace ei {
 	 */
 	Widget::Widget(const widgetclass_name_t& class_name, Widget* parent) 
 	{
+
+		cout << "Create a basic widget" << endl;
+		
 		name = class_name;
 		parent = parent;
+		geom_manager = nullptr;
 
 		// TODO: root ?
 	}
@@ -67,5 +74,10 @@ namespace ei {
 	Size Widget::get_requested_size() const
 	{
 		return requested_size;
+	}
+	
+	void Widget::setGeometryManager(GeometryManager *geometryManager)
+	{
+		geom_manager = geometryManager;
 	}
 }

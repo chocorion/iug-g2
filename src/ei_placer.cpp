@@ -1,4 +1,7 @@
 #include "ei_geometrymanager.h"
+#include <iostream>
+
+using namespace std;
 
 namespace ei
 {
@@ -13,10 +16,13 @@ namespace ei
                     float*     rel_width,
                     float*     rel_height)
     {
+        cout << "Configure the widget !" << endl;
+
         GeometryManager* currendWidgetManager = widget->getGeometryManager();
 
         if (currendWidgetManager)
         {
+            cout << "Already a manager for this widget !" << endl;
             if (currendWidgetManager != this)
             {
                 //The widget is already managed by another geometry manager.
@@ -37,26 +43,27 @@ namespace ei
                 );
                 return;
             }
-
-            //We need to add this widget to the list
-            //The place is normaly free because widget id is uniq
-            _dataMap.insert(
-                std::make_pair<uint32_t, WidgetPlacerData>(widget->getPick_id(), WidgetPlacerData(widget))
-            );
-
-            //On le fait deux fois, redondance de code à corriger !
-            _dataMap[widget->getPick_id()].set(
-                    anchor,
-                    x,
-                    y,
-                    width,
-                    height,
-                    rel_x,
-                    rel_y,
-                    rel_width,
-                    rel_height
-                );
         }
+        widget->setGeometryManager(this);
+        //We need to add this widget to the list
+        //The place is normaly free because widget id is uniq
+        _dataMap.insert(
+            std::make_pair<uint32_t, WidgetPlacerData>(widget->getPick_id(), WidgetPlacerData(widget))
+        );
+
+        //On le fait deux fois, redondance de code à corriger !
+        _dataMap[widget->getPick_id()].set(
+                anchor,
+                x,
+                y,
+                width,
+                height,
+                rel_x,
+                rel_y,
+                rel_width,
+                rel_height
+            );
+        
     }
 
     void Placer::run(Widget* widget)
@@ -94,7 +101,9 @@ namespace ei
         _rel_x(0.0f, true),
         _rel_y(0.0f, true),
         _rel_width(0.0f, true),
-        _rel_height(0.0f, true) {}
+        _rel_height(0.0f, true) {
+            cout << "Create WidgetPlacerData with default constructor !" << endl;
+        }
 
     WidgetPlacerData::WidgetPlacerData(Widget* widget):
         _anchor(ei_anc_northwest, true),
@@ -105,6 +114,7 @@ namespace ei
         _rel_x(0.0f, true),
         _rel_y(0.0f, true)
     {
+        cout << "Create WidgetPlacerData with complete constructor !" << endl;
         Size size = widget->get_requested_size();
 
         _rel_width  = Value<float>(size.width(), false);

@@ -83,6 +83,8 @@ public:
      */
     GeometryManager *getGeometryManager() const;
     Size get_requested_size() const;
+
+    void setGeometryManager(GeometryManager* geometryManager);
     
     protected: 
     widgetclass_name_t name; ///< The string name of this class of widget.
