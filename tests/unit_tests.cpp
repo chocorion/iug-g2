@@ -6,6 +6,9 @@
 #include "hw_interface.h"
 #include "ei_geometrymanager.h"
 #include "ei_widget.h"
+#include <iostream>
+
+using namespace std;
 
 using namespace ei;
 
@@ -55,9 +58,11 @@ TEST_CASE("fill_window", "[unit]")
 }
 
 TEST_CASE("Simple_geometryManager" , "[unit]")
-{
+{  
+    cout << "---------------------------------------" << endl;
+    cout << "Test geometryManager " << endl;
     Value<int> v(42, true);
-
+    cout << v.getValue() << " " << v.isDefault() << endl;
     //Juste histoire que make me lance la compilation du géométrie manager
     REQUIRE(true);
 }

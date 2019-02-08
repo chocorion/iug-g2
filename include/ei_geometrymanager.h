@@ -26,7 +26,6 @@ template<class T> class Value
         bool _default;
 
     public:
-        //Comprendre pourquoi il faut forcement mettre ceci....
         Value() {
             return;
         }
