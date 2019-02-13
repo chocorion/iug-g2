@@ -75,6 +75,14 @@ public:
 
     Widget *getParent() const;
 
+    /**
+     * \brief Return the current geometry manager of the widget.
+     *      Required by the geometry manager to know if the widget 
+     *      is currently managed.
+     */
+    GeometryManager *getGeometryManager() const;
+    Size* get_requested_size() const;
+
 protected:
     widgetclass_name_t name; ///< The string name of this class of widget.
 

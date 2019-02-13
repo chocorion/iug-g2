@@ -3,3 +3,17 @@ build/
 CMakeLists\.txt\.user
 
 \.vs/
+
+\.vscode/
+docs
+tests/CMakeFiles/
+
+tests/tests/
+
+tests/cmake_install\.cmake
+
+tests/CMakeCache\.txt
+
+tests/libei\.a
+
+tests/Makefile

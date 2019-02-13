@@ -4,6 +4,8 @@
 #include "ei_main.h"
 #include "ei_draw.h"
 #include "hw_interface.h"
+#include "ei_geometrymanager.h"
+#include "ei_widget.h"
 
 using namespace ei;
 
@@ -50,6 +52,14 @@ TEST_CASE("fill_window", "[unit]")
         REQUIRE( query_color.blue == font_default_color.blue );
     }
 
+}
+
+TEST_CASE("Simple_geometryManager" , "[unit]")
+{
+    Value<int> v(42, true);
+
+    //Juste histoire que make me lance la compilation du géométrie manager
+    REQUIRE(true);
 }
 
 int ei_main(int argc, char* argv[])
