@@ -1,4 +1,10 @@
 #include "ei_geometrymanager.h"
+#include "ei_widgetdatabank.h"
+#include "ei_widgetplacerdata.h"
+
+#include <iostream>
+
+using namespace std;
 
 namespace ei
 {
@@ -13,10 +19,13 @@ namespace ei
                     float*     rel_width,
                     float*     rel_height)
     {
+        cout << "Configure the widget !" << endl;
+
         GeometryManager* currendWidgetManager = widget->getGeometryManager();
 
         if (currendWidgetManager)
         {
+            cout << "Already a manager for this widget !" << endl;
             if (currendWidgetManager != this)
             {
                 //The widget is already managed by another geometry manager.
@@ -24,7 +33,15 @@ namespace ei
             }
             else
             {
-                _dataMap[widget->getPick_id()].set(
+                WidgetPlacerData *data = _widgetData.get(widget);
+
+                if (!data)
+                {
+                    cerr << "Error in Placer::configure: No data found in the bank for this widget" << endl;
+                    //Had to quit
+                }
+                
+                data->set(
                     anchor,
                     x,
                     y,
@@ -37,100 +54,56 @@ namespace ei
                 );
                 return;
             }
-
-            //We need to add this widget to the list
-            //The place is normaly free because widget id is uniq
-            _dataMap.insert(
-                std::make_pair<uint32_t, WidgetPlacerData>(widget->getPick_id(), WidgetPlacerData(widget))
-            );
-
-            //On le fait deux fois, redondance de code à corriger !
-            _dataMap[widget->getPick_id()].set(
-                    anchor,
-                    x,
-                    y,
-                    width,
-                    height,
-                    rel_x,
-                    rel_y,
-                    rel_width,
-                    rel_height
-                );
         }
+        widget->setGeometryManager(this);
+        //We need to add this widget to the list
+        //The place is normaly free because widget id is uniq
+        WidgetPlacerData* data = new WidgetPlacerData(widget);
+        data->set(
+            anchor,
+            x,
+            y,
+            width,
+            height,
+            rel_x,
+            rel_y,
+            rel_width,
+            rel_height
+        );
+
+        _widgetData.set(
+            widget,
+            data
+        );
     }
 
     void Placer::run(Widget* widget)
     {
-        //Une importance ?
-        Widget* parent = widget->getParent();
-        
-        //Faire attention aux paramêtres de taille du widget !
-        // Placer::configure > widget::requestedSize > defaultSize 
-        //                                              Ou est-elle ?
-        // Mouvement dépend si taille relative donnée ?
-        // Sinon ne pas bouger ?
+        std::list<Widget*> children = widget->getChildren();
+        Rect* containerRect = widget->getContentRect();
 
+        const Rect* oldChildRect;
+        Rect newChildRect;
 
+        for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++) //Post-inccrémentation dans la doc !
+        {
+            oldChildRect = ((Widget *)(*it))->getScreenLocation();  //ça fonctionne bien ce truc ?
+
+            // switch (_dataMap.)
+            // {
+            //     case /* constant-expression */:
+            //         /* code */
+            //         break;
+            
+            //     default:
+            //         break;
+            }
     }
-
     void Placer::release(Widget *widget)
     {
-        if (_dataMap.find(widget->getPick_id()) == _dataMap.end())
-        {
-            //The widget is not managed by this manager
-            return;
-        }
-        
-        _dataMap.erase(widget->getPick_id());
-    }
-
-    WidgetPlacerData::WidgetPlacerData(): 
-        _anchor(ei_anc_northwest, true),
-        _x(0, true),
-        _y(0, true),
-        _width(0.0f, true),
-        _height(0.0f, true),
-        _rel_x(0.0f, true),
-        _rel_y(0.0f, true),
-        _rel_width(0.0f, true),
-        _rel_height(0.0f, true) {}
-
-    WidgetPlacerData::WidgetPlacerData(Widget* widget):
-        _anchor(ei_anc_northwest, true),
-        _x(0, true),
-        _y(0, true),
-        _width(0.0f, true),
-        _height(0.0f, true),
-        _rel_x(0.0f, true),
-        _rel_y(0.0f, true)
-    {
-        Size* size = widget->get_requested_size();
-
-        _rel_width  = Value<float>(size->width(), false);
-        _rel_height = Value<float>(size->height(), false);
-    }
-
-    void WidgetPlacerData::set(
-            anchor_t*  anchor,
-            int*       x,
-            int*       y,
-            float*     width,
-            float*     height,
-            float*     rel_x,
-            float*     rel_y,
-            float*     rel_width,
-            float*     rel_height)
-    {
-        if (anchor) {   _anchor.setValue(*anchor) ; } 
-        if (x)      {   _x.setValue(*x) ;      } 
-        if (y)      {   _y.setValue(*y) ;      } 
-        if (width)  {   _width.setValue(*width) ;  }
-        if (height) {   _height.setValue(*height) ; }
-        if (rel_x)  {   _rel_x.setValue(*rel_x) ;  }
-        if (rel_y)  {   _rel_y.setValue(*rel_y) ;  }
-
-        if (rel_width) {  _rel_width.setValue(*rel_width) ;  }
-        if (rel_height){  _rel_height.setValue(*rel_height);  }
+        _widgetData.remove(widget);
     }
 
 }
+
+    

@@ -9,59 +9,85 @@
 #include "ei_widget.h"
 
 #include <functional>
+#include <iostream>
+
+using namespace std;
 
 namespace ei {
 	/**
 	 * \brief   Abstract class representing a widget
 	 *          Every widget class specializes this base class by adding its own attributes.
 	 */
-	class Widget
+	Widget::Widget(const widgetclass_name_t& class_name, Widget* parent) 
 	{
-	public:
 
-		/**
-		 * @brief   Construct a new instance of a widget of some particular class, as a descendant of an existing widget.
-		 *
-		 *      The widget is not displayed on screen until it is managed by a geometry manager.
-		 *
-		 * @param   class_name  The name of the class of the widget that is to be created.
-		 * @param   parent      A pointer to the parent widget. Cannot be NULL except for the root widget.
-		 */
-		Widget(const widgetclass_name_t& class_name, Widget* parent) 
-		{
-			this.widgetclass_name_t = class_name;
-			this.parent = parent;
+		cout << "Create a basic widget" << endl;
+		
+		name = class_name;
+		parent = parent;
+		geom_manager = nullptr;
 
-			// TODO: root ?
-		}
+		// TODO: root ?
+	}
 
-		/**
-		 * @brief   Destroys the widget. Removes it from screen if it is managed by a geometry manager.
-		 *          Destroys all its descendants.
-		 */
-		virtual ~Widget()
+	/**
+	 * @brief   Destroys the widget. Removes it from screen if it is managed by a geometry manager.
+	 *          Destroys all its descendants.
+	 */
+	Widget::~Widget()
+	{
+		for(Widget* child : children)
 		{
-			foreach(Widget child : this.children)
-			{
-				delete child;
-			}
-			// TODO: actual cleaning
+			delete child;
 		}
+		// TODO: actual cleaning
+	}
 
-		Widget* pick(uint32_t id)
-		{
-			if (this.pick_id == id) {
-				// TODO: pick
-			} 
-		}
-		uint32_t getPick_id() const
-		{
-			return pick_id;
-		}
+	Widget *Widget::pick(uint32_t id)
+	{
+		if (pick_id == id) {
+			// TODO: pick
+		} 
 
-		Widget *getParent() const
-		{
-			return this.parent;
-		}
-	};
+		return nullptr;
+	}
+	uint32_t Widget::getPick_id() const
+	{
+		return pick_id;
+	}
+
+	Widget *Widget::getParent() const
+	{
+		return parent;
+	}
+
+	std::list<Widget *> Widget::getChildren() const
+	{
+		return children;
+	}
+
+	GeometryManager *Widget::getGeometryManager() const
+	{
+		return geom_manager;
+	}
+
+	Size Widget::get_requested_size() const
+	{
+		return requested_size;
+	}
+	
+	void Widget::setGeometryManager(GeometryManager *geometryManager)
+	{
+		geom_manager = geometryManager;
+	}
+
+	Rect* Widget::getContentRect() const
+	{
+		return content_rect;
+	}
+
+	const Rect* Widget::getScreenLocation() const
+	{
+		return &screen_location;
+	}
 }

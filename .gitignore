@@ -1,5 +1,7 @@
 build/
 
+\.vscode/
+docs
 CMakeLists\.txt\.user
 
 \.vs/
