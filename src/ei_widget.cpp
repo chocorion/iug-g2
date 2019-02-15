@@ -15,6 +15,9 @@
 using namespace std;
 
 namespace ei {
+
+	uint32_t Widget::s_idGenerator = 0;
+
 	/**
 	 * \brief   Abstract class representing a widget
 	 *          Every widget class specializes this base class by adding its own attributes.
@@ -27,6 +30,16 @@ namespace ei {
 		name = class_name;
 		parent = parent; // null if root
 		geom_manager = nullptr;
+
+		pick_id = s_idGenerator;
+		s_idGenerator++;
+		
+		unsigned char alpha = pick_id & 0xFF;
+		unsigned char blue = (pick_id >> 8) & 0xFF;
+		unsigned char green = (pick_id >> 16) & 0xFF;
+		unsigned char red = (pick_id >> 24) & 0xFF;
+
+		pick_color = {red,green,blue,alpha};
 	}
 
 	/**
@@ -61,7 +74,7 @@ namespace ei {
 		}
 	}
 	void Widget::geomnotify(Rect rect) {
-		// ?
+		this->screen_location = rect;
 	}
 
 	uint32_t Widget::getPick_id() const
