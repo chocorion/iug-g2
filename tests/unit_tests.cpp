@@ -142,7 +142,10 @@ TEST_CASE("Create widget" , "[unit]")
                      &frame_relief, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
     cout << "Widget id : " << frame->getPick_id() << endl;
-    cout << "Widget pick color : (" << (int) frame->get_pick_color().red << "," << (int) frame->get_pick_color().green << "," << (int) frame->get_pick_color().blue << "," << (int) frame->get_pick_color().alpha << ")" << endl;
+    cout << "Widget pick color : (" << (int) frame->get_pick_color().red 
+    << "," << (int) frame->get_pick_color().green 
+    << "," << (int) frame->get_pick_color().blue 
+    << "," << (int) frame->get_pick_color().alpha << ")" << endl;
 
     REQUIRE(true);
 }
