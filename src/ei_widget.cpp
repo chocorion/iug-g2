@@ -14,6 +14,9 @@
 using namespace std;
 
 namespace ei {
+
+	uint32_t Widget::s_idGenerator = 0;
+
 	/**
 	 * \brief   Abstract class representing a widget
 	 *          Every widget class specializes this base class by adding its own attributes.
@@ -27,7 +30,15 @@ namespace ei {
 		parent = parent;
 		geom_manager = nullptr;
 
-		// TODO: root ?
+		pick_id = s_idGenerator;
+		s_idGenerator++;
+		
+		unsigned char alpha = pick_id & 0xFF;
+		unsigned char blue = (pick_id >> 8) & 0xFF;
+		unsigned char green = (pick_id >> 16) & 0xFF;
+		unsigned char red = (pick_id >> 24) & 0xFF;
+
+		pick_color = {red,green,blue,alpha};
 	}
 
 	/**
