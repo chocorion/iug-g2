@@ -50,6 +50,20 @@ namespace ei {
 
 		return nullptr;
 	}
+
+	void Widget::draw(surface_t surface,
+		surface_t pick_surface,
+		Rect*     clipper)
+	{
+		for(Widget* child : children)
+		{
+			child->draw(surface, pick_surface, clipper);
+		}
+	}
+	void Widget::geomnotify(Rect rect) {
+		// ?
+	}
+
 	uint32_t Widget::getPick_id() const
 	{
 		return pick_id;
