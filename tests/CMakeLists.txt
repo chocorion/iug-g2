@@ -5,8 +5,8 @@
 
 # Targets disabled until the basic functionalities of the library are implemented
 
- add_executable(frame frame.cpp)
- target_link_libraries(frame ei eibase ${Allegro_LIBRARIES} m)
+#add_executable(frame frame.cpp)
+#target_link_libraries(frame ei eibase ${Allegro_LIBRARIES} m)
 
 # add_executable(button button.cpp)
 # target_link_libraries(button ei eibase ${Allegro_LIBRARIES} m)
