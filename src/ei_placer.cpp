@@ -83,7 +83,7 @@ namespace ei
         const Rect* oldChildRect;
         Rect newChildRect;
         WidgetPlacerData* childData;
-        point ancre;
+        Point ancre;
 
         for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++) //Post-inccrémentation dans la doc !
         {
@@ -92,54 +92,54 @@ namespace ei
             childData = _widgetData.get(currentChild);
 
             //Ancre point 
-            ancre.x = childData->rel_x * containerRect->width  + childData->x;
-            ancre.y = childData->rel_y * containerRect->height + childData->y;
+            ancre.x() = childData->_rel_x * containerRect->size.width()  + childData->_x;
+            ancre.y() = childData->_rel_y * containerRect->size.height() + childData->_y;
             
             //Calculate width and height
-            newChildRect.width = childData->rel_width * containerRect->width + childData->width;
-            newChildRect.height = childData->rel_height * containerRect->height + childData->height;
+            newChildRect.size.width() = childData->_rel_width * containerRect->size.width() + childData->size.width;
+            newChildRect.size.height() = childData->_rel_height * containerRect->size.height() + childData->size.height;
             
             switch (childData->_anchor.getValue())
             {
                 case ei_anc_none:   //Northwest by default
                 case ei_anc_northwest:
-                    newChildRect = ancre.x;
-                    newChildRect = ancre.y;
+                    newChildRect = ancre.x();
+                    newChildRect = ancre.y();
                     break;
                 
                 case ei_anc_north:
-                    newChildRect.x = ancre.x - newChildRect.width/2;
-                    newChildRect.y = ancre.y;
+                    newChildRect.top_left.x() = ancre.x() - newChildRect.size.width()/2;
+                    newChildRect.top_left.y() = ancre.y();
                     break;
                 
                 case ei_anc_northeast:
-                    newChildRect.x = ancre.x - newChildRect.width;
-                    newChildRect.y = ancre.y;
+                    newChildRect.top_left.x() = ancre.x() - newChildRect.size.width();
+                    newChildRect.top_left.y() = ancre.y();
                     break;
 
                 case ei_anc_south:
-                    newChildRect.x = ancre.x - newChildRect.width/2;
-                    newChildRect.y = ancre.y - newChildRect.height;
+                    newChildRect.top_left.x() = ancre.x() - newChildRect.size.width()/2;
+                    newChildRect.top_left.y() = ancre.y() - newChildRect.size.height();
                     break;
 
                 case ei_anc_southwest:
-                    newChildRect.x = ancre.x;
-                    newChildRect.y = ancre.y - newChildRect.height;
+                    newChildRect.top_left.x() = ancre.x();
+                    newChildRect.top_left.y() = ancre.y() - newChildRect.size.height();
                     break;
 
                 case ei_anc_southeast:
-                    newChildRect.x = ancre.x - newChildRect.width;
-                    newChildRect.y = ancre.y - newChildRect.height;
+                    newChildRect.top_left.x() = ancre.x() - newChildRect.size.width();
+                    newChildRect.top_left.y() = ancre.y() - newChildRect.size.height();
                     break;
 
                 case ei_anc_west:
-                    newChildRect.x = ancre.x;
-                    newChildRect.y = ancre.y - newChildRect.height/2;
+                    newChildRect.top_left.x() = ancre.x();
+                    newChildRect.top_left.y() = ancre.y() - newChildRect.size.height()/2;
                     break;
 
                 case ei_anc_east:
-                    newChildRect.x = ancre.x - newChildRect.width;
-                    newChildRect.y = ancre.y - newChildRect.height;
+                    newChildRect.top_left.x() = ancre.x() - newChildRect.size.width();
+                    newChildRect.top_left.y() = ancre.y() - newChildRect.size.height();
                     break;
                 default:
                     break;
@@ -147,13 +147,13 @@ namespace ei
 
             //Vérifier si newChildRect et oldChildRect son différent ou non
             if (
-                newChildRect.x != oldChildRect.x ||
-                newChildRect.y != oldChildRect.y ||
-                newChildRect.width != oldChildRect.width ||
-                newChildRect.height != oldChildRect.height
+                newChildRect.top_left.x() != oldChildRect.top_left.x() ||
+                newChildRect.top_left.y() != oldChildRect.top_left.y() ||
+                newChildRect.size.width() != oldChildRect.size.width() ||
+                newChildRect.size.height() != oldChildRect.size.height()
             ) {
-                run(current_child);
-                current_child.geomNotify(newChildRect);
+                run(currentChild);
+                currentChild.geomNotify(newChildRect);
             }
         }
     }
