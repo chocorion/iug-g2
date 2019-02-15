@@ -13,14 +13,12 @@ using namespace std;
 
 namespace ei {
 
-	Frame::Frame(Widget* parent)
+	Frame::Frame(Widget* parent) : Widget(parent)
 	{
-		super(parent);
 	}
 
-	Frame::~Frame()
+	Frame::~Frame() : ~Widget()
 	{
-		super();
 	}
 
 	void Frame::draw(surface_t surface,
@@ -44,5 +42,3 @@ namespace ei {
 
 	}
 };
-
-}
