@@ -22,10 +22,7 @@ namespace ei {
 	 *          Every widget class specializes this base class by adding its own attributes.
 	 */
 	Widget::Widget(const widgetclass_name_t& class_name, Widget* parent) 
-	{
-
-		cout << "Create a basic widget" << endl;
-		
+	{		
 		name = class_name;
 		parent = parent;
 		geom_manager = nullptr;
