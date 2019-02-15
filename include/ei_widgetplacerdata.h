@@ -50,6 +50,8 @@ template<class T> class Value
         }
 };
 
+class Placer;
+
 /**
  * @brief Represent the widget's data about is localisation on the screen
  * 
@@ -69,7 +71,7 @@ class WidgetPlacerData
         Value<float> _rel_width;
         Value<float> _rel_height;
 
-        
+        friend Placer;
 
 
     
