@@ -59,7 +59,7 @@ public:
      * @param   clipper     If not NULL, the drawing is restricted within this rectangle
      *                      (expressed in the surface reference frame).
      */
-    //virtual void draw (surface_t surface, surface_t pick_surface, Rect* clipper);
+    virtual void draw (surface_t surface, surface_t pick_surface, Rect* clipper);
 
     /**
      * \brief   Method that is called to notify the widget that its geometry has been modified
@@ -68,7 +68,7 @@ public:
      * @param   rect        The new rectangular screen location of the widget
      *                      (i.e., = widget->screen_location).
      */
-    //virtual void geomnotify (Rect rect);
+    virtual void geomnotify (Rect rect);
 
     Widget* pick(uint32_t id);
     uint32_t getPick_id() const;
