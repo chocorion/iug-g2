@@ -62,7 +62,7 @@ namespace ei {
 		}
 	}
 	void Widget::geomnotify(Rect rect) {
-		// ?
+		this->screen_location = rect;
 	}
 
 	uint32_t Widget::getPick_id() const
