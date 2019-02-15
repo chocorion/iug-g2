@@ -31,10 +31,10 @@ namespace ei {
 		pick_id = s_idGenerator;
 		s_idGenerator++;
 		
-		unsigned char alpha = pick_id & 0xFF;
-		unsigned char blue = (pick_id >> 8) & 0xFF;
-		unsigned char green = (pick_id >> 16) & 0xFF;
-		unsigned char red = (pick_id >> 24) & 0xFF;
+		unsigned char red = (pick_id & 0xff000000) >> 24;
+		unsigned char green = (pick_id & 0x00ff0000) >> 16;
+		unsigned char blue = (pick_id & 0x0000ff00) >> 8;
+		unsigned char alpha = (pick_id & 0x000000ff);
 
 		pick_color = {red,green,blue,alpha};
 	}
@@ -65,6 +65,7 @@ namespace ei {
 		surface_t pick_surface,
 		Rect*     clipper)
 	{
+
 		for(Widget* child : children)
 		{
 			child->draw(surface, pick_surface, clipper);
@@ -77,6 +78,11 @@ namespace ei {
 	uint32_t Widget::getPick_id() const
 	{
 		return pick_id;
+	}
+
+	color_t Widget::get_pick_color() const
+	{
+		return pick_color;
 	}
 
 	Widget *Widget::getParent() const

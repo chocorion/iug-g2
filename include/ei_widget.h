@@ -71,6 +71,7 @@ class Widget
 
     Widget *pick(uint32_t id);
     uint32_t getPick_id() const;
+    color_t get_pick_color() const;
 
     Widget *getParent() const;
     std::list<Widget *> getChildren() const;

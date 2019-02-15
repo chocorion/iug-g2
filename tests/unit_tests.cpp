@@ -126,6 +126,27 @@ TEST_CASE("Simple_geometryManager" , "[unit]")
         REQUIRE(true);
 }
 
+TEST_CASE("Create widget" , "[unit]")
+{  
+    cout << "---------------------------------------" << endl;
+    cout << "Test widget (frame) " << endl;
+    
+    Size frame_size = Size(300, 200);
+    color_t frame_color = { 0x88, 0x88, 0x88, 0xff };
+    relief_t frame_relief = ei_relief_raised;
+    int frame_border_width = 6;
+
+    Frame* frame = new Frame(new Widget("root",nullptr));
+    
+    frame->configure(&frame_size, &frame_color, &frame_border_width,
+                     &frame_relief, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+    cout << "Widget id : " << frame->getPick_id() << endl;
+    cout << "Widget pick color : (" << (int) frame->get_pick_color().red << "," << (int) frame->get_pick_color().green << "," << (int) frame->get_pick_color().blue << "," << (int) frame->get_pick_color().alpha << ")" << endl;
+
+    REQUIRE(true);
+}
+
 TEST_CASE("Create frame" , "[unit]")
 {  
     cout << "---------------------------------------" << endl;
