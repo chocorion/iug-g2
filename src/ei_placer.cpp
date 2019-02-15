@@ -131,7 +131,7 @@ namespace ei
                     newChildRect.x = ancre.x - newChildRect.width;
                     newChildRect.y = ancre.y - newChildRect.height;
                     break;
-                    
+
                 case ei_anc_west:
                     newChildRect.x = ancre.x;
                     newChildRect.y = ancre.y - newChildRect.height/2;
@@ -146,6 +146,15 @@ namespace ei
             }
 
             //Vérifier si newChildRect et oldChildRect son différent ou non
+            if (
+                newChildRect.x != oldChildRect.x ||
+                newChildRect.y != oldChildRect.y ||
+                newChildRect.width != oldChildRect.width ||
+                newChildRect.height != oldChildRect.height
+            ) {
+                run(current_child);
+                current_child.geomNotify(newChildRect);
+            }
         }
     }
 
