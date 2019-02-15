@@ -13,11 +13,12 @@ using namespace std;
 
 namespace ei {
 
-	Frame::Frame(Widget* parent) : Widget(parent)
+	Frame::Frame(Widget* parent) : Widget("Frame", parent)
 	{
+		
 	}
 
-	Frame::~Frame() : ~Widget()
+	Frame::~Frame()
 	{
 	}
 

@@ -21,6 +21,7 @@ add_executable(
     ../src/ei_placer.cpp 
     ../include/ei_geometrymanager.h 
     ../src/ei_widget.cpp 
+    ../src/ei_frame.cpp 
     ../include/ei_widget.h
     ../include/ei_widgetdatabank.h
     ../include/ei_widgetplacerdata.h
