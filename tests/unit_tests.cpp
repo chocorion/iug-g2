@@ -126,6 +126,24 @@ TEST_CASE("Simple_geometryManager" , "[unit]")
         REQUIRE(true);
 }
 
+TEST_CASE("Create frame" , "[unit]")
+{  
+    cout << "---------------------------------------" << endl;
+    cout << "Test frame " << endl;
+    
+    Size frame_size = Size(300, 200);
+    color_t frame_color = { 0x88, 0x88, 0x88, 0xff };
+    relief_t frame_relief = ei_relief_raised;
+    int frame_border_width = 6;
+
+    Frame* frame = new Frame(new Widget("root",nullptr));
+    
+    frame->configure(&frame_size, &frame_color, &frame_border_width,
+                     &frame_relief, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+    REQUIRE(true);
+}
+
 int ei_main(int argc, char* argv[])
 {
     // Init acces to hardware.

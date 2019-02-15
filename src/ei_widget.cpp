@@ -4,6 +4,7 @@
  * @brief   API for widgets management: creation, configuration, hierarchy, redisplay.
  *
  *  Created by Adrien Boitelle on 04.02.19.
+ *  Edited by Robin Navarro.
  */
 
 #include "ei_widget.h"
@@ -24,7 +25,7 @@ namespace ei {
 	Widget::Widget(const widgetclass_name_t& class_name, Widget* parent) 
 	{		
 		name = class_name;
-		parent = parent;
+		parent = parent; // null if root
 		geom_manager = nullptr;
 
 		pick_id = s_idGenerator;
