@@ -92,15 +92,19 @@ namespace ei
             childData = _widgetData.get(currentChild);
 
             //Ancre point 
-            ancre.x() = childData->_rel_x * containerRect->size.width()  + childData->_x;
-            ancre.y() = childData->_rel_y * containerRect->size.height() + childData->_y;
+            ancre = (
+                childData->_rel_x.getValue() * containerRect->size.width()  + childData->_x.getValue(),
+                childData->_rel_y.getValue() * containerRect->size.height() + childData->_y.getValue()
+            );
             
 
             //ATTENTION PRENDDRE EN COMPTE S'IL N'Y EN A PAS PAR DEFAULT !!
 
             //Calculate width and height
-            newChildRect.size.width() = childData->_rel_width * containerRect->size.width() + childData->_width;
-            newChildRect.size.height() = childData->_rel_height * containerRect->size.height() + childData->_height;
+            newChildRect.size  = (
+                childData->_rel_width.getValue() * containerRect->size.width() + childData->_width.getValue(),
+                childData->_rel_height.getValue() * containerRect->size.height() + childData->_height.getValue()
+            );
             
             switch (childData->_anchor.getValue())
             {
