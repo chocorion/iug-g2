@@ -4,6 +4,7 @@
  * @brief   API for widgets management: creation, configuration, hierarchy, redisplay.
  *
  *  Created by Adrien Boitelle on 04.02.19.
+ *  Edited by Robin Navarro.
  */
 
 #include "ei_widget.h"
@@ -14,20 +15,28 @@
 using namespace std;
 
 namespace ei {
+
+	uint32_t Widget::s_idGenerator = 0;
+
 	/**
 	 * \brief   Abstract class representing a widget
 	 *          Every widget class specializes this base class by adding its own attributes.
 	 */
 	Widget::Widget(const widgetclass_name_t& class_name, Widget* parent) 
-	{
-
-		cout << "Create a basic widget" << endl;
-		
+	{		
 		name = class_name;
-		parent = parent;
+		parent = parent; // null if root
 		geom_manager = nullptr;
 
-		// TODO: root ?
+		pick_id = s_idGenerator;
+		s_idGenerator++;
+		
+		unsigned char red = (pick_id & 0xff000000) >> 24;
+		unsigned char green = (pick_id & 0x00ff0000) >> 16;
+		unsigned char blue = (pick_id & 0x0000ff00) >> 8;
+		unsigned char alpha = (pick_id & 0x000000ff);
+
+		pick_color = {red,green,blue,alpha};
 	}
 
 	/**
@@ -51,9 +60,29 @@ namespace ei {
 
 		return nullptr;
 	}
+
+	void Widget::draw(surface_t surface,
+		surface_t pick_surface,
+		Rect*     clipper)
+	{
+
+		for(Widget* child : children)
+		{
+			child->draw(surface, pick_surface, clipper);
+		}
+	}
+	void Widget::geomnotify(Rect rect) {
+		this->screen_location = rect;
+	}
+
 	uint32_t Widget::getPick_id() const
 	{
 		return pick_id;
+	}
+
+	color_t Widget::get_pick_color() const
+	{
+		return pick_color;
 	}
 
 	Widget *Widget::getParent() const
