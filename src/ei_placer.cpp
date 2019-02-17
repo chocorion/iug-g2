@@ -100,10 +100,14 @@ namespace ei
 
             //ATTENTION PRENDDRE EN COMPTE S'IL N'Y EN A PAS PAR DEFAULT !!
 
-            //Calculate width and height
+            //Calculate width and height 
             newChildRect.size  = (
-                childData->_rel_width.getValue() * containerRect->size.width() + childData->_width.getValue(),
-                childData->_rel_height.getValue() * containerRect->size.height() + childData->_height.getValue()
+                (childData->_rel_width.isDefault())?
+                    currentChild->get_requested_size().width():
+                    childData->_rel_width.getValue() * containerRect->size.width() + childData->_width.getValue(),
+                (childData->_rel_height.isDefault())?
+                    currentChild->get_requested_size().height():
+                    childData->_rel_height.getValue() * containerRect->size.height() + childData->_height.getValue()
             );
             
             switch (childData->_anchor.getValue())
