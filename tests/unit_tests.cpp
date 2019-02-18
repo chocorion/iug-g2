@@ -2,6 +2,7 @@
 #include "catch.hpp"
 
 #include "ei_main.h"
+#include "ei_application.h"
 #include "ei_draw.h"
 #include "hw_interface.h"
 
@@ -50,6 +51,12 @@ TEST_CASE("fill_window", "[unit]")
         REQUIRE( query_color.blue == font_default_color.blue );
     }
 
+}
+
+TEST_CASE("create Application", "[unit]")
+{
+    Size screen_size = Size(600, 600);
+    Application* app = new Application(&screen_size);
 }
 
 int ei_main(int argc, char* argv[])
