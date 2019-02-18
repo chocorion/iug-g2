@@ -1,3 +1,19 @@
 build/
 
 CMakeLists\.txt\.user
+
+tests/tests/
+
+tests/CMakeFiles/
+
+tests/cmake_install\.cmake
+
+tests/CMakeCache\.txt
+
+\.vscode/
+
+\.vs/
+
+*.a
+
+tests/Makefile
