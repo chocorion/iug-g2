@@ -57,6 +57,8 @@ TEST_CASE("create Application", "[unit]")
 {
     Size screen_size = Size(600, 600);
     Application* app = new Application(&screen_size);
+
+    REQUIRE(app != nullptr);
 }
 
 int ei_main(int argc, char* argv[])
