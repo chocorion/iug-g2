@@ -46,7 +46,8 @@ template<class T> class Value
          */
         void setValue(T new_value)
         {
-            _value = new_value;
+            _default = false;
+            _value   = new_value;
         }
 };
 
