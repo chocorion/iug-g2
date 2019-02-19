@@ -1,19 +1,23 @@
 build/
 
+\.vscode/
+docs
 CMakeLists\.txt\.user
 
-tests/tests/
+\.vs/
 
+\.vscode/
+docs
 tests/CMakeFiles/
+
+tests/tests/
 
 tests/cmake_install\.cmake
 
 tests/CMakeCache\.txt
 
-\.vscode/
-
-\.vs/
-
-*.a
+tests/libei\.a
 
 tests/Makefile
+
+*.a
