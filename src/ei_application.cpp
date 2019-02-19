@@ -52,6 +52,9 @@ Application::~Application()
 
 void Application::run()
 {
+    while(true) {
+        
+    }
 }
 
 void Application::invalidate_rect(const Rect &rect)
