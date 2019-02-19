@@ -234,6 +234,18 @@ class Button : public Widget
                    surface_t *img,
                    Rect **img_rect,
                    anchor_t *img_anchor);
+
+  private:
+    const color_t *color;
+    int *border_width;
+    relief_t *relief;
+    const char **text;
+    font_t *text_font;
+    color_t *text_color;
+    anchor_t *text_anchor;
+    surface_t *img;
+    Rect **img_rect;
+    anchor_t *img_anchor;
 };
 
 class Toplevel : public Widget
