@@ -27,21 +27,28 @@ int ei_main(int argc, char** argv)
     relief_t frame_relief = ei_relief_raised;
     int frame_border_width = 6;
 
+    printf("--- Setup Application phase ---\n");
     /* Create the application and change the color of the background. */
     Application* app = new Application(&screen_size);
     app->root_widget()->configure(&screen_size, &root_bgcol, NULL, NULL, NULL, NULL,
                                   NULL, NULL, NULL, NULL, NULL);
 
+    printf("--- Setup Frame phase ---\n");
     /* Create, configure and place the frame on screen. */
     Frame* frame = new Frame(app->root_widget());
     frame->configure(&frame_size, &frame_color, &frame_border_width,
                      &frame_relief, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+                     
+    printf("--- Setup Placer phase ---\n");
     Placer* p = new Placer();
     p->configure(frame, NULL, &frame_x, &frame_y, NULL, NULL, NULL, NULL, NULL, NULL);
 
+    printf("--- Application run phase ---\n");
     /* Run the application's main loop. */
     app->run();
 
+    printf("--- Application delete phase ---\n");
     /* We just exited from the main loop. Terminate the application (cleanup). */
     delete app;
     delete p;
