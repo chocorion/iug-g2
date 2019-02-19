@@ -19,13 +19,10 @@ namespace ei
                     float*     rel_width,
                     float*     rel_height)
     {
-        cout << "Configure the widget !" << endl;
-
         GeometryManager* currendWidgetManager = widget->getGeometryManager();
 
         if (currendWidgetManager)
         {
-            cout << "Already a manager for this widget !" << endl;
             if (currendWidgetManager != this)
             {
                 //The widget is already managed by another geometry manager.
@@ -71,6 +68,7 @@ namespace ei
             rel_height
         );
 
+        //Put information in the data map
         _widgetData.set(
             widget,
             data
@@ -82,23 +80,113 @@ namespace ei
         std::list<Widget*> children = widget->getChildren();
         Rect* containerRect = widget->getContentRect();
 
+        Widget* currentChild;
+
         const Rect* oldChildRect;
         Rect newChildRect;
+        WidgetPlacerData* childData;
+        Point anchor;
 
         for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++) //Post-inccrémentation dans la doc !
         {
-            oldChildRect = ((Widget *)(*it))->getScreenLocation();  //ça fonctionne bien ce truc ?
+            currentChild = (Widget *)(*it);
+            oldChildRect = currentChild->getScreenLocation();  //ça fonctionne bien ce truc ?
+            childData = _widgetData.get(currentChild);
 
-            // switch (_dataMap.)
-            // {
-            //     case /* constant-expression */:
-            //         /* code */
-            //         break;
+            //anchor point 
+            anchor = (
+                childData->_rel_x.getValue() * containerRect->size.width()  + childData->_x.getValue(),
+                childData->_rel_y.getValue() * containerRect->size.height() + childData->_y.getValue()
+            );
             
-            //     default:
-            //         break;
+
+            //Calculate width and height 
+            newChildRect.size  = (
+                
+                (childData->_rel_width.isDefault())?
+                    currentChild->get_requested_size().width():
+                    childData->_rel_width.getValue() * containerRect->size.width() + childData->_width.getValue(),
+
+                (childData->_rel_height.isDefault())?
+                    currentChild->get_requested_size().height():
+                    childData->_rel_height.getValue() * containerRect->size.height() + childData->_height.getValue()
+            );
+            
+            switch (childData->_anchor.getValue())
+            {
+                case ei_anc_none:   //Northwest by default
+                case ei_anc_northwest:
+                    newChildRect.top_left = (
+                        anchor.x(),
+                        anchor.y()
+                    );
+                    break;
+                
+                case ei_anc_north:
+                    newChildRect.top_left = (
+                        anchor.x() - newChildRect.size.width()/2,
+                        anchor.y()
+                    );
+                    break;
+                
+                case ei_anc_northeast:
+                    newChildRect.top_left = (
+                        anchor.x() - newChildRect.size.width(),
+                        anchor.y()
+                    );
+                    break;
+
+                case ei_anc_south:
+                    newChildRect.top_left = (
+                        anchor.x() - newChildRect.size.width()/2,
+                        anchor.y() - newChildRect.size.height()
+                    );
+                    break;
+
+                case ei_anc_southwest:
+                    newChildRect.top_left = (
+                        anchor.x(),
+                        anchor.y() - newChildRect.size.height()
+                    );
+                    break;
+
+                case ei_anc_southeast:
+                    newChildRect.top_left = (
+                        anchor.x() - newChildRect.size.width(),
+                        anchor.y() - newChildRect.size.height()
+                    );
+                    break;
+
+                case ei_anc_west:
+                    newChildRect.top_left = (
+                        anchor.x(),
+                        anchor.y() - newChildRect.size.height()/2
+                    );
+                    break;
+
+                case ei_anc_east:
+                    newChildRect.top_left = (
+                        anchor.x() - newChildRect.size.width(),
+                        anchor.y() - newChildRect.size.height()
+                    );
+                    break;
+                default:
+                    break;
             }
+
+            //Vérifier si newChildRect et oldChildRect son différent ou non
+            if (
+                newChildRect.top_left.x() != oldChildRect->top_left.x() ||
+                newChildRect.top_left.y() != oldChildRect->top_left.y() ||
+                newChildRect.size.width() != oldChildRect->size.width() ||
+                newChildRect.size.height() != oldChildRect->size.height()
+            ) {
+                run(currentChild);
+                currentChild->geomnotify(newChildRect);
+            }
+        }
     }
+
     void Placer::release(Widget *widget)
     {
         _widgetData.remove(widget);

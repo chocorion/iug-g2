@@ -46,9 +46,12 @@ template<class T> class Value
          */
         void setValue(T new_value)
         {
-            _value = new_value;
+            _default = false;
+            _value   = new_value;
         }
 };
+
+class Placer;
 
 /**
  * @brief Represent the widget's data about is localisation on the screen
@@ -69,7 +72,7 @@ class WidgetPlacerData
         Value<float> _rel_width;
         Value<float> _rel_height;
 
-        
+        friend Placer;
 
 
     
