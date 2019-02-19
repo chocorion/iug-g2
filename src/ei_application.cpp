@@ -20,7 +20,7 @@ Application::Application(Size *main_window_size)
 {
     hw_init();
     
-    surface_t img = hw_create_window(main_window_size, EI_TRUE);
+    surface_t img = hw_create_window(main_window_size, EI_FALSE);
 
     int border_width = 0;
     relief_t relief = ei_relief_none;
