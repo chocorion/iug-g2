@@ -14,45 +14,39 @@ using namespace std;
 
 namespace ei
 {
-    Application::Application(Size *main_window_size) 
-    {
+Frame *Application::root = new Frame(nullptr);
 
-    }
+Application::Application(Size *main_window_size)
+{
+}
 
-    Application::~Application() 
-    {
+Application::~Application()
+{
+}
 
-    }
+void Application::run()
+{
+}
 
-    void Application::run() 
-    {
+void Application::invalidate_rect(const Rect &rect)
+{
+}
 
-    }
+void Application::quit_request()
+{
+}
 
-    void Application::invalidate_rect(const Rect &rect) 
-    {
+Frame *Application::root_widget()
+{
+}
 
-    }
+surface_t Application::root_surface()
+{
+}
 
-    void Application::quit_request() 
-    {
+Widget *Application::widget_pick(const Point &where)
+{
+}
 
-    }
-
-    Frame *Application::root_widget() 
-    {
-
-    }
-
-    surface_t Application::root_surface() 
-    {
-
-    }
-
-    Widget *Application::widget_pick(const Point &where) 
-    {
-
-    }
-
-    static Application *instance;
+static Application *instance;
 } // namespace ei

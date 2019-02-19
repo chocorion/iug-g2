@@ -21,3 +21,9 @@ tests/libei\.a
 tests/Makefile
 
 build/
+
+lib/_mingw/
+
+lib/_osx/
+
+lib/_x11/
