@@ -23,7 +23,7 @@ int ei_main(int argc, char** argv)
     Size frame_size = Size(300, 200);
     int frame_x = 150;
     int frame_y = 200;
-    color_t frame_color = { 0xFF, 0x88, 0x88, 0xff };
+    color_t frame_color = { 0xFF, 0x00, 0x00, 0xff };
     relief_t frame_relief = ei_relief_raised;
     int frame_border_width = 6;
 
@@ -37,10 +37,10 @@ int ei_main(int argc, char** argv)
     frame->configure(&frame_size, &frame_color, &frame_border_width,
                      &frame_relief, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
+    frame->draw(app->root_surface(), NULL, nullptr);
     Placer* p = new Placer();
     p->configure(frame, NULL, &frame_x, &frame_y, NULL, NULL, NULL, NULL, NULL, NULL);
 
-    frame->draw(app->root_surface(), NULL, nullptr);
     /* Run the application's main loop. */
     app->run();
 

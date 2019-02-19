@@ -28,13 +28,17 @@ namespace ei {
 	{
 		Rect current = Rect(Point((double) requested_size.x(),(double) requested_size.y()),Size((double) requested_size.width(),(double) requested_size.height()));
 		for(int i = 0; i < *border_width; i++) {
-			printf("%lf-%lf-%d-%d ",current.size.height(),current.size.width(),current.top_left.x(),current.top_left.y());
-			draw_polyline(surface,rounded_frame(current,0,BT_FULL),*color,clipper);
+			printf("%lf-%lf-%d-%d\n",current.size.height(),current.size.width(),current.top_left.x(),current.top_left.y());
+			draw_polyline(surface,rounded_frame(current,0,BT_FULL),*color,&current);
 			current.size.height() -= 2;
 			current.size.width() -= 2;
 			current.top_left.x() += 1;
 			current.top_left.y() += 1;
 		}
+
+		linked_rect_t* rects = new linked_rect_t();
+		rects->push_front(Rect(Point((double) requested_size.x(),(double) requested_size.y()),Size((double) requested_size.width(),(double) requested_size.height())));
+		hw_surface_update_rects(*rects);
 
 	}
 
