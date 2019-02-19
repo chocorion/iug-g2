@@ -28,6 +28,9 @@ target_link_libraries(frame ei eibase ${Allegro_LIBRARIES} m)
 # Unit tests
 add_executable(
     unit_tests unit_tests.cpp 
+    ../include/hw_interface.h
+    ../include/ei_event.h
+    ../include/keycodes.h
     ../src/ei_placer.cpp 
     ../include/ei_geometrymanager.h 
     ../src/ei_widget.cpp 
