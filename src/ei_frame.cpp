@@ -26,6 +26,16 @@ namespace ei {
 		surface_t pick_surface,
 		Rect*     clipper)
 	{
+		Rect current = Rect(Point((double) requested_size.x(),(double) requested_size.y()),Size((double) requested_size.width(),(double) requested_size.height()));
+		for(int i = 0; i < *border_width; i++) {
+			printf("%lf-%lf-%d-%d ",current.size.height(),current.size.width(),current.top_left.x(),current.top_left.y());
+			draw_polyline(surface,rounded_frame(current,0,BT_FULL),*color,clipper);
+			current.size.height() -= 2;
+			current.size.width() -= 2;
+			current.top_left.x() += 1;
+			current.top_left.y() += 1;
+		}
+
 	}
 
 	void Frame::configure(Size*           requested_size,
@@ -51,5 +61,9 @@ namespace ei {
 		this->img = img;
 		this->img_rect = img_rect;
 		this->img_anchor;
+	}
+
+	surface_t *Frame::getImg() {
+		return img;
 	}
 };

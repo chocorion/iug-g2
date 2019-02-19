@@ -185,6 +185,8 @@ class Frame : public Widget
                    Rect **img_rect,
                    anchor_t *img_anchor);
 
+    surface_t *getImg();
+
   private:
     const color_t *color;
     int *border_width;

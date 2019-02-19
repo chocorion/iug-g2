@@ -85,6 +85,7 @@ Frame *Application::root_widget()
 
 surface_t Application::root_surface()
 {
+    return root->getImg();
 }
 
 Widget *Application::widget_pick(const Point &where)
