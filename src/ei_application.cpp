@@ -61,6 +61,7 @@ void Application::quit_request()
 
 Frame *Application::root_widget()
 {
+    return root;
 }
 
 surface_t Application::root_surface()
