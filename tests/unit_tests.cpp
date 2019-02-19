@@ -210,6 +210,32 @@ TEST_CASE("configure Application Frame", "[unit]")
     REQUIRE(app != nullptr);
 }
 
+TEST_CASE("configure Button", "[unit]")
+{
+    Size       screen_size = Size(600, 600);
+    color_t root_bgcol  = {0x52, 0x7f, 0xb4, 0xff};
+
+    Size    button_size = Size(300,200);
+    int     button_x    = 150;
+    int     button_y    = 200;
+    color_t  button_color        = {0x88, 0x88, 0x88, 0xff};
+    const char* button_title        = "Mon premier Bouton !";
+    color_t  button_text_color   = {0x00, 0x00, 0x00, 0xff};
+    int button_corner_radius        = 20;
+    relief_t button_relief       = ei_relief_raised;
+    int button_border_width      = 6;
+
+    /* Create the application and change the color of the background. */
+    Application* app = new Application(&screen_size);
+    app->root_widget()->configure(&screen_size, &root_bgcol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+    /* Create and configure the button */
+    Button* button = new Button(app->root_widget());
+    button->configure (&button_size, &button_color,
+                       &button_border_width, &button_corner_radius, &button_relief, &button_title, NULL, &button_text_color, NULL,
+                       NULL, NULL, NULL);
+    REQUIRE(button != nullptr);
+}
 int ei_main(int argc, char* argv[])
 {
     // Init acces to hardware.

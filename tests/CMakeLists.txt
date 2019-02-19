@@ -35,6 +35,7 @@ add_executable(
     ../include/ei_geometrymanager.h 
     ../src/ei_widget.cpp 
     ../src/ei_frame.cpp 
+    ../src/ei_button.cpp 
     ../include/ei_widget.h
     ../include/ei_widgetdatabank.h
     ../include/ei_widgetplacerdata.h
