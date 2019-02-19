@@ -99,7 +99,8 @@ public:
 
 private:
     static Application *instance;
-};
+    static Frame *root;
+};  
 
 }
 
