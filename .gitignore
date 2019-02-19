@@ -20,4 +20,4 @@ tests/libei\.a
 
 tests/Makefile
 
-*.a
+build/
