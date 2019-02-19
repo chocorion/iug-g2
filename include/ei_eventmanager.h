@@ -27,7 +27,14 @@ class BoundEvent
 
     public:
         BoundEvent();
-        bool execute();
+
+        BoundEvent(
+            Widget* widget,
+            tag_t tag,
+            ei_callback_t callback,
+            void* user_param
+        );
+        bool execute(Event* event);
 };
 
 class BoundEventBank
