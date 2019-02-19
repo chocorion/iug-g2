@@ -18,9 +18,9 @@ Frame *Application::root = new Frame(nullptr);
 
 Application::Application(Size *main_window_size)
 {
-    printf("Create window\n");
+    hw_init();
+    
     surface_t img = hw_create_window(main_window_size, EI_TRUE);
-    printf("Created window\n");
 
     int border_width = 0;
     relief_t relief = ei_relief_none;
@@ -30,7 +30,6 @@ Application::Application(Size *main_window_size)
     
     Rect* window = new Rect(Point(),*main_window_size);
 
-    printf("Configure window\n");
     root->configure(
         main_window_size,
         &black,
@@ -48,6 +47,7 @@ Application::Application(Size *main_window_size)
 
 Application::~Application()
 {
+    hw_quit();
 }
 
 void Application::run()
