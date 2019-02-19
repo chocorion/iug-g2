@@ -9,6 +9,10 @@
  */
 
 #include "ei_application.h"
+#include "hw_interface.h"
+#include "ei_event.h"
+#include "keycodes.h"
+#include "ei_main.h"
 
 using namespace std;
 
@@ -26,6 +30,18 @@ Application::~Application()
 
 void Application::run()
 {
+    bool doExit = false;
+    Event* event;
+
+    while(!doExit)
+    {
+        event = hw_event_wait_next();
+
+        doExit = (
+            (event->type == ei_ev_display && ((DisplayEvent*)event)->closed) ||
+            (event->type == ei_ev_keydown && ((KeyEvent*)event)->key_sym == ALLEGRO_KEY_ESCAPE)
+        );
+    }
 }
 
 void Application::invalidate_rect(const Rect &rect)
