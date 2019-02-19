@@ -44,7 +44,8 @@ public:
      * @return the instance
      */
     static Application* getInstance() {
-        return instance;
+        static Application instance;
+        return &instance;
     }
 
     /**
@@ -98,8 +99,10 @@ public:
     void operator=(Application const&)  = delete; // prevents  this  method  to be used
 
 private:
+    Application();
     static Application *instance;
-};
+    static Frame *root;
+};  
 
 }
 

@@ -5,8 +5,18 @@
 
 # Targets disabled until the basic functionalities of the library are implemented
 
-#add_executable(frame frame.cpp)
-#target_link_libraries(frame ei eibase ${Allegro_LIBRARIES} m)
+add_executable(frame frame.cpp
+../src/ei_placer.cpp 
+../include/ei_geometrymanager.h 
+../src/ei_widget.cpp 
+../src/ei_frame.cpp 
+../include/ei_widget.h
+../include/ei_widgetdatabank.h
+../include/ei_widgetplacerdata.h
+../src/ei_widgetdatabank.cpp
+../src/ei_widgetplacerdata.cpp
+../src/ei_application.cpp)
+target_link_libraries(frame ei eibase ${Allegro_LIBRARIES} m)
 
 # add_executable(button button.cpp)
 # target_link_libraries(button ei eibase ${Allegro_LIBRARIES} m)
@@ -18,6 +28,9 @@
 # Unit tests
 add_executable(
     unit_tests unit_tests.cpp 
+    ../include/hw_interface.h
+    ../include/ei_event.h
+    ../include/keycodes.h
     ../src/ei_placer.cpp 
     ../include/ei_geometrymanager.h 
     ../src/ei_widget.cpp 
@@ -27,7 +40,7 @@ add_executable(
     ../include/ei_widgetplacerdata.h
     ../src/ei_widgetdatabank.cpp
     ../src/ei_widgetplacerdata.cpp
-)
+../src/ei_application.cpp )
 target_link_libraries(unit_tests ei eibase ${Allegro_LIBRARIES} m)
 
 enable_testing()

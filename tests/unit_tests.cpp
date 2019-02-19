@@ -2,6 +2,7 @@
 #include "catch.hpp"
 
 #include "ei_main.h"
+#include "ei_application.h"
 #include "ei_draw.h"
 #include "hw_interface.h"
 #include "ei_geometrymanager.h"
@@ -166,6 +167,47 @@ TEST_CASE("Create frame" , "[unit]")
                      &frame_relief, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
     REQUIRE(true);
+}
+
+TEST_CASE("create Application", "[unit]")
+{
+    Size screen_size = Size(600, 600);
+    Application* app = new Application(&screen_size);
+
+    REQUIRE(app != nullptr);
+}
+
+TEST_CASE("configure Application", "[unit]")
+{
+    color_t root_bgcol = { 0x52, 0x7f, 0xb4, 0xff };
+    Size screen_size = Size(600, 600);
+    Application* app = new Application(&screen_size);
+
+    app->root_widget()->configure(&screen_size, &root_bgcol, NULL, NULL, NULL, NULL,
+                                  NULL, NULL, NULL, NULL, NULL);
+
+    REQUIRE(app != nullptr);
+}
+
+TEST_CASE("configure Application Frame", "[unit]")
+{    
+    Size screen_size = Size(600, 600);
+    color_t root_bgcol = { 0x52, 0x7f, 0xb4, 0xff };
+
+    Size frame_size = Size(300, 200);
+    color_t frame_color = { 0x88, 0x88, 0x88, 0xff };
+    relief_t frame_relief = ei_relief_raised;
+    int frame_border_width = 6;
+
+    Application* app = new Application(&screen_size);
+    app->root_widget()->configure(&screen_size, &root_bgcol, NULL, NULL, NULL, NULL,
+                                  NULL, NULL, NULL, NULL, NULL);
+
+    Frame* frame = new Frame(app->root_widget());
+    frame->configure(&frame_size, &frame_color, &frame_border_width,
+                     &frame_relief, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+    REQUIRE(app != nullptr);
 }
 
 int ei_main(int argc, char* argv[])

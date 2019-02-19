@@ -36,6 +36,8 @@ int ei_main(int argc, char** argv)
     Frame* frame = new Frame(app->root_widget());
     frame->configure(&frame_size, &frame_color, &frame_border_width,
                      &frame_relief, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+                     
     Placer* p = new Placer();
     p->configure(frame, NULL, &frame_x, &frame_y, NULL, NULL, NULL, NULL, NULL, NULL);
 
