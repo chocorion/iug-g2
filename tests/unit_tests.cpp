@@ -7,6 +7,7 @@
 #include "hw_interface.h"
 #include "ei_geometrymanager.h"
 #include "ei_widget.h"
+#include "ei_eventmanager.h"
 #include <iostream>
 
 using namespace std;
@@ -208,6 +209,30 @@ TEST_CASE("configure Application Frame", "[unit]")
                      &frame_relief, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
     REQUIRE(app != nullptr);
+}
+
+TEST_CASE("BoundEventBank", "[unit]")
+{
+    BoundEventBank bank;
+    BoundEvent *data = new BoundEvent(
+        nullptr, 
+        "all",
+        nullptr, 
+        nullptr
+    );
+
+    bank.add(ei_ev_none, data);
+
+    SECTION("get")
+    {
+        REQUIRE(bank.get(ei_ev_none)->size() == 1);
+    }
+
+    SECTION("remove")
+    {
+        bank.remove(ei_ev_none, data);
+        REQUIRE(bank.get(ei_ev_none)->size() == 0);
+    }
 }
 
 int ei_main(int argc, char* argv[])

@@ -40,7 +40,10 @@ add_executable(
     ../include/ei_widgetplacerdata.h
     ../src/ei_widgetdatabank.cpp
     ../src/ei_widgetplacerdata.cpp
-../src/ei_application.cpp )
+    ../src/ei_application.cpp
+    ../src/ei_eventmanager.cpp
+    ../include/ei_eventmanager.h
+)
 target_link_libraries(unit_tests ei eibase ${Allegro_LIBRARIES} m)
 
 enable_testing()

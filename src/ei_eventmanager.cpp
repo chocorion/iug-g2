@@ -63,7 +63,7 @@ void BoundEventBank::remove(ei_eventtype_t event)
     }
     std::list<BoundEvent*>::iterator it_list;
 
-    for (it_list = (*l).begin(); it_list != (*l).end; ++it_list)
+    for (it_list = (*l).begin(); it_list != (*l).end(); ++it_list)
     {
         free(*it_list);
     }
@@ -83,7 +83,7 @@ void BoundEventBank::remove(ei_eventtype_t event, BoundEvent *data)
     }
     std::list<BoundEvent*>::iterator it_list;
 
-    for (it_list = (*l).begin(); it_list != (*l).end; ++it_list)
+    for (it_list = (*l).begin(); it_list != (*l).end(); ++it_list)
     {
         if (*it_list == data) {
             free(*it_list);
