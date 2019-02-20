@@ -15,6 +15,7 @@
 #include "ei_types.h"
 #include "ei_event.h"
 #include "ei_widget.h"
+#include "ei_eventmanager.h"
 
 namespace ei {
 
@@ -115,6 +116,7 @@ public:
 
 private:
     Application();
+    bool continue_running;
     static Application *instance;
     static Frame *root;
     static Frame *pick;

@@ -7,6 +7,7 @@
 #include "hw_interface.h"
 #include "ei_geometrymanager.h"
 #include "ei_widget.h"
+#include "ei_eventmanager.h"
 #include <iostream>
 
 using namespace std;
@@ -148,6 +149,15 @@ TEST_CASE("Create widget" , "[unit]")
     << "," << (int) frame->get_pick_color().blue 
     << "," << (int) frame->get_pick_color().alpha << ")" << endl;
 
+    SECTION("Parent/Child")
+    {
+        Widget* w = new Widget("root",nullptr);
+        Frame* frame = new Frame(w);
+        std::list<Widget*> l = w->getChildren();
+
+        REQUIRE(l.size() == 1);
+    }
+
     REQUIRE(true);
 }
 
@@ -208,6 +218,32 @@ TEST_CASE("configure Application Frame", "[unit]")
                      &frame_relief, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
     REQUIRE(app != nullptr);
+}
+
+TEST_CASE("BoundEventBank", "[unit]")
+{
+    BoundEventBank bank;
+    BoundEvent *data = new BoundEvent(
+        nullptr, 
+        "all",
+        nullptr, 
+        nullptr
+    );
+
+    bank.add(ei_ev_none, data);
+
+    SECTION("get")
+    {
+        std::list<BoundEvent*> *data;
+        REQUIRE(((data = bank.get(ei_ev_none)) && data->size() == 1));
+    }
+
+    SECTION("remove")
+    {
+        bank.remove(ei_ev_none, data);
+        REQUIRE(bank.get(ei_ev_none)->size() == 0);
+    }
+    REQUIRE(true);
 }
 
 TEST_CASE("configure Button", "[unit]")

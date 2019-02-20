@@ -38,6 +38,11 @@ namespace ei {
 		unsigned char alpha = (pick_id & 0x000000ff);
 
 		pick_color = {red,green,blue,alpha};
+
+		if (parent)
+		{
+			parent->addChild(this);
+		}
 	}
 
 	/**
@@ -77,6 +82,11 @@ namespace ei {
 	}
 	void Widget::geomnotify(Rect rect) {
 		this->screen_location = rect;
+	}
+
+	void Widget::addChild(Widget* widget)
+	{
+		children.push_back(widget);
 	}
 
 	uint32_t Widget::getPick_id() const

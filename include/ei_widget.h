@@ -75,6 +75,7 @@ class Widget
 
     Widget *getParent() const;
     std::list<Widget *> getChildren() const;
+    void addChild(Widget* whild);
 
     /**
      * \brief Return the current geometry manager of the widget.

@@ -12,9 +12,59 @@
 #define EI_EVENTMANAGER_H
 
 #include "ei_event.h"
+#include <unordered_map>
 
 namespace ei {
 
+class BoundEventBank;
+
+class BoundEvent
+{
+    private:
+        //ei_eventtype_t eventtype;
+        Widget*        _widget;
+        tag_t          _tag;
+        ei_callback_t  _callback;
+        void*          _user_param;
+
+        friend BoundEventBank;
+
+    public:
+        BoundEvent();
+
+        BoundEvent(
+            Widget* widget,
+            tag_t tag,
+            ei_callback_t callback,
+            void* user_param
+        );
+        bool execute(Event* event);
+};
+
+class BoundEventBank
+{
+    private:
+        std::unordered_map<ei_eventtype_t, std::list<BoundEvent*>*> _bank;
+    
+    public:
+        ~BoundEventBank();
+
+        std::list<BoundEvent*>* get(ei_eventtype_t event);
+        void add(ei_eventtype_t event, BoundEvent* data);
+        void remove(ei_eventtype_t event);
+
+        void remove(
+            ei_eventtype_t event,
+            Widget* widget,
+            tag_t tag,
+            ei_callback_t callback,
+            void* user_param
+        );
+        
+        void remove(ei_eventtype_t event, BoundEvent *data);
+        void execute(Event* event, Widget* widget, tag_t tag);
+
+};
 /**
  * \brief Class that represents the event manager.
  */
@@ -30,6 +80,7 @@ public:
     }
 private:
     EventManager();
+    BoundEventBank _bank;
 
 public:
     EventManager(EventManager const&)    = delete;
@@ -65,6 +116,9 @@ public:
                  tag_t          tag,
                  ei_callback_t  callback,
                  void*          user_param);
+
+    void execute(Event *event, Widget* widget);
+    void execute(Event *event, tag_t tag);
 };
 
 }
