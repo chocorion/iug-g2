@@ -233,6 +233,7 @@ TEST_CASE("BoundEventBank", "[unit]")
         bank.remove(ei_ev_none, data);
         REQUIRE(bank.get(ei_ev_none)->size() == 0);
     }
+    REQUIRE(true);
 }
 
 int ei_main(int argc, char* argv[])
