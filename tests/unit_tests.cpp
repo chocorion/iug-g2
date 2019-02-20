@@ -104,29 +104,11 @@ TEST_CASE("placer", "[unit]")
         p.release(&w);
 
         //Just look if it crash due to pointers
-        REQUIRE(true);
+        REQUIRE((w.getGeometryManager() == nullptr));
     }
 
 }
 
-TEST_CASE("Simple_geometryManager" , "[unit]")
-{  
-    cout << "---------------------------------------" << endl;
-    cout << "Test geometryManager " << endl;
-    Value<int> v(42, true);
-    cout << v.getValue() << " " << v.isDefault() << endl;
-    //Juste histoire que make me lance la compilation du géométrie manager
-
-    Widget w = Widget("test", nullptr);
-    Placer c = Placer();
-
-    c.configure(
-        &w, nullptr, nullptr,
-        nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
-
-
-        REQUIRE(true);
-}
 
 TEST_CASE("Create widget" , "[unit]")
 {  
