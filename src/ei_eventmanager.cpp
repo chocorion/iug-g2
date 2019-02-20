@@ -127,9 +127,9 @@ void BoundEventBank::remove(ei_eventtype_t event, Widget* widget,tag_t tag,
     }
 }
 
-void BoundEventBank::execute(Event event, Widget* widget, tag_t tag)
+void BoundEventBank::execute(Event* event, Widget* widget, tag_t tag)
 {
-    std::list<BoundEvent*>* l = get(event.type);
+    std::list<BoundEvent*>* l = get(event->type);
 
     if (!l)
     {
@@ -145,7 +145,7 @@ void BoundEventBank::execute(Event event, Widget* widget, tag_t tag)
                 (*it_list)->_tag    == tag
         )
         {
-            if ((*it_list)->execute(&event))
+            if ((*it_list)->execute(event))
             {
                 break;
             }
@@ -161,6 +161,11 @@ BoundEventBank::~BoundEventBank()
     {
         remove(it_bank->first);
     }
+}
+
+EventManager::EventManager()
+{
+    return;
 }
 
 void EventManager::bind (ei_eventtype_t eventtype,
@@ -189,12 +194,12 @@ void EventManager::unbind (ei_eventtype_t eventtype,
 
 
 
-void EventManager::execute(Event event, Widget* widget)
+void EventManager::execute(Event *event, Widget* widget)
 {
     _bank.execute(event, widget, "");
 }
 
-void EventManager::execute(Event event, tag_t tag)
+void EventManager::execute(Event *event, tag_t tag)
 {
     _bank.execute(event, nullptr, tag);
 }

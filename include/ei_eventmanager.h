@@ -62,7 +62,7 @@ class BoundEventBank
         );
         
         void remove(ei_eventtype_t event, BoundEvent *data);
-        void execute(Event event, Widget* widget, tag_t tag);
+        void execute(Event* event, Widget* widget, tag_t tag);
 
 };
 /**
@@ -117,8 +117,8 @@ public:
                  ei_callback_t  callback,
                  void*          user_param);
 
-    void execute(Event event, Widget* widget);
-    void execute(Event event, tag_t tag);
+    void execute(Event *event, Widget* widget);
+    void execute(Event *event, tag_t tag);
 };
 
 }

@@ -30,6 +30,8 @@ bool_t button_press(Widget* widget, Event* event, void* user_param)
  */
 bool_t process_key(Widget* widget, Event* event, void* user_param)
 {
+    std::cout << "KEY PRESSED ! -> " << static_cast<KeyEvent*>(event)->key_sym << " " << ALLEGRO_KEY_ESCAPE << std::endl;
+    
     if (static_cast<KeyEvent*>(event)->key_sym == ALLEGRO_KEY_ESCAPE) {
         static_cast<Application*>(user_param)->quit_request();
         return EI_TRUE;
@@ -78,17 +80,17 @@ int ei_main(int argc, char** argv)
     app->root_widget()->configure(&screen_size, &root_bgcol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
     /* Create and configure the button */
-    Button* button = new Button(app->root_widget());
-    button->configure (&button_size, &button_color,
-                       &button_border_width, &button_corner_radius, &button_relief, &button_title, NULL, &button_text_color, NULL,
-                       NULL, NULL, NULL);
+    // Button* button = new Button(app->root_widget());
+    // button->configure (&button_size, &button_color,
+    //                    &button_border_width, &button_corner_radius, &button_relief, &button_title, NULL, &button_text_color, NULL,
+    //                    NULL, NULL, NULL);
     /* Place the button on screen. */
     Placer* p = new Placer();
-    p->configure(button, NULL, &button_x, &button_y, NULL, NULL, NULL, NULL, NULL, NULL );
+    //p->configure(button, NULL, &button_x, &button_y, NULL, NULL, NULL, NULL, NULL, NULL );
 
-    /* Bind the button callbacks to the mouse events */
-    EventManager::getInstance().bind(ei_ev_mouse_buttondown, button, "", button_press, NULL);
-    EventManager::getInstance().bind(ei_ev_mouse_buttonup, button, "", button_press, NULL);
+    /* Bind the button callbacks to the mouse events */     //button here !
+    EventManager::getInstance().bind(ei_ev_mouse_buttondown, nullptr, "", button_press, NULL);
+    EventManager::getInstance().bind(ei_ev_mouse_buttonup, nullptr, "", button_press, NULL);
 
     /* Hook the keypress and close button callbacks to the event. */
     EventManager::getInstance().bind(ei_ev_keydown, NULL, "all", process_key, app);
