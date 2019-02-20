@@ -42,6 +42,10 @@ int ei_main(int argc, char** argv)
 
     printf("%p\n",app->root_surface());
     frame->draw(app->root_surface(), NULL, nullptr);
+
+    linked_rect_t rect;
+    rect.push_back(Rect(Point(),screen_size));
+    hw_surface_update_rects(rect);
     
     /* Run the application's main loop. */
     app->run();
