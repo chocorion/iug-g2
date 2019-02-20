@@ -48,7 +48,7 @@ class BoundEventBank
         std::list<BoundEvent*>* get(ei_eventtype_t event);
         void add(ei_eventtype_t event, BoundEvent* data);
         void remove(ei_eventtype_t event);
-        void remove(ei_eventtype_t event, BoundEvent &data);
+        void remove(ei_eventtype_t event, BoundEvent *data);
 
 };
 /**

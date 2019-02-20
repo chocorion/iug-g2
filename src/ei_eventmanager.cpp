@@ -50,9 +50,9 @@ void BoundEventBank::add(ei_eventtype_t event, BoundEvent *data)
     l->push_back(data);
 }
 
+
 void BoundEventBank::remove(ei_eventtype_t event)
 {
-
     std::list<BoundEvent*>* l = nullptr;
 
     l = get(event);
@@ -61,18 +61,48 @@ void BoundEventBank::remove(ei_eventtype_t event)
     {
         return ;
     }
+    std::list<BoundEvent*>::iterator it_list;
 
+    for (it_list = (*l).begin(); it_list != (*l).end; ++it_list)
+    {
+        free(*it_list);
+    }
+
+    _bank.erase(event);
+}
+
+void BoundEventBank::remove(ei_eventtype_t event, BoundEvent *data)
+{
+    std::list<BoundEvent*>* l = nullptr;
+
+    l = get(event);
+
+    if (!l)
+    {
+        return ;
+    }
+    std::list<BoundEvent*>::iterator it_list;
+
+    for (it_list = (*l).begin(); it_list != (*l).end; ++it_list)
+    {
+        if (*it_list == data) {
+            free(*it_list);
+            l->erase(it_list);
+
+            break;
+        }
+    }
+
+    
+}
+
+BoundEventBank::~BoundEventBank()
+{
     std::unordered_map<ei_eventtype_t, std::list<BoundEvent*>*>::iterator it_bank;
 
     for (it_bank = _bank.begin(); it_bank != _bank.end(); ++it_bank)
     {
-        std::list<BoundEvent*>::iterator it_list;
-
-        std::list l = *(it_bank->second);
-        for (it_list = l.begin(); it_list != l.end; ++it_list)
-        {
-            free(*it_list);
-        }
+        remove(it_bank->first);
     }
 }
 
