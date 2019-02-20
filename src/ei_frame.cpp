@@ -7,7 +7,7 @@
  */
 
 #include "ei_widget.h"
-
+#include <iostream>
 
 using namespace std;
 
@@ -31,7 +31,9 @@ namespace ei {
 		for(int i = 0; i < *border_width; i++) {
 			printf("%lf-%lf-%d-%d\n",current.size.width(),current.size.height(),current.top_left.x(),current.top_left.y());
 			linked_point_t current_frame_border_pixel = rounded_frame(current,0,BT_BOTTOM);
+
 			draw_polyline(surface,current_frame_border_pixel,*color,&current);
+
 			current.size.height() -= 2;
 			current.size.width() -= 2;
 			current.top_left.x() += 1;
@@ -67,6 +69,8 @@ namespace ei {
 		if(img) this->img = img;
 		if(img_rect) this->img_rect = img_rect;
 		if(img_anchor) this->img_anchor = img_anchor;
+
+
 	}
 
 	surface_t *Frame::getImg() {

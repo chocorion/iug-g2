@@ -24,18 +24,19 @@ Application::Application(Size *main_window_size)
 {
     hw_init();
     
-    surface_t img = hw_create_window(main_window_size, EI_FALSE);
+    surface_t* img = new surface_t;
+    *img = hw_create_window(main_window_size, EI_FALSE);
 
     int border_width = 0;
     relief_t relief = ei_relief_none;
     color_t black = {0,0,0,255};
 
     
-    fill(img, &black, EI_FALSE);
+    //fill(img, &black, EI_FALSE);
     
-		linked_rect_t* rects = new linked_rect_t();
-		rects->push_front(Rect(Point((double) main_window_size->x(),(double) main_window_size->y()),Size((double) main_window_size->width(),(double) main_window_size->height())));
-		hw_surface_update_rects(*rects);
+		//linked_rect_t* rects = new linked_rect_t();
+		//rects->push_front(Rect(Point((double) main_window_size->x(),(double) main_window_size->y()),Size((double) main_window_size->width(),(double) main_window_size->height())));
+		//hw_surface_update_rects(*rects);
     
 
 
@@ -52,7 +53,7 @@ Application::Application(Size *main_window_size)
         nullptr,
         &black,
         new anchor_t(),
-        &img,
+        img,
         &window,
         new anchor_t()
     );
@@ -94,7 +95,7 @@ Frame *Application::root_widget()
 
 surface_t Application::root_surface()
 {
-    return root->getImg();
+    return *(root->getImg());
 }
 
 Widget *Application::widget_pick(const Point &where)
