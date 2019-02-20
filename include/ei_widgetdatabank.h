@@ -17,6 +17,7 @@ class WidgetDataBank
         std::unordered_map<uint32_t, WidgetPlacerData*> _dataMap;
     
     public:
+        WidgetDataBank();
         ~WidgetDataBank();
 
         /**

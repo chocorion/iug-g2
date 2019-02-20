@@ -1,3 +1,5 @@
+set(CMAKE_C_FLAGS "-O0 -g")
+set(CMAKE_CXX_FLAGS "-O0 -g")
 # minimal target
  add_executable(minimal minimal.cpp)
  target_link_libraries(minimal ei eibase ${Allegro_LIBRARIES} m)

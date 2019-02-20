@@ -8,6 +8,11 @@ using namespace std;
 
 namespace ei
 {
+    Placer::Placer()
+    {
+        return;
+    }
+
     void Placer::configure (Widget*    widget,
                     anchor_t*  anchor,
                     int*       x,
@@ -80,6 +85,7 @@ namespace ei
         std::list<Widget*> children = widget->getChildren();
         Rect* containerRect = widget->getContentRect();
 
+
         Widget* currentChild;
 
         const Rect* oldChildRect;
@@ -87,12 +93,40 @@ namespace ei
         WidgetPlacerData* childData;
         Point anchor;
 
+        //CHAQUE WIDGET SON PLACER
         for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++) //Post-inccrémentation dans la doc !
         {
             currentChild = (Widget *)(*it);
             oldChildRect = currentChild->getScreenLocation();  //ça fonctionne bien ce truc ?
             childData = _widgetData.get(currentChild);
 
+
+            if (!childData)
+            {
+                this->configure(
+                    currentChild,
+                    nullptr,
+                    nullptr,
+                    nullptr,
+                    nullptr,
+                    nullptr,
+                    nullptr,
+                    nullptr,
+                    nullptr,
+                    nullptr
+                );
+            }
+
+            childData = _widgetData.get(currentChild);
+
+            if (!childData)
+            {
+                cerr << "Fatal error, can't make data for widget !" << endl;
+                exit(EXIT_FAILURE);
+            }
+
+            cout << "RUN --> " << containerRect->size.width() << " " << containerRect->size.height() << endl;
+            
             //anchor point 
             anchor = (
                 childData->_rel_x.getValue() * containerRect->size.width()  + childData->_x.getValue(),
@@ -100,16 +134,17 @@ namespace ei
             );
             
 
-            //Calculate width and height 
-            newChildRect.size  = (
-                
-                (childData->_rel_width.isDefault())?
+            double width = (childData->_rel_width.isDefault())?
                     currentChild->get_requested_size().width():
-                    childData->_rel_width.getValue() * containerRect->size.width() + childData->_width.getValue(),
+                    childData->_rel_width.getValue() * containerRect->size.width() + childData->_width.getValue();
 
-                (childData->_rel_height.isDefault())?
+            double height = (childData->_rel_height.isDefault())?
                     currentChild->get_requested_size().height():
-                    childData->_rel_height.getValue() * containerRect->size.height() + childData->_height.getValue()
+                    childData->_rel_height.getValue() * containerRect->size.height() + childData->_height.getValue();
+            //Calculate width and height 
+            newChildRect.size  = Size(
+                width,
+                height
             );
             
             switch (childData->_anchor.getValue())

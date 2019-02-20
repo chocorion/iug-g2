@@ -2,6 +2,11 @@
 #include <unordered_map>
 namespace ei {
 
+WidgetDataBank::WidgetDataBank()
+{
+    return;
+}
+
 WidgetDataBank::~WidgetDataBank()
 {
     for (std::unordered_map<uint32_t, WidgetPlacerData*>::iterator it = _dataMap.begin(); it != _dataMap.end(); it++) //Post-inccrémentation dans la doc !

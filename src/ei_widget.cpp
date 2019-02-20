@@ -43,6 +43,8 @@ namespace ei {
 		{
 			parent->addChild(this);
 		}
+
+		content_rect = &screen_location;
 	}
 
 	/**
@@ -71,9 +73,9 @@ namespace ei {
 		surface_t pick_surface,
 		Rect*     clipper)
 	{
-		if(geom_manager) {
-			geom_manager->run(this);
-		}
+		// if(geom_manager) {
+		// 	geom_manager->run(this);
+		// }
 
 		for(Widget* child : children)
 		{

@@ -105,6 +105,8 @@ public:
 
     virtual void release (Widget* widget);
 
+    Placer();
+
 };
 
 }
