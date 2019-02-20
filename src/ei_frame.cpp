@@ -28,10 +28,18 @@ namespace ei {
 	{
 		Rect base = Rect(Point(screen_location.top_left.x(),screen_location.top_left.y()),Size((double) requested_size.width(),(double) requested_size.height()));
 		Rect current = Rect(Point(base.top_left),Size(base.size));
+
+		surface_t pick = hw_surface_create(pick_surface, &base.size);
+		fill(pick,&pick_color,EI_TRUE); // warning: check alpha
+		ei_copy_surface(pick_surface,pick,&base.top_left,EI_FALSE);
+		
 		
 		for(int i = 0; i < *border_width; i++) {
 			printf("%lf-%lf-%d-%d\n",current.size.width(),current.size.height(),current.top_left.x(),current.top_left.y());
 			
+			/*
+			// Polyline does not work
+
 			linked_point_t points;
 			points.push_front(Point(current.top_left.x(),current.top_left.y()));
 			points.push_front(Point(current.top_left.x() + current.size.width(),current.top_left.y()));
@@ -39,10 +47,17 @@ namespace ei {
 			points.push_front(Point(current.top_left.x(),current.top_left.y() + current.size.height()));
 			points.push_front(Point(current.top_left.x(),current.top_left.y()));
 
-			draw_polyline(surface,points,*color,&current);
+			draw_polyline(surface,points,*color,clipper);
+			*/
 
-			current.size.height() -= 2;
-			current.size.width() -= 2;
+			// Patchwork because of polyline
+			draw_line(surface,Point(current.top_left.x(),current.top_left.y()),Point(current.top_left.x() + current.size.width(),current.top_left.y()),*color,clipper);
+			draw_line(surface,Point(Point(current.top_left.x() + current.size.width(),current.top_left.y())),Point(current.top_left.x() + current.size.width(),current.top_left.y() + current.size.height()),*color,clipper);
+			draw_line(surface,Point(current.top_left.x() + current.size.width(),current.top_left.y() + current.size.height()),Point(current.top_left.x(),current.top_left.y() + current.size.height()),*color,clipper);
+			draw_line(surface,Point(current.top_left.x(),current.top_left.y() + current.size.height()),Point(current.top_left.x(),current.top_left.y()),*color,clipper);
+
+			if(current.size.height() >= 2) current.size.height() -= 2;
+			if(current.size.width() >= 2) current.size.width() -= 2;
 			current.top_left.x() += 1;
 			current.top_left.y() += 1;
 		}

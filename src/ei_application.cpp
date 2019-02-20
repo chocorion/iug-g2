@@ -19,13 +19,16 @@ using namespace std;
 namespace ei
 {
 Frame *Application::root = new Frame(nullptr);
+Frame *Application::pick = new Frame(nullptr);
 
 Application::Application(Size *main_window_size)
 {
     hw_init();
     
     surface_t* img = new surface_t;
+    surface_t* pick_surface = new surface_t;
     *img = hw_create_window(main_window_size, EI_FALSE);
+    *pick_surface = hw_surface_create(*img, main_window_size);
 
     int border_width = 0;
     relief_t relief = ei_relief_none;
@@ -57,6 +60,20 @@ Application::Application(Size *main_window_size)
         &window,
         new anchor_t()
     );
+
+    pick->configure(
+        main_window_size,
+        &black,
+        &border_width,
+        &relief,
+        &blank_text,
+        nullptr,
+        &black,
+        new anchor_t(),
+        pick_surface,
+        &window,
+        new anchor_t()
+    );
 }
 
 Application::~Application()
@@ -68,6 +85,8 @@ void Application::run()
 {
     bool doExit = false;
     Event* event;
+
+    
 
     while(!doExit)
     {
@@ -96,6 +115,16 @@ Frame *Application::root_widget()
 surface_t Application::root_surface()
 {
     return *(root->getImg());
+}
+
+Frame *Application::pick_widget()
+{
+    return pick;
+}
+
+surface_t Application::pick_surface()
+{
+    return *(pick->getImg());
 }
 
 Widget *Application::widget_pick(const Point &where)

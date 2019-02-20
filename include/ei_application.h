@@ -78,12 +78,27 @@ public:
     Frame* root_widget();
 
     /**
+     * \brief Returns the surface of the pick window. Used to identify picked widgets.
+     *
+     * @return      The surface of the root window.
+     */
+    surface_t root_surface();
+
+    /**
+     * \brief Returns the "pick widget" of the application: a "frame" widget that encapsulates the
+     *    pick window.
+     *
+     * @return      The root widget.
+     */
+    Frame* pick_widget();
+
+    /**
      * \brief Returns the surface of the root window. Used to create surfaces with similar r, g, b
      *    channels.
      *
      * @return      The surface of the root window.
      */
-    surface_t root_surface();
+    surface_t pick_surface();
 
     /**
      * @brief   Returns the widget that is at a given location on screen.
@@ -102,6 +117,7 @@ private:
     Application();
     static Application *instance;
     static Frame *root;
+    static Frame *pick;
 };  
 
 }
