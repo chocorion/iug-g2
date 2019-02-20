@@ -29,7 +29,16 @@ Application::Application(Size *main_window_size)
     int border_width = 0;
     relief_t relief = ei_relief_none;
     color_t black = {0,0,0,255};
+
     
+    fill(img, &black, EI_FALSE);
+    
+		linked_rect_t* rects = new linked_rect_t();
+		rects->push_front(Rect(Point((double) main_window_size->x(),(double) main_window_size->y()),Size((double) main_window_size->width(),(double) main_window_size->height())));
+		hw_surface_update_rects(*rects);
+    
+
+
     char* blank_text = (char*)"";
     
     Rect* window = new Rect(Point(),*main_window_size);

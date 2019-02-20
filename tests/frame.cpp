@@ -37,10 +37,12 @@ int ei_main(int argc, char** argv)
     frame->configure(&frame_size, &frame_color, &frame_border_width,
                      &frame_relief, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
-    frame->draw(app->root_surface(), NULL, nullptr);
     Placer* p = new Placer();
     p->configure(frame, NULL, &frame_x, &frame_y, NULL, NULL, NULL, NULL, NULL, NULL);
 
+    printf("%p\n",app->root_surface());
+    frame->draw(app->root_surface(), NULL, nullptr);
+    
     /* Run the application's main loop. */
     app->run();
 
