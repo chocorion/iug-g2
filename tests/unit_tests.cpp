@@ -149,6 +149,15 @@ TEST_CASE("Create widget" , "[unit]")
     << "," << (int) frame->get_pick_color().blue 
     << "," << (int) frame->get_pick_color().alpha << ")" << endl;
 
+    SECTION("Parent/Child")
+    {
+        Widget* w = new Widget("root",nullptr);
+        Frame* frame = new Frame(w);
+        std::list<Widget*> l = w->getChildren();
+
+        REQUIRE(l.size() == 1);
+    }
+
     REQUIRE(true);
 }
 
@@ -225,7 +234,8 @@ TEST_CASE("BoundEventBank", "[unit]")
 
     SECTION("get")
     {
-        REQUIRE(bank.get(ei_ev_none)->size() == 1);
+        std::list<BoundEvent*> *data;
+        REQUIRE(((data = bank.get(ei_ev_none)) && data->size() == 1));
     }
 
     SECTION("remove")
