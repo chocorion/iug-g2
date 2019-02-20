@@ -86,7 +86,8 @@ void Application::run()
     bool doExit = false;
     Event* event;
 
-    
+    // Initial draw
+    root->draw(this->root_surface(),pick_surface(),nullptr);
 
     while(!doExit)
     {

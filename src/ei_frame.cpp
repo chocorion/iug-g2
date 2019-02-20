@@ -87,8 +87,6 @@ namespace ei {
 		if(img) this->img = img;
 		if(img_rect) this->img_rect = img_rect;
 		if(img_anchor) this->img_anchor = img_anchor;
-
-
 	}
 
 	surface_t *Frame::getImg() {

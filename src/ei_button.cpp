@@ -41,16 +41,16 @@ namespace ei {
                    Rect **img_rect,
                    anchor_t *img_anchor)
 	{
-		this->requested_size = *requested_size;
-		this->color = color;
-		this->border_width = border_width;
-		this->relief = relief;
-		this->text = text;
-		this->text_font = text_font;
-		this->text_color = text_color;
-		this->text_anchor = text_anchor;
-		this->img = img;
-		this->img_rect = img_rect;
-		this->img_anchor;
+		if(requested_size) this->requested_size = *requested_size;
+		if(color) this->color = color;
+		if(border_width) this->border_width = border_width;
+		if(relief) this->relief = relief;
+		if(text) this->text = text;
+		if(text_font) this->text_font = text_font;
+		if(text_color) this->text_color = text_color;
+		if(text_anchor) this->text_anchor = text_anchor;
+		if(img) this->img = img;
+		if(img_rect) this->img_rect = img_rect;
+		if(img_anchor) this->img_anchor = img_anchor;
 	}
 };
