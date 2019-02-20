@@ -16,6 +16,8 @@
 
 namespace ei {
 
+class BoundEventBank;
+
 class BoundEvent
 {
     private:
@@ -24,6 +26,8 @@ class BoundEvent
         tag_t          _tag;
         ei_callback_t  _callback;
         void*          _user_param;
+
+        friend BoundEventBank;
 
     public:
         BoundEvent();
@@ -48,6 +52,15 @@ class BoundEventBank
         std::list<BoundEvent*>* get(ei_eventtype_t event);
         void add(ei_eventtype_t event, BoundEvent* data);
         void remove(ei_eventtype_t event);
+
+        void remove(
+            ei_eventtype_t event,
+            Widget* widget,
+            tag_t tag,
+            ei_callback_t callback,
+            void* user_param
+        );
+        
         void remove(ei_eventtype_t event, BoundEvent *data);
 
 };
@@ -66,6 +79,7 @@ public:
     }
 private:
     EventManager();
+    BoundEventBank _bank;
 
 public:
     EventManager(EventManager const&)    = delete;

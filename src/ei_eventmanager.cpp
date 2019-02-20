@@ -92,9 +92,41 @@ void BoundEventBank::remove(ei_eventtype_t event, BoundEvent *data)
             break;
         }
     }
-
-    
 }
+
+void BoundEventBank::remove(ei_eventtype_t event, Widget* widget,tag_t tag,
+            ei_callback_t callback,
+            void* user_param)
+{
+    std::list<BoundEvent*>* l = nullptr;
+
+    l = get(event);
+
+    if (!l)
+    {
+        return ;
+    }
+    std::list<BoundEvent*>::iterator it_list;
+
+    for (it_list = (*l).begin(); it_list != (*l).end(); ++it_list)
+    {
+        if (
+            (
+                (widget == nullptr)?
+                (*it_list)->_widget == widget :
+                (*it_list)->_tag == tag
+            ) &&
+            &(*it_list)->_callback == &callback &&    //Can't compare callback
+            (*it_list)->_user_param == user_param
+        )
+        
+        {
+            free(*it_list);
+            l->erase(it_list);
+        }
+    }
+}
+
 
 BoundEventBank::~BoundEventBank()
 {
@@ -105,6 +137,31 @@ BoundEventBank::~BoundEventBank()
         remove(it_bank->first);
     }
 }
+
+void EventManager::bind (ei_eventtype_t eventtype,
+               Widget*        widget,
+               tag_t          tag,
+               ei_callback_t  callback,
+               void*          user_param)
+{
+    BoundEvent *data = new BoundEvent(
+        widget, tag, callback, user_param
+    );
+
+    _bank.add(eventtype, data);
+}
+
+void EventManager::unbind (ei_eventtype_t eventtype,
+                 Widget*        widget,
+                 tag_t          tag,
+                 ei_callback_t  callback,
+                 void*          user_param)
+{
+    _bank.remove(eventtype, widget, tag, callback, user_param);
+}
+
+
+
 
 }
 
