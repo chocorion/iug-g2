@@ -62,10 +62,6 @@ Application::Application(Size *main_window_size)
         &window,
         new anchor_t()
     );
-    Placer* p = new Placer();
-    p->configure(root, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
-
-    root->geomnotify(Rect(Point(), *main_window_size));
 
     continue_running = true;
 

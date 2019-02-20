@@ -30,15 +30,16 @@ Placer::Placer():
                     float*     rel_width,
                     float*     rel_height)
     {
-        GeometryManager* currendWidgetManager = widget->getGeometryManager();
+        GeometryManager* currentGeometryManager = widget->getGeometryManager();
 
-        if (currendWidgetManager)
+        if (currentGeometryManager != this)
         {
-            if (currendWidgetManager != this)
+            //The widget is already managed by another geometry manager.
+            if (currentGeometryManager)
             {
-                //The widget is already managed by another geometry manager.
                 widget->getGeometryManager()->release(widget);
             }
+            widget->setGeometryManager(this);
         }
         
         if (anchor) {   _anchor = *anchor ; } 
@@ -60,6 +61,10 @@ Placer::Placer():
 
         if (rel_width) {  _rel_width = *rel_width   ;  }
         if (rel_height){  _rel_height = *rel_height ;  }
+
+        //First run for the widget
+        run(widget);
+        
     }
 
     void Placer::run(Widget* widget)
@@ -184,7 +189,6 @@ Placer::Placer():
                 }
             }
         }
-    }
 
     void Placer::release(Widget *widget)
     {
