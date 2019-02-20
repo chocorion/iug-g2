@@ -40,12 +40,12 @@ class BoundEvent
 class BoundEventBank
 {
     private:
-        std::unordered_map<ei_eventtype_t, std::list<BoundEvent>*> _bank;
+        std::unordered_map<ei_eventtype_t, std::list<BoundEvent*>*> _bank;
     
     public:
         ~BoundEventBank();
 
-        std::list<BoundEvent>* get(ei_eventtype_t event);
+        std::list<BoundEvent*>* get(ei_eventtype_t event);
         void add(ei_eventtype_t event, BoundEvent* data);
         void remove(ei_eventtype_t event);
         void remove(ei_eventtype_t event, BoundEvent &data);
