@@ -34,12 +34,13 @@ namespace ei {
         fill(pick,&pick_color,EI_TRUE); // warning: check alpha
         ei_copy_surface(pick_surface,pick,&base.top_left,EI_FALSE);
 
-        linked_point_t points;
-        points.push_front(Point(current.top_left.x(),current.top_left.y()));
+        linked_point_t points = rounded_frame(base,45, BT_FULL);
+
+       /* points.push_front(Point(current.top_left.x(),current.top_left.y()));
         points.push_front(Point(current.top_left.x() + current.size.width(),current.top_left.y()));
         points.push_front(Point(current.top_left.x() + current.size.width(),current.top_left.y() + current.size.height()));
         points.push_front(Point(current.top_left.x(),current.top_left.y() + current.size.height()));
-        points.push_front(Point(current.top_left.x(),current.top_left.y()));
+        points.push_front(Point(current.top_left.x(),current.top_left.y()));*/
 
         draw_polygon(surface, points, *color, clipper);
 	}
