@@ -86,14 +86,6 @@ public:
     surface_t root_surface();
 
     /**
-     * \brief Returns the "pick widget" of the application: a "frame" widget that encapsulates the
-     *    pick window.
-     *
-     * @return      The root widget.
-     */
-    Frame* pick_widget();
-
-    /**
      * \brief Returns the surface of the root window. Used to create surfaces with similar r, g, b
      *    channels.
      *
@@ -119,7 +111,7 @@ private:
     bool continue_running;
     static Application *instance;
     static Frame *root;
-    static Frame *pick;
+    surface_t _pick;
 };  
 
 }

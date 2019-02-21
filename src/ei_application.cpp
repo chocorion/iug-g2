@@ -21,16 +21,14 @@ using namespace std;
 namespace ei
 {
 Frame *Application::root = new Frame(nullptr);
-Frame *Application::pick = new Frame(nullptr);
 
 Application::Application(Size *main_window_size)
 {
     hw_init();
     
     surface_t* img = new surface_t;
-    surface_t* pick_surface = new surface_t;
     *img = hw_create_window(main_window_size, EI_FALSE);
-    *pick_surface = hw_surface_create(*img, main_window_size);
+    _pick = hw_surface_create(*img, main_window_size);
 
     int *border_width = new int(0);
     *border_width = 0;
@@ -40,14 +38,10 @@ Application::Application(Size *main_window_size)
 
     color_t  *black  = new color_t();
     *black = {0,0,0,255};
+    color_t  *green  = new color_t();
+    *green = {0,255,0,255};
     
-    //fill(img, &black, EI_FALSE);
-    
-		//linked_rect_t* rects = new linked_rect_t();
-		//rects->push_front(Rect(Point((double) main_window_size->x(),(double) main_window_size->y()),Size((double) main_window_size->width(),(double) main_window_size->height())));
-		//hw_surface_update_rects(*rects);
-    
-
+    fill(*img, green, EI_FALSE);
 
     char* blank_text = (char*)"";
     
@@ -71,25 +65,34 @@ Application::Application(Size *main_window_size)
     root->geomnotify(*window);
 
     continue_running = true;
-
-    pick->configure(
-        main_window_size,
-        black,
-        border_width,
-        relief,
-        &blank_text,
-        nullptr,
-        black,
-        new anchor_t(),
-        pick_surface,
-        &window,
-        new anchor_t()
-    );
 }
 
 Application::~Application()
 {
     hw_quit();
+}
+
+typedef enum {MOUSE, TOUCH, OTHER} mouse_e;
+
+mouse_e need_picking(Event* event) {
+    if (
+        event->type == ei_ev_mouse_buttondown ||
+        event->type == ei_ev_mouse_buttonup   ||
+        event->type == ei_ev_mouse_move
+    )
+    {
+        return MOUSE;
+    } else if (
+        event->type == ei_ev_touch_begin      ||
+        event->type == ei_ev_touch_end        ||
+        event->type == ei_ev_touch_move
+    )
+    {
+        return TOUCH;
+    } else 
+    {
+        return OTHER;
+    }
 }
 
 void Application::run()
@@ -102,16 +105,36 @@ void Application::run()
     std::list<Widget*> children = root->getChildren();
 
     
+    mouse_e isMouseEvent; 
+    Point mouseCoord;
+    color_t picking_color;
 
     while(continue_running)
     {
-        cout << "Waiting an event... Press something for drawing... (spoiler -> la frame s'affiche pas)" << endl;
+        cout << "Waiting for event..." << endl;
         event = hw_event_wait_next();
 
-        // doExit = (
-        //     (event->type == ei_ev_display && ((DisplayEvent*)event)->closed) ||
-        //     (event->type == ei_ev_keydown && ((KeyEvent*)event)->key_sym == ALLEGRO_KEY_ESCAPE)
-        // );
+        //Search the good widget
+        if ((isMouseEvent = need_picking(event)) != OTHER)
+        {
+            if (isMouseEvent == MOUSE)
+            {
+                mouseCoord = ((MouseEvent*)event)->where;
+                cout << "\tMouse event in " << mouseCoord.x() << " " << mouseCoord.y() << endl;
+            }
+            else if (isMouseEvent == TOUCH)
+            {
+                mouseCoord = ((TouchEvent*)event)->where;
+                cout << "\tTouch event in " << mouseCoord.x() << " " << mouseCoord.y() << endl;
+            }
+
+            hw_surface_lock(pick_surface());
+            picking_color = hw_get_pixel(pick_surface(), mouseCoord);
+            hw_surface_unlock(pick_surface());
+
+            cout << "\t\tColor in screen picking : " << (int) picking_color.red << " : " << (int) picking_color.green << " : " << (int) picking_color.blue << " : " << (int) picking_color.alpha << endl;
+            //Faire une rechercher récursive à partir de la racine dans les widgets pour trouver à qui correspond la couleure prise dans l'offscreen picking
+        }
 
         EventManager::getInstance().execute(event, "all");
 
@@ -120,6 +143,7 @@ void Application::run()
         {
             (*it)->draw(root_surface(), pick_surface(), nullptr);
         }
+
 
         linked_rect_t* rects = new linked_rect_t();
         rects->push_back(hw_surface_get_rect(root_surface()));
@@ -147,14 +171,9 @@ surface_t Application::root_surface()
     return *(root->getImg());
 }
 
-Frame *Application::pick_widget()
-{
-    return pick;
-}
-
 surface_t Application::pick_surface()
 {
-    return *(pick->getImg());
+    return _pick;
 }
 
 Widget *Application::widget_pick(const Point &where)
