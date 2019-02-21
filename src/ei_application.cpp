@@ -96,8 +96,13 @@ void Application::run()
     // Initial draw
     root->draw(this->root_surface(),pick_surface(),nullptr);
 
+    std::list<Widget*> children = root->getChildren();
+
+    
+
     while(continue_running)
     {
+        cout << "Waiting an event... Press something for drawing... (spoiler -> la frame s'affiche pas)" << endl;
         event = hw_event_wait_next();
 
         // doExit = (
@@ -106,6 +111,12 @@ void Application::run()
         // );
 
         EventManager::getInstance().execute(event, "all");
+
+        cout << "drawing root's kids !" << endl;
+        for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); ++it)
+        {
+            (*it)->draw(root_surface(), pick_surface(), nullptr);
+        }
     }
 }
 
