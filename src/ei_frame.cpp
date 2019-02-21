@@ -30,14 +30,11 @@ namespace ei {
 
 		surface_t pick = hw_surface_create(pick_surface, &current.size);
 		
-		color_t green = {0, 255, 0, 255};
-		fill(pick,&green,EI_TRUE); // warning: check alpha
-		cout << "\t\t\tDrawing in picking : " << (int) green.red << " : " << (int) green.green << " : " << (int) green.blue << " : " << (int) green.alpha << endl;
-		ei_copy_surface(surface, pick_surface, &current.top_left, EI_FALSE);
-		
+		fill(pick, &pick_color,EI_FALSE); // warning: check alpha
+		ei_copy_surface(pick_surface, pick, &current.top_left, EI_FALSE);
+
 		
 		for(int i = 0; i < *border_width; i++) {
-			cout << *border_width << endl;
 			//printf("%lf-%lf-%d-%d\n",current.size.width(),current.size.height(),current.top_left.x(),current.top_left.y());
 			
 			/*

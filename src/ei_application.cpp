@@ -38,10 +38,8 @@ Application::Application(Size *main_window_size)
 
     color_t  *black  = new color_t();
     *black = {0,0,0,255};
-    color_t  *green  = new color_t();
-    *green = {0,255,0,255};
     
-    fill(*img, green, EI_FALSE);
+    fill(*img, black, EI_FALSE);
 
     char* blank_text = (char*)"";
     
@@ -128,9 +126,9 @@ void Application::run()
                 cout << "\tTouch event in " << mouseCoord.x() << " " << mouseCoord.y() << endl;
             }
 
-            hw_surface_lock(pick_surface());
+            //hw_surface_lock(pick_surface());
             picking_color = hw_get_pixel(pick_surface(), mouseCoord);
-            hw_surface_unlock(pick_surface());
+            //hw_surface_unlock(pick_surface());
 
             cout << "\t\tColor in screen picking : " << (int) picking_color.red << " : " << (int) picking_color.green << " : " << (int) picking_color.blue << " : " << (int) picking_color.alpha << endl;
             //Faire une rechercher récursive à partir de la racine dans les widgets pour trouver à qui correspond la couleure prise dans l'offscreen picking

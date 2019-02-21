@@ -32,10 +32,10 @@ namespace ei {
 		pick_id = s_idGenerator;
 		s_idGenerator++;
 		
-		unsigned char red = (pick_id & 0xff000000) >> 24;
-		unsigned char green = (pick_id & 0x00ff0000) >> 16;
-		unsigned char blue = (pick_id & 0x0000ff00) >> 8;
-		unsigned char alpha = (pick_id & 0x000000ff);
+		unsigned char red = (pick_id & 0x00ff0000) >> 16;
+		unsigned char green = (pick_id & 0x0000ff00) >> 8;
+		unsigned char blue = (pick_id & 0x000000ff);
+		unsigned char alpha = 255;
 
 		pick_color = {red,green,blue,alpha};
 
