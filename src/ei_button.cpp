@@ -26,6 +26,22 @@ namespace ei {
 		surface_t pick_surface,
 		Rect*     clipper)
 	{
+
+        Rect base = Rect(Point(screen_location.top_left.x(),screen_location.top_left.y()),Size((double) requested_size.width(),(double) requested_size.height()));
+        Rect current = Rect(Point(base.top_left),Size(base.size));
+
+        surface_t pick = hw_surface_create(pick_surface, &base.size);
+        fill(pick,&pick_color,EI_TRUE); // warning: check alpha
+        ei_copy_surface(pick_surface,pick,&base.top_left,EI_FALSE);
+
+        linked_point_t points;
+        points.push_front(Point(current.top_left.x(),current.top_left.y()));
+        points.push_front(Point(current.top_left.x() + current.size.width(),current.top_left.y()));
+        points.push_front(Point(current.top_left.x() + current.size.width(),current.top_left.y() + current.size.height()));
+        points.push_front(Point(current.top_left.x(),current.top_left.y() + current.size.height()));
+        points.push_front(Point(current.top_left.x(),current.top_left.y()));
+
+        draw_polygon(surface, points, *color, clipper);
 	}
 
 	void Button::configure(Size *requested_size,
