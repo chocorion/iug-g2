@@ -32,7 +32,8 @@ Application::Application(Size *main_window_size)
     *img = hw_create_window(main_window_size, EI_FALSE);
     *pick_surface = hw_surface_create(*img, main_window_size);
 
-    int border_width = 0;
+    int *border_width = new int;
+    *border_width = 0;
     relief_t relief = ei_relief_none;
     color_t black = {0,0,0,255};
 
@@ -52,7 +53,7 @@ Application::Application(Size *main_window_size)
     root->configure(
         main_window_size,
         &black,
-        &border_width,
+        border_width,
         &relief,
         &blank_text,
         nullptr,
@@ -68,7 +69,7 @@ Application::Application(Size *main_window_size)
     pick->configure(
         main_window_size,
         &black,
-        &border_width,
+        border_width,
         &relief,
         &blank_text,
         nullptr,
