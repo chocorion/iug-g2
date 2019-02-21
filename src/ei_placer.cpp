@@ -91,11 +91,11 @@ Placer::Placer():
         Rect new_widget_location;
 
 
-        Point anchor = (
+
+        Point anchor = Point(
             _rel_x * container->size.width()  + _x,
             _rel_y * container->size.height() + _y
         );
-            
 
         double width = (_is_default_width) ?
             widget->get_requested_size().width() :
@@ -115,56 +115,56 @@ Placer::Placer():
         {
             case ei_anc_none:   //Northwest by default
             case ei_anc_northwest:
-                new_widget_location.top_left = (
+                new_widget_location.top_left = Point(
                     anchor.x(),
                     anchor.y()
                 );
                 break;
             
             case ei_anc_north:
-                new_widget_location.top_left = (
+                new_widget_location.top_left = Point(
                     anchor.x() - new_widget_location.size.width()/2,
                     anchor.y()
                 );
                 break;
             
             case ei_anc_northeast:
-                new_widget_location.top_left = (
+                new_widget_location.top_left = Point(
                     anchor.x() - new_widget_location.size.width(),
                     anchor.y()
                 );
                 break;
 
             case ei_anc_south:
-                new_widget_location.top_left = (
+                new_widget_location.top_left = Point(
                     anchor.x() - new_widget_location.size.width()/2,
                     anchor.y() - new_widget_location.size.height()
                 );
                 break;
 
             case ei_anc_southwest:
-                new_widget_location.top_left = (
+                new_widget_location.top_left = Point(
                     anchor.x(),
                     anchor.y() - new_widget_location.size.height()
                 );
                 break;
 
             case ei_anc_southeast:
-                new_widget_location.top_left = (
+                new_widget_location.top_left = Point(
                     anchor.x() - new_widget_location.size.width(),
                     anchor.y() - new_widget_location.size.height()
                 );
                 break;
 
             case ei_anc_west:
-                new_widget_location.top_left = (
+                new_widget_location.top_left = Point(
                     anchor.x(),
                     anchor.y() - new_widget_location.size.height()/2
                 );
                 break;
 
             case ei_anc_east:
-                new_widget_location.top_left = (
+                new_widget_location.top_left = Point(
                     anchor.x() - new_widget_location.size.width(),
                     anchor.y() - new_widget_location.size.height()
                 );

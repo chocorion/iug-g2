@@ -67,6 +67,9 @@ Application::Application(Size *main_window_size)
         new anchor_t()
     );
 
+    //Set the size of the widget to the window size
+    root->geomnotify(*window);
+
     continue_running = true;
 
     pick->configure(
