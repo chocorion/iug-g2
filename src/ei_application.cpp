@@ -45,20 +45,6 @@ Application::Application(Size *main_window_size)
     );
 
     continue_running = true;
-
-    pick->configure(
-        main_window_size,
-        NULL,
-        NULL,
-        NULL,
-        NULL,
-        NULL,
-        NULL,
-        NULL,
-        pick_surface,
-        NULL,
-        NULL
-    );
 }
 
 Application::~Application()
