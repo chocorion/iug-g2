@@ -20,9 +20,9 @@ int ei_main(int argc, char** argv)
     Size screen_size = Size(600, 600);
     color_t root_bgcol = { 0xFF, 0x7f, 0xb4, 0xff };
 
-    Size frame_size = Size(50, 50);
-    int frame_x = 0;
-    int frame_y = 0;
+    Size frame_size = Size(300, 200);
+    int frame_x = 150;
+    int frame_y = 200;
     color_t frame_color = { 0xFF, 0x00, 0x00, 0xff };
     relief_t frame_relief = ei_relief_raised;
     int frame_border_width = 6;
@@ -38,10 +38,8 @@ int ei_main(int argc, char** argv)
                      &frame_relief, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 
-    anchor_t a = ei_anc_center;
-
     Placer* p = new Placer();
-    p->configure(frame, &a, &frame_x, &frame_y, NULL, NULL, NULL, NULL, NULL, NULL);
+    p->configure(frame, NULL, &frame_x, &frame_y, NULL, NULL, NULL, NULL, NULL, NULL);
     
     /* Run the application's main loop. */
     app->run();
