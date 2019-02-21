@@ -33,8 +33,8 @@ class Placer;
  */
 class Widget
 {
-  public:
-    /**
+public:
+  /**
      * @brief   Construct a new instance of a widget of some particular class, as a descendant of an existing widget.
      *
      *      The widget is not displayed on screen until it is managed by a geometry manager.
@@ -42,15 +42,15 @@ class Widget
      * @param   class_name  The name of the class of the widget that is to be created.
      * @param   parent      A pointer to the parent widget. Cannot be NULL except for the root widget.
      */
-    Widget(const widgetclass_name_t &class_name, Widget *parent);
+  Widget(const widgetclass_name_t &class_name, Widget *parent);
 
-    /**
+  /**
      * @brief   Destroys the widget. Removes it from screen if it is managed by a geometry manager.
      *          Destroys all its descendants.
      */
-    virtual ~Widget();
+  virtual ~Widget();
 
-    /**
+  /**
      * \brief   Method that draws the widget.
      *
      * @param   surface     Where to draw the widget. The actual location of the widget in the
@@ -59,55 +59,55 @@ class Widget
      * @param   clipper     If not NULL, the drawing is restricted within this rectangle
      *                      (expressed in the surface reference frame).
      */
-    virtual void draw(surface_t surface, surface_t pick_surface, Rect *clipper);
+  virtual void draw(surface_t surface, surface_t pick_surface, Rect *clipper);
 
-    /**
+  /**
      * \brief   Method that is called to notify the widget that its geometry has been modified
      *      by its geometry manager.
      *
      * @param   rect        The new rectangular screen location of the widget
      *                      (i.e., = widget->screen_location).
      */
-    virtual void geomnotify(Rect rect);
+  virtual void geomnotify(Rect rect);
 
-    Widget *pick(uint32_t id);
-    uint32_t getPick_id() const;
-    color_t get_pick_color() const;
+  Widget *pick(uint32_t id);
+  uint32_t getPick_id() const;
+  color_t get_pick_color() const;
 
-    Widget *getParent() const;
-    std::list<Widget *> getChildren() const;
-    void addChild(Widget* whild);
+  Widget *getParent() const;
+  std::list<Widget *> getChildren() const;
+  void addChild(Widget *whild);
 
-    /**
+  /**
      * \brief Return the current geometry manager of the widget.
      *      Required by the geometry manager to know if the widget 
      *      is currently managed.
      */
-    GeometryManager *getGeometryManager() const;
-    Size get_requested_size() const;
-    Rect *getContentRect() const;
-    const Rect *getScreenLocation() const;
+  GeometryManager *getGeometryManager() const;
+  Size get_requested_size() const;
+  Rect *getContentRect() const;
+  const Rect *getScreenLocation() const;
 
-    void setGeometryManager(GeometryManager *geometryManager);
+  void setGeometryManager(GeometryManager *geometryManager);
 
-  protected:
-    widgetclass_name_t name; ///< The string name of this class of widget.
+protected:
+  widgetclass_name_t name; ///< The string name of this class of widget.
 
-    static uint32_t s_idGenerator; ///< Static counter to assure the uniqueness of the generated Ids
-    uint32_t pick_id;              ///< Id of this widget in the picking offscreen.
-    color_t pick_color;            ///< pick_id encoded as a color.
+  static uint32_t s_idGenerator; ///< Static counter to assure the uniqueness of the generated Ids
+  uint32_t pick_id;              ///< Id of this widget in the picking offscreen.
+  color_t pick_color;            ///< pick_id encoded as a color.
 
-    /* Widget Hierachy Management */
-    Widget *parent;               ///< Pointer to the parent of this widget.
-    std::list<Widget *> children; ///< List of this widget's children
+  /* Widget Hierachy Management */
+  Widget *parent;               ///< Pointer to the parent of this widget.
+  std::list<Widget *> children; ///< List of this widget's children
 
-    /* Geometry Management */
-    GeometryManager *geom_manager; ///< Pointer to the geometry management for this widget.
+  /* Geometry Management */
+  GeometryManager *geom_manager; ///< Pointer to the geometry management for this widget.
 
-    ///  If NULL, the widget is not currently managed and thus, is not mapped on the screen.
-    Size requested_size;  ///< Size requested by the widget (big enough for its label, for example), or by the programmer. This can be different than its screen size defined by the placer.
-    Rect screen_location; ///< Position and size of the widget expressed in the root window reference.
-    Rect *content_rect;   ///< Where to place children, when this widget is used as a container. By defaults, points to the screen_location.
+  ///  If NULL, the widget is not currently managed and thus, is not mapped on the screen.
+  Size requested_size;  ///< Size requested by the widget (big enough for its label, for example), or by the programmer. This can be different than its screen size defined by the placer.
+  Rect screen_location; ///< Position and size of the widget expressed in the root window reference.
+  Rect *content_rect;   ///< Where to place children, when this widget is used as a container. By defaults, points to the screen_location.
 };
 
 /**
@@ -129,16 +129,16 @@ typedef std::function<bool_t(Widget *, Event *, void *)> ei_callback_t;
 
 class Frame : public Widget
 {
-  public:
-    Frame(Widget *parent);
+public:
+  Frame(Widget *parent);
 
-    virtual ~Frame();
+  virtual ~Frame();
 
-    virtual void draw(surface_t surface,
-                      surface_t pick_surface,
-                      Rect *clipper);
+  virtual void draw(surface_t surface,
+                    surface_t pick_surface,
+                    Rect *clipper);
 
-    /**
+  /**
      * @brief   Configures the attributes of widgets of the class "frame".
      *
      *      Parameters obey the "default" protocol: if a parameter is "NULL" and it has never
@@ -175,47 +175,47 @@ class Frame : public Widget
      *                      when the size of the widget is bigger than the size of the image.
      *                      Defaults to \ref ei_anc_center.
      */
-    void configure(Size *requested_size,
-                   const color_t *color,
-                   int *border_width,
-                   relief_t *relief,
-                   char **text,
-                   font_t *text_font,
-                   color_t *text_color,
-                   anchor_t *text_anchor,
-                   surface_t *img,
-                   Rect **img_rect,
-                   anchor_t *img_anchor);
+  void configure(Size *requested_size,
+                 const color_t *color,
+                 int *border_width,
+                 relief_t *relief,
+                 char **text,
+                 font_t *text_font,
+                 color_t *text_color,
+                 anchor_t *text_anchor,
+                 surface_t *img,
+                 Rect **img_rect,
+                 anchor_t *img_anchor);
 
-    surface_t *getImg();
+  surface_t *getImg();
 
-  private:
-    const color_t *color;
-    int *border_width;
-    relief_t *relief;
-    char **text;
-    font_t *text_font;
-    color_t *text_color;
-    anchor_t *text_anchor;
-    surface_t *img;
-    Rect **img_rect;
-    anchor_t *img_anchor;
+private:
+  const color_t *color;
+  int *border_width;
+  relief_t *relief;
+  char **text;
+  font_t *text_font;
+  color_t *text_color;
+  anchor_t *text_anchor;
+  surface_t *img;
+  Rect **img_rect;
+  anchor_t *img_anchor;
 };
 
 struct MouseEvent;
 
 class Button : public Widget
 {
-  public:
-    Button(Widget *parent);
+public:
+  Button(Widget *parent);
 
-    virtual ~Button();
+  virtual ~Button();
 
-    virtual void draw(surface_t surface,
-                      surface_t pick_surface,
-                      Rect *clipper);
+  virtual void draw(surface_t surface,
+                    surface_t pick_surface,
+                    Rect *clipper);
 
-    /**
+  /**
      * @brief   Configures the attributes of widgets of the class "button".
      *
      * @param   widget, requested_size, color, border_width, relief, text, text_font,
@@ -226,44 +226,44 @@ class Button : public Widget
      * @param   corner_radius   The radius (in pixels) of the rounded corners of the button.
      *                          0 means straight corners. Defaults to k_default_button_corner_radius.
      */
-    void configure(Size *requested_size,
-                   const color_t *color,
-                   int *border_width,
-                   int *corner_radius,
-                   relief_t *relief,
-                   const char **text,
-                   font_t *text_font,
-                   color_t *text_color,
-                   anchor_t *text_anchor,
-                   surface_t *img,
-                   Rect **img_rect,
-                   anchor_t *img_anchor);
+  void configure(Size *requested_size,
+                 const color_t *color,
+                 int *border_width,
+                 int *corner_radius,
+                 relief_t *relief,
+                 const char **text,
+                 font_t *text_font,
+                 color_t *text_color,
+                 anchor_t *text_anchor,
+                 surface_t *img,
+                 Rect **img_rect,
+                 anchor_t *img_anchor);
 
-  private:
-    const color_t *color;
-    int *border_width;
-    relief_t *relief;
-    const char **text;
-    font_t *text_font;
-    color_t *text_color;
-    anchor_t *text_anchor;
-    surface_t *img;
-    Rect **img_rect;
-    anchor_t *img_anchor;
+private:
+  const color_t *color;
+  int *border_width;
+  relief_t *relief;
+  const char **text;
+  font_t *text_font;
+  color_t *text_color;
+  anchor_t *text_anchor;
+  surface_t *img;
+  Rect **img_rect;
+  anchor_t *img_anchor;
 };
 
 class Toplevel : public Widget
 {
-  public:
-    Toplevel(Widget *parent);
+public:
+  Toplevel(Widget *parent);
 
-    virtual ~Toplevel();
+  virtual ~Toplevel();
 
-    virtual void draw(surface_t surface,
-                      surface_t pick_surface,
-                      Rect *clipper);
+  virtual void draw(surface_t surface,
+                    surface_t pick_surface,
+                    Rect *clipper);
 
-    /**
+  /**
      * @brief   Configures the attributes of widgets of the class "toplevel".
      *
      * @param   widget      The widget to configure.
@@ -281,13 +281,21 @@ class Toplevel : public Widget
      *                      by the user. Defaults to \ref ei_axis_both.
      * @param   min_size    For resizable widgets, defines the minimum size. Defaults to (160, 120).
      */
-    void configure(Size *requested_size,
-                   color_t *color,
-                   int *border_width,
-                   const char **title,
-                   bool_t *closable,
-                   axis_set_t *resizable,
-                   Size *min_size);
+  void configure(Size *requested_size,
+                 color_t *color,
+                 int *border_width,
+                 const char **title,
+                 bool_t *closable,
+                 axis_set_t *resizable,
+                 Size *min_size);
+
+private:
+  color_t *color;
+  int *border_width;
+  const char **title;
+  bool_t *closable;
+  axis_set_t *resizable;
+  Size *min_size;
 };
 
 } // namespace ei
