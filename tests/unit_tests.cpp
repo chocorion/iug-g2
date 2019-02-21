@@ -59,74 +59,6 @@ TEST_CASE("fill_window", "[unit]")
 
 }
 
-TEST_CASE("placer", "[unit]")
-{
-    cout << "Test Placer" << endl;
-    SECTION("configure") 
-    {
-        cout << "\tSection configure" << endl;
-        Widget w = Widget("test", nullptr);
-        Placer p = Placer();
-
-        p.configure(
-            &w, 
-            nullptr, 
-            nullptr, 
-            nullptr, 
-            nullptr, 
-            nullptr, 
-            nullptr, 
-            nullptr, 
-            nullptr, 
-            nullptr
-        );
-        REQUIRE( w.getGeometryManager() == &p);
-    }
-    
-    SECTION("remove")
-    {
-        cout << "\tSection configure" << endl;
-        Widget w = Widget("test", nullptr);
-        Placer p = Placer();
-
-        p.configure(
-            &w, 
-            nullptr, 
-            nullptr, 
-            nullptr, 
-            nullptr, 
-            nullptr, 
-            nullptr, 
-            nullptr, 
-            nullptr, 
-            nullptr
-        );
-        p.release(&w);
-
-        //Just look if it crash due to pointers
-        REQUIRE(true);
-    }
-
-}
-
-TEST_CASE("Simple_geometryManager" , "[unit]")
-{  
-    cout << "---------------------------------------" << endl;
-    cout << "Test geometryManager " << endl;
-    Value<int> v(42, true);
-    cout << v.getValue() << " " << v.isDefault() << endl;
-    //Juste histoire que make me lance la compilation du géométrie manager
-
-    Widget w = Widget("test", nullptr);
-    Placer c = Placer();
-
-    c.configure(
-        &w, nullptr, nullptr,
-        nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
-
-
-        REQUIRE(true);
-}
 
 TEST_CASE("Create widget" , "[unit]")
 {  
@@ -149,7 +81,7 @@ TEST_CASE("Create widget" , "[unit]")
     << "," << (int) frame->get_pick_color().blue 
     << "," << (int) frame->get_pick_color().alpha << ")" << endl;
 
-    SECTION("Parent/Child")
+    SECTION("Child")
     {
         Widget* w = new Widget("root",nullptr);
         Frame* frame = new Frame(w);
@@ -158,7 +90,66 @@ TEST_CASE("Create widget" , "[unit]")
         REQUIRE(l.size() == 1);
     }
 
+    SECTION("Parent")
+    {
+        Widget root = Widget("root", nullptr);
+        Widget w = Widget("test", &root);
+
+        REQUIRE(w.getParent() == &root);
+    }
+
     REQUIRE(true);
+}
+
+
+TEST_CASE("placer", "[unit]")
+{
+    cout << "Test Placer" << endl;
+    SECTION("configure") 
+    {
+        cout << "\tSection configure" << endl;
+        Widget root = Widget("root", nullptr);
+        Widget w = Widget("test", &root);
+        Placer p = Placer();
+
+        p.configure(
+            &w, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr
+        );
+        REQUIRE( w.getGeometryManager() == &p);
+    }
+    
+    SECTION("remove")
+    {
+        Widget w = Widget("test", new Widget("root", nullptr));
+        Placer p = Placer();
+
+        p.configure(
+            &w, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr, 
+            nullptr
+        );
+        p.release(&w);
+
+        //Just look if it crash due to pointers
+        REQUIRE((w.getGeometryManager() == nullptr));
+    }
+
 }
 
 TEST_CASE("Create frame" , "[unit]")

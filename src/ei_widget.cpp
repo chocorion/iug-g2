@@ -26,7 +26,7 @@ namespace ei {
 	Widget::Widget(const widgetclass_name_t& class_name, Widget* parent) 
 	{		
 		name = class_name;
-		parent = parent; // null if root
+		this->parent = parent; // null if root
 		geom_manager = nullptr;
 
 		pick_id = s_idGenerator;
@@ -53,10 +53,14 @@ namespace ei {
 	 */
 	Widget::~Widget()
 	{
-		for(Widget* child : children)
-		{
-			delete child;
-		}
+		return;
+
+		//Dans le cas ou le parent n'est pas alloué dynamiquement ça plante...
+
+		// for(Widget* child : children)
+		// {
+		// 	delete child;
+		// }
 		// TODO: actual cleaning
 	}
 
