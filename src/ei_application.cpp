@@ -115,7 +115,7 @@ void Application::run()
 
         EventManager::getInstance().execute(event, "all");
 
-        cout << "drawing root's kids !" << endl;
+        cout << "drawing root's children !" << endl;
         for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); ++it)
         {
             (*it)->draw(root_surface(), pick_surface(), nullptr);
