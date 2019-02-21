@@ -32,11 +32,14 @@ Application::Application(Size *main_window_size)
     *img = hw_create_window(main_window_size, EI_FALSE);
     *pick_surface = hw_surface_create(*img, main_window_size);
 
-    int *border_width = new int;
+    int *border_width = new int(0);
     *border_width = 0;
-    relief_t relief = ei_relief_none;
-    color_t black = {0,0,0,255};
 
+    relief_t *relief = new relief_t();
+    *relief = ei_relief_none;
+
+    color_t  *black  = new color_t();
+    *black = {0,0,0,255};
     
     //fill(img, &black, EI_FALSE);
     
@@ -52,12 +55,12 @@ Application::Application(Size *main_window_size)
 
     root->configure(
         main_window_size,
-        &black,
+        black,
         border_width,
-        &relief,
+        relief,
         &blank_text,
         nullptr,
-        &black,
+        black,
         new anchor_t(),
         img,
         &window,
@@ -68,12 +71,12 @@ Application::Application(Size *main_window_size)
 
     pick->configure(
         main_window_size,
-        &black,
+        black,
         border_width,
-        &relief,
+        relief,
         &blank_text,
         nullptr,
-        &black,
+        black,
         new anchor_t(),
         pick_surface,
         &window,
