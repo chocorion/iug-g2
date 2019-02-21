@@ -40,7 +40,6 @@ void Frame::draw(surface_t surface,
 	{
 		for (int i = 0; i < *border_width; i++)
 		{
-			cout << *border_width << endl;
 			//printf("%lf-%lf-%d-%d\n",current.size.width(),current.size.height(),current.top_left.x(),current.top_left.y());
 
 			/*

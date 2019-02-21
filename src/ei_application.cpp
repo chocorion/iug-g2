@@ -122,7 +122,7 @@ void Application::run()
                 cout << "\tTouch event in " << mouseCoord.x() << " " << mouseCoord.y() << endl;
             }
 
-            cout << widget_pick(mouseCoord)->getPick_id() << endl;
+            cout << "widget id under the mouse --> " << widget_pick(mouseCoord)->getPick_id() << endl;
             //Faire une rechercher récursive à partir de la racine dans les widgets pour trouver à qui correspond la couleure prise dans l'offscreen picking
         }
 
