@@ -19,15 +19,15 @@ WidgetPlacerData::WidgetPlacerData():
      _anchor(ei_anc_northwest, true),
      _x(0, true),
      _y(0, true),
-     _width(0.0f, true),
-     _height(0.0f, true),
+     _rel_width(0.0f, true),
+     _rel_height(0.0f, true),
      _rel_x(0.0f, true),
      _rel_y(0.0f, true)
  {
      Size size = widget->get_requested_size();
 
-     _rel_width  = Value<float>(size.width(), false);
-     _rel_height = Value<float>(size.height(), false);
+     _width  = Value<float>(size.width(), false);
+     _height = Value<float>(size.height(), false);
  }
 
  void WidgetPlacerData::set(

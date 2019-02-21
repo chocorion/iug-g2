@@ -13,6 +13,7 @@
 #include "ei_event.h"
 #include "keycodes.h"
 #include "ei_main.h"
+#include "ei_geometrymanager.h"
 #include <iostream>
 
 using namespace std;
@@ -61,6 +62,10 @@ Application::Application(Size *main_window_size)
         &window,
         new anchor_t()
     );
+    Placer* p = new Placer();
+    p->configure(root, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
+
+    root->geomnotify(Rect(Point(), *main_window_size));
 
     continue_running = true;
 
@@ -89,6 +94,7 @@ void Application::run()
     Event* event;
 
     // Initial draw
+    (root->getGeometryManager())->run(root);
     root->draw(this->root_surface(),pick_surface(),nullptr);
 
     while(continue_running)
