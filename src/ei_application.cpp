@@ -145,10 +145,6 @@ void Application::run()
         }
 
         EventManager::getInstance().execute(event, "all");
-
-        
-
-
         
     }
 }
