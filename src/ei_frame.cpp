@@ -35,12 +35,100 @@ void Frame::draw(surface_t surface,
 	fill(pick, &pick_color, EI_FALSE); // warning: check alpha
 	ei_copy_surface(pick_surface, pick, &base.top_left, EI_FALSE);
 
+	// FRAME IMAGE
+	if(img && parent) {
+		ei_copy_surface(surface, img, &base.top_left, EI_TRUE);
+	}
+
+	// FRAME TEXT
+	if(text) {
+		Size* text_size = new Size();
+		hw_text_compute_size(*this->text, this->text_font, *text_size);
+			
+		
+		Rect* position = new Rect(Point(),*text_size);
+
+		Rect object = *position;		
+		anchor_t _anchor = ei_anc_center;
+		Point anchor = Point(base.top_left.x()+base.size.width()/2,base.top_left.y()+base.size.height()/2);
+
+		switch (_anchor)
+        {
+            case ei_anc_none:   //Northwest by default
+            case ei_anc_northwest:
+                object.top_left = Point(
+                    anchor.x(),
+                    anchor.y()
+                );
+                break;
+            
+            case ei_anc_north:
+                object.top_left = Point(
+                    anchor.x() - object.size.width()/2,
+                    anchor.y()
+                );
+                break;
+            
+            case ei_anc_northeast:
+                object.top_left = Point(
+                    anchor.x() - object.size.width(),
+                    anchor.y()
+                );
+                break;
+
+            case ei_anc_south:
+                object.top_left = Point(
+                    anchor.x() - object.size.width()/2,
+                    anchor.y() - object.size.height()
+                );
+                break;
+
+            case ei_anc_southwest:
+                object.top_left = Point(
+                    anchor.x(),
+                    anchor.y() - object.size.height()
+                );
+                break;
+
+            case ei_anc_southeast:
+                object.top_left = Point(
+                    anchor.x() - object.size.width(),
+                    anchor.y() - object.size.height()
+                );
+                break;
+
+            case ei_anc_west:
+                object.top_left = Point(
+                    anchor.x(),
+                    anchor.y() - object.size.height()/2
+                );
+                break;
+
+            case ei_anc_east:
+                object.top_left = Point(
+                    anchor.x() - object.size.width(),
+                    anchor.y() - object.size.height()
+                );
+                break;
+
+            case ei_anc_center:
+                 object.top_left = Point(
+                    anchor.x() - object.size.width()/2,
+                    anchor.y() - object.size.height()/2
+                );
+                break;
+            default:
+                break;
+		}
+		
+		draw_text(surface, &(position->top_left), *text, text_font, text_color);
+	}
+
 	// FRAME BORDER
 	if (border_width)
 	{
 		for (int i = 0; i < *border_width; i++)
 		{
-			cout << *border_width << endl;
 			//printf("%lf-%lf-%d-%d\n",current.size.width(),current.size.height(),current.top_left.x(),current.top_left.y());
 
 			/*
@@ -156,7 +244,6 @@ void Frame::configure(Size *requested_size,
 
 		if (this->text)
 		{
-			int width, height;
 			hw_text_compute_size(*this->text, this->text_font, *default_size);
 		}
 		else if (this->img)

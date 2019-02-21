@@ -104,6 +104,7 @@ public:
 
     virtual void run (Widget* widget);
     virtual void release (Widget* widget);
+    static void setPosFromAnchor(Rect object, anchor_t _anchor, Point anchor);
 
     Placer();
 };

@@ -17,7 +17,6 @@
 
 namespace ei
 {
-
 struct Event;
 
 /**
@@ -26,6 +25,7 @@ struct Event;
 typedef std::string widgetclass_name_t;
 
 class GeometryManager;
+class Placer;
 
 /**
  * \brief   Abstract class representing a widget
