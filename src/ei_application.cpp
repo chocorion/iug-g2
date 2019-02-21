@@ -90,7 +90,6 @@ void Application::run()
     Event* event;
 
     // Initial draw
-    (root->getGeometryManager())->run(root);
     root->draw(this->root_surface(),pick_surface(),nullptr);
 
     while(continue_running)
