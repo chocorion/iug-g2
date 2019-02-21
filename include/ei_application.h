@@ -108,6 +108,7 @@ public:
 
 private:
     Application();
+    void renderDisplay();
     bool continue_running;
     static Application *instance;
     static Frame *root;

@@ -93,22 +93,36 @@ mouse_e need_picking(Event* event) {
     }
 }
 
-void Application::run()
+void Application::renderDisplay()
 {
-    Event* event;
-
-    // Initial draw
-    root->draw(this->root_surface(),pick_surface(),nullptr);
 
     std::list<Widget*> children = root->getChildren();
 
+    root->draw(this->root_surface(),pick_surface(),nullptr);
+
+    for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); ++it)
+    {
+        (*it)->draw(root_surface(), pick_surface(), nullptr);
+    }
+
+    linked_rect_t* rects = new linked_rect_t();
+    rects->push_back(hw_surface_get_rect(root_surface()));
+    hw_surface_update_rects(*rects);
+}
+
+void Application::run()
+{
+    Event* event;
     
     mouse_e isMouseEvent; 
     Point mouseCoord;
-    color_t picking_color;
+    
 
     while(continue_running)
     {
+        
+        renderDisplay();
+        
         cout << "Waiting for event..." << endl;
         event = hw_event_wait_next();
 
@@ -126,26 +140,16 @@ void Application::run()
                 cout << "\tTouch event in " << mouseCoord.x() << " " << mouseCoord.y() << endl;
             }
 
-            //hw_surface_lock(pick_surface());
-            picking_color = hw_get_pixel(pick_surface(), mouseCoord);
-            //hw_surface_unlock(pick_surface());
-
-            cout << "\t\tColor in screen picking : " << (int) picking_color.red << " : " << (int) picking_color.green << " : " << (int) picking_color.blue << " : " << (int) picking_color.alpha << endl;
+            widget_pick(mouseCoord);
             //Faire une rechercher récursive à partir de la racine dans les widgets pour trouver à qui correspond la couleure prise dans l'offscreen picking
         }
 
         EventManager::getInstance().execute(event, "all");
 
-        cout << "drawing root's children !" << endl;
-        for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); ++it)
-        {
-            (*it)->draw(root_surface(), pick_surface(), nullptr);
-        }
+        
 
 
-        linked_rect_t* rects = new linked_rect_t();
-        rects->push_back(hw_surface_get_rect(root_surface()));
-        hw_surface_update_rects(*rects);
+        
     }
 }
 
@@ -176,6 +180,8 @@ surface_t Application::pick_surface()
 
 Widget *Application::widget_pick(const Point &where)
 {
+    color_t picking_color = hw_get_pixel(pick_surface(), where);
+    cout << "\t\tColor in screen picking : " << (int) picking_color.red << " : " << (int) picking_color.green << " : " << (int) picking_color.blue << " : " << (int) picking_color.alpha << endl;
 }
 
 static Application *instance;
