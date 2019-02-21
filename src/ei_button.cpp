@@ -34,7 +34,7 @@ namespace ei {
         fill(pick,&pick_color,EI_TRUE); // warning: check alpha
         ei_copy_surface(pick_surface,pick,&base.top_left,EI_FALSE);
 
-        linked_point_t points = rounded_frame(base,45, BT_FULL);
+        linked_point_t points = rounded_frame(base, (float)*corner_radius, BT_FULL);
 
        /* points.push_front(Point(current.top_left.x(),current.top_left.y()));
         points.push_front(Point(current.top_left.x() + current.size.width(),current.top_left.y()));
@@ -61,6 +61,7 @@ namespace ei {
 		if(requested_size) this->requested_size = *requested_size;
 		if(color) this->color = color;
 		if(border_width) this->border_width = border_width;
+        if(corner_radius) this->corner_radius = corner_radius;
 		if(relief) this->relief = relief;
 		if(text) this->text = text;
 		if(text_font) this->text_font = text_font;

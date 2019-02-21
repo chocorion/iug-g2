@@ -62,8 +62,6 @@ set(EI_SRC
         src/ei_frame.cpp
         src/ei_placer.cpp
         src/ei_widget.cpp
-        src/ei_widgetdatabank.cpp
-        src/ei_widgetplacerdata.cpp
         )
 add_library(ei ${EI_SRC})
 
