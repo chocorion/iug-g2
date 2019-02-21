@@ -122,7 +122,7 @@ void Application::run()
     {
         
         renderDisplay();
-        
+
         cout << "Waiting for event..." << endl;
         event = hw_event_wait_next();
 
@@ -140,7 +140,7 @@ void Application::run()
                 cout << "\tTouch event in " << mouseCoord.x() << " " << mouseCoord.y() << endl;
             }
 
-            widget_pick(mouseCoord);
+            cout << widget_pick(mouseCoord)->getPick_id() << endl;
             //Faire une rechercher récursive à partir de la racine dans les widgets pour trouver à qui correspond la couleure prise dans l'offscreen picking
         }
 
@@ -178,10 +178,51 @@ surface_t Application::pick_surface()
     return _pick;
 }
 
+bool isColorEquals(const color_t color_1, const color_t color_2, bool use_alpha)
+{
+    return (
+        color_1.red == color_2.red      &&
+        color_1.green == color_2.green  &&
+        color_1.blue == color_2.blue    &&
+        (
+            (use_alpha)?
+                color_1.alpha == color_2.alpha:
+                true
+        )
+        
+    );
+}
+
+Widget* rec_widget_pick(const color_t color, Widget* widget)
+{
+    if (isColorEquals(widget->get_pick_color(), color, false))
+    {
+        return widget;
+    }
+    std::list<Widget *> l = widget->getChildren();
+
+    if (l.size() == 0)
+    {
+        return nullptr;
+    }
+
+    Widget* result;
+    for (std::list<Widget *>::iterator it = l.begin(); it != l.end(); ++it)
+    {
+        if ((result = rec_widget_pick(color, (*it))))
+        {
+            return result;
+        }
+    }
+
+    return nullptr;
+}
+
 Widget *Application::widget_pick(const Point &where)
 {
     color_t picking_color = hw_get_pixel(pick_surface(), where);
-    cout << "\t\tColor in screen picking : " << (int) picking_color.red << " : " << (int) picking_color.green << " : " << (int) picking_color.blue << " : " << (int) picking_color.alpha << endl;
+    
+    return rec_widget_pick(picking_color, root);
 }
 
 static Application *instance;
