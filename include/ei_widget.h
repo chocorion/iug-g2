@@ -11,6 +11,7 @@
 #define EI_WIDGET_H
 
 #include "ei_draw.h"
+#include "ei_types.h"
 
 #include <functional>
 

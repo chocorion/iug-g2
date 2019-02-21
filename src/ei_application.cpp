@@ -32,58 +32,34 @@ Application::Application(Size *main_window_size)
     *img = hw_create_window(main_window_size, EI_FALSE);
     *pick_surface = hw_surface_create(*img, main_window_size);
 
-    int *border_width = new int(0);
-    *border_width = 0;
-
-    relief_t *relief = new relief_t();
-    *relief = ei_relief_none;
-
-    color_t  *black  = new color_t();
-    *black = {0,0,0,255};
-    
-    //fill(img, &black, EI_FALSE);
-    
-		//linked_rect_t* rects = new linked_rect_t();
-		//rects->push_front(Rect(Point((double) main_window_size->x(),(double) main_window_size->y()),Size((double) main_window_size->width(),(double) main_window_size->height())));
-		//hw_surface_update_rects(*rects);
-    
-
-
-    char* blank_text = (char*)"";
-    
-    Rect* window = new Rect(Point(),*main_window_size);
-
     root->configure(
         main_window_size,
-        black,
-        border_width,
-        relief,
-        &blank_text,
-        nullptr,
-        black,
-        new anchor_t(),
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
         img,
-        &window,
-        new anchor_t()
+        NULL,
+        NULL
     );
-
-    //Set the size of the widget to the window size
-    root->geomnotify(*window);
 
     continue_running = true;
 
     pick->configure(
         main_window_size,
-        black,
-        border_width,
-        relief,
-        &blank_text,
-        nullptr,
-        black,
-        new anchor_t(),
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
         pick_surface,
-        &window,
-        new anchor_t()
+        NULL,
+        NULL
     );
 }
 
