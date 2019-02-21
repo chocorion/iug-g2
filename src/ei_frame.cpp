@@ -52,15 +52,16 @@ namespace ei {
 			*/
 
 			// Patchwork because of polyline
-			// draw_line(surface,Point(current.top_left.x(),current.top_left.y()),Point(current.top_left.x() + current.size.width(),current.top_left.y()),*color,clipper);
-			// draw_line(surface,Point(Point(current.top_left.x() + current.size.width(),current.top_left.y())),Point(current.top_left.x() + current.size.width(),current.top_left.y() + current.size.height()),*color,clipper);
-			// draw_line(surface,Point(current.top_left.x() + current.size.width(),current.top_left.y() + current.size.height()),Point(current.top_left.x(),current.top_left.y() + current.size.height()),*color,clipper);
-			// draw_line(surface,Point(current.top_left.x(),current.top_left.y() + current.size.height()),Point(current.top_left.x(),current.top_left.y()),*color,clipper);
+			draw_line(surface,Point(current.top_left.x(),current.top_left.y()),Point(current.top_left.x() + current.size.width(),current.top_left.y()),*color,clipper);
+			draw_line(surface,Point(Point(current.top_left.x() + current.size.width(),current.top_left.y())),Point(current.top_left.x() + current.size.width(),current.top_left.y() + current.size.height()),*color,clipper);
+			draw_line(surface,Point(current.top_left.x() + current.size.width(),current.top_left.y() + current.size.height()),Point(current.top_left.x(),current.top_left.y() + current.size.height()),*color,clipper);
+			draw_line(surface,Point(current.top_left.x(),current.top_left.y() + current.size.height()),Point(current.top_left.x(),current.top_left.y()),*color,clipper);
 
-			// if(current.size.height() >= 2) current.size.height() -= 2;
-			// if(current.size.width() >= 2) current.size.width() -= 2;
-			// current.top_left.x() += 1;
-			// current.top_left.y() += 1;
+			if(current.size.height() >= 2) current.size.height() -= 2;
+			if(current.size.width() >= 2) current.size.width() -= 2;
+			current.top_left.x() += 1;
+			current.top_left.y() += 1;
+
 		}
 
 	}

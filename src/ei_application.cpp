@@ -117,6 +117,10 @@ void Application::run()
         {
             (*it)->draw(root_surface(), pick_surface(), nullptr);
         }
+
+        linked_rect_t* rects = new linked_rect_t();
+        rects->push_back(hw_surface_get_rect(root_surface()));
+        hw_surface_update_rects(*rects);
     }
 }
 
