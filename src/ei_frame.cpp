@@ -120,26 +120,15 @@ void Frame::draw(surface_t surface,
 	{
 		for (int i = 0; i < *border_width; i++)
 		{
-			//printf("%lf-%lf-%d-%d\n",current.size.width(),current.size.height(),current.top_left.x(),current.top_left.y());
-
-			/*
-			// Polyline does not work
 
 			linked_point_t points;
 			points.push_front(Point(current.top_left.x(),current.top_left.y()));
 			points.push_front(Point(current.top_left.x() + current.size.width(),current.top_left.y()));
 			points.push_front(Point(current.top_left.x() + current.size.width(),current.top_left.y() + current.size.height()));
-			points.push_front(Point(current.top_left.x(),current.top_left.y() + current.size.height()));
+			points.push_front(Point(current.top_left.x() - 1,current.top_left.y() + current.size.height())); // -1 because of a hole otherwise appearing
 			points.push_front(Point(current.top_left.x(),current.top_left.y()));
 
 			draw_polyline(surface,points,*color,clipper);
-			*/
-
-			// Patchwork because of polyline
-			draw_line(surface, Point(current.top_left.x(), current.top_left.y()), Point(current.top_left.x() + current.size.width(), current.top_left.y()), *color, clipper);
-			draw_line(surface, Point(current.top_left.x() + current.size.width(), current.top_left.y()), Point(current.top_left.x() + current.size.width(), current.top_left.y() + current.size.height()), *color, clipper);
-			draw_line(surface, Point(current.top_left.x() + current.size.width(), current.top_left.y() + current.size.height()), Point(current.top_left.x(), current.top_left.y() + current.size.height()), *color, clipper);
-			draw_line(surface, Point(current.top_left.x(), current.top_left.y() + current.size.height()), Point(current.top_left.x(), current.top_left.y()), *color, clipper);
 
 			if (current.size.height() >= 2)
 				current.size.height() -= 2;
