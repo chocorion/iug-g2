@@ -108,6 +108,7 @@ public:
 
 private:
     Application();
+    void renderDisplayRec(Widget* widget);
     void renderDisplay();
     bool continue_running;
     static Application *instance;

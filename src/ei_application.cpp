@@ -75,17 +75,19 @@ mouse_e need_picking(Event* event) {
     }
 }
 
+void Application::renderDisplayRec(Widget* widget)
+{
+    widget->draw(root_surface(),pick_surface(),nullptr);
+
+    for (Widget* child :widget->getChildren()) 
+    {
+        renderDisplayRec(child);
+    }
+}
+
 void Application::renderDisplay()
 {
-
-    std::list<Widget*> children = root->getChildren();
-
-    root->draw(this->root_surface(),pick_surface(),nullptr);
-
-    for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); ++it)
-    {
-        (*it)->draw(root_surface(), pick_surface(), nullptr);
-    }
+    renderDisplayRec(root);
 
     linked_rect_t* rects = new linked_rect_t();
     rects->push_back(hw_surface_get_rect(root_surface()));

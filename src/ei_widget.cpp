@@ -98,21 +98,11 @@ namespace ei {
 
 	}
 
-	void Widget::drawChildren(surface_t surface, surface_t pick_surface, Rect* clipper)
-	{
-		for(Widget* child : children)
-		{
-			child->draw(surface, pick_surface, clipper);
-		}
-	}
-
 	void Widget::draw(surface_t surface,
 		surface_t pick_surface,
 		Rect*     clipper)
 	{
 		drawOffscreen(pick_surface, clipper);
-		drawChildren(surface, pick_surface, clipper);
-		
 	}
 	void Widget::geomnotify(Rect rect) {
 		this->screen_location = rect;

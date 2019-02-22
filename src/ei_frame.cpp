@@ -31,9 +31,7 @@ void Frame::draw(surface_t surface,
 	Rect current = Rect(Point(base.top_left), Size(base.size));
 
 	// PICK SURFACE
-	surface_t pick = hw_surface_create(pick_surface, &base.size);
-	fill(pick, &pick_color, EI_FALSE); // warning: check alpha
-	ei_copy_surface(pick_surface, pick, &base.top_left, EI_FALSE);
+	drawOffscreen(pick_surface, clipper);
 
 	// FRAME IMAGE
 	if(img && parent) {
@@ -158,6 +156,7 @@ void Frame::draw(surface_t surface,
 			current.top_left.y() += 1;
 		}
 	}
+
 }
 
 void Frame::configure(Size *requested_size,
