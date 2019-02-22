@@ -104,6 +104,7 @@ namespace ei {
 	{
 		drawOffscreen(pick_surface, clipper);
 	}
+	
 	void Widget::geomnotify(Rect rect) {
 		this->screen_location = rect;
 	}
