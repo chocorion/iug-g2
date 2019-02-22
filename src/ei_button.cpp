@@ -35,11 +35,7 @@ namespace ei {
                                  Size((double) (requested_size.width() - *border_width * 2),(double) (requested_size.height() - *border_width * 2)));
         Rect current = Rect(Point(base.top_left),Size(base.size));
 
-        int color_coef = 70;
-
-        printf("rgb : %d, %d, %d\n", (unsigned char)(color->red * (color_coef + 100)),
-               (unsigned char)(color->green * (color_coef + 100)),
-               (unsigned char)(color->blue * (color_coef + 100)));
+        int color_coef = 50;
 
         color_t dark_color = {
             (unsigned char)(color->red * color_coef / 100),
@@ -50,9 +46,9 @@ namespace ei {
 
 
         color_t light_color = {
-            (unsigned char)(color->red * (color_coef + 100)),
-            (unsigned char)(color->green * (color_coef + 100)),
-            (unsigned char)(color->blue * (color_coef + 100)),
+            (unsigned char)(color->red * (color_coef + 100) + (color->red != 0) * (255 - color_coef / 100 * 255)),
+            (unsigned char)(color->green * (color_coef + 100)+ (color->green != 0) * (255 - color_coef / 100 * 255)),
+            (unsigned char)(color->blue * (color_coef + 100)+ (color->blue != 0) * (255 - color_coef / 100 * 255)),
             255
         };
 
@@ -70,47 +66,62 @@ namespace ei {
 
         //text
 
-        if(text_anchor){
+        if(text){
 
+			
             Point anchor;
 
-            switch(*text_anchor){
+			if(!text_anchor){
 
-                case ei_anc_none :
-                    anchor = Point(base.top_left);
-                    break;
-                case ei_anc_center :
-                    anchor = Point(base.top_left);
-                    break;
-                case ei_anc_north :
-                    anchor = Point(base.top_left);
-                    break;
-                case ei_anc_northeast :
-                    anchor = Point(base.top_left);
-                    break;
-                case ei_anc_east :
-                    anchor = Point(base.top_left);
-                    break;
-                case ei_anc_southeast :
-                    anchor = Point(base.top_left);
-                    break;
-                case ei_anc_south :
-                    anchor = Point(base.top_left);
-                    break;
-                case ei_anc_southwest :
-                    anchor = Point(base.top_left);
-                    break;
-                case ei_anc_west :
-                    anchor = Point(base.top_left);
-                    break;
-                case ei_anc_northwest :
-                    anchor = Point(base.top_left);
-                    break;
-                default:
-                    break;
-            }
+				anchor = Point(base.top_left.x() + *border_width, base.top_left.y() + *border_width);
 
-            //draw_text(surface, &anchor, *text, *text_font, text_color);
+			}
+			else{
+
+				switch(*text_anchor){
+
+					case ei_anc_none :
+						anchor = Point(base.top_left);
+						break;
+					case ei_anc_center :
+						anchor = Point(base.top_left);
+						break;
+					case ei_anc_north :
+						anchor = Point(base.top_left);
+						break;
+					case ei_anc_northeast :
+						anchor = Point(base.top_left);
+						break;
+					case ei_anc_east :
+						anchor = Point(base.top_left);
+						break;
+					case ei_anc_southeast :
+						anchor = Point(base.top_left);
+						break;
+					case ei_anc_south :
+						anchor = Point(base.top_left);
+						break;
+					case ei_anc_southwest :
+						anchor = Point(base.top_left);
+						break;
+					case ei_anc_west :
+						anchor = Point(base.top_left);
+						break;
+					case ei_anc_northwest :
+						anchor = Point(base.top_left.x() + *border_width, base.top_left.y() + *border_width);
+						break;
+					default:
+						break;
+				}
+			}
+		
+			if(!text_font){
+				draw_text(surface, &anchor, *text, hw_text_font_create(default_font_filename, font_default_size), text_color);
+			}
+			else{
+				draw_text(surface, &anchor, *text, *text_font, text_color);
+			}
+			
         }
     }
 
@@ -139,5 +150,9 @@ namespace ei {
 		if(img) this->img = img;
 		if(img_rect) this->img_rect = img_rect;
 		if(img_anchor) this->img_anchor = img_anchor;
+
+		if(!text_color){
+			*this->text_color = font_default_color;
+		}
 	}
 };
