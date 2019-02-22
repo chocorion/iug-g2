@@ -91,7 +91,7 @@ public:
   void setGeometryManager(GeometryManager *geometryManager);
 
 protected:
-   void drawOffscreen(surface_t pick_surface, Rect *clipper);
+   virtual void drawOffscreen(surface_t pick_surface, Rect *clipper);
   
   widgetclass_name_t name; ///< The string name of this class of widget.
 
