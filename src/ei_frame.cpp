@@ -16,6 +16,8 @@ namespace ei
 
 Frame::Frame(Widget *parent) : Widget("Frame", parent)
 {
+		this->img = NULL;
+		this->text = NULL;
 }
 
 Frame::~Frame()
@@ -24,9 +26,8 @@ Frame::~Frame()
 
 void Frame::draw(surface_t surface,
 				 surface_t pick_surface,
-				 Rect *clipper)
-{ 
-
+				 Rect *clipper) 
+{
 	Rect base = Rect(Point(screen_location.top_left.x(), screen_location.top_left.y()), Size((double)requested_size.width(), (double)requested_size.height()));
 	Rect current = Rect(Point(base.top_left), Size(base.size));
 
@@ -34,91 +35,83 @@ void Frame::draw(surface_t surface,
 	drawOffscreen(pick_surface, clipper);
 
 	// FRAME IMAGE
-	if(img && parent) {
-		ei_copy_surface(surface, img, &base.top_left, EI_TRUE);
+	if (img && parent)
+	{
+		ei_copy_surface(surface, *img, &base.top_left, EI_TRUE);
 	}
 
 	// FRAME TEXT
-	if(text) {
-		Size* text_size = new Size();
+	if (text && text_font)
+	{
+		Size *text_size = new Size();
 		hw_text_compute_size(*this->text, this->text_font, *text_size);
-			
-		
-		Rect* position = new Rect(Point(),*text_size);
 
-		Rect object = *position;		
+		Rect *position = new Rect(Point(), *text_size);
+
+		Rect object = *position;
 		anchor_t _anchor = ei_anc_center;
-		Point anchor = Point(base.top_left.x()+base.size.width()/2,base.top_left.y()+base.size.height()/2);
+		Point anchor = Point(base.top_left.x() + base.size.width() / 2, base.top_left.y() + base.size.height() / 2);
 
 		switch (_anchor)
-        {
-            case ei_anc_none:   //Northwest by default
-            case ei_anc_northwest:
-                object.top_left = Point(
-                    anchor.x(),
-                    anchor.y()
-                );
-                break;
-            
-            case ei_anc_north:
-                object.top_left = Point(
-                    anchor.x() - object.size.width()/2,
-                    anchor.y()
-                );
-                break;
-            
-            case ei_anc_northeast:
-                object.top_left = Point(
-                    anchor.x() - object.size.width(),
-                    anchor.y()
-                );
-                break;
+		{
+		case ei_anc_none: //Northwest by default
+		case ei_anc_northwest:
+			object.top_left = Point(
+				anchor.x(),
+				anchor.y());
+			break;
 
-            case ei_anc_south:
-                object.top_left = Point(
-                    anchor.x() - object.size.width()/2,
-                    anchor.y() - object.size.height()
-                );
-                break;
+		case ei_anc_north:
+			object.top_left = Point(
+				anchor.x() - object.size.width() / 2,
+				anchor.y());
+			break;
 
-            case ei_anc_southwest:
-                object.top_left = Point(
-                    anchor.x(),
-                    anchor.y() - object.size.height()
-                );
-                break;
+		case ei_anc_northeast:
+			object.top_left = Point(
+				anchor.x() - object.size.width(),
+				anchor.y());
+			break;
 
-            case ei_anc_southeast:
-                object.top_left = Point(
-                    anchor.x() - object.size.width(),
-                    anchor.y() - object.size.height()
-                );
-                break;
+		case ei_anc_south:
+			object.top_left = Point(
+				anchor.x() - object.size.width() / 2,
+				anchor.y() - object.size.height());
+			break;
 
-            case ei_anc_west:
-                object.top_left = Point(
-                    anchor.x(),
-                    anchor.y() - object.size.height()/2
-                );
-                break;
+		case ei_anc_southwest:
+			object.top_left = Point(
+				anchor.x(),
+				anchor.y() - object.size.height());
+			break;
 
-            case ei_anc_east:
-                object.top_left = Point(
-                    anchor.x() - object.size.width(),
-                    anchor.y() - object.size.height()
-                );
-                break;
+		case ei_anc_southeast:
+			object.top_left = Point(
+				anchor.x() - object.size.width(),
+				anchor.y() - object.size.height());
+			break;
 
-            case ei_anc_center:
-                 object.top_left = Point(
-                    anchor.x() - object.size.width()/2,
-                    anchor.y() - object.size.height()/2
-                );
-                break;
-            default:
-                break;
+		case ei_anc_west:
+			object.top_left = Point(
+				anchor.x(),
+				anchor.y() - object.size.height() / 2);
+			break;
+
+		case ei_anc_east:
+			object.top_left = Point(
+				anchor.x() - object.size.width(),
+				anchor.y() - object.size.height());
+			break;
+
+		case ei_anc_center:
+			object.top_left = Point(
+				anchor.x() - object.size.width() / 2,
+				anchor.y() - object.size.height() / 2);
+			break;
+		default:
+			break;
 		}
-		
+
 		draw_text(surface, &(position->top_left), *text, text_font, text_color);
 	}
 
@@ -144,7 +137,7 @@ void Frame::draw(surface_t surface,
 
 			// Patchwork because of polyline
 			draw_line(surface, Point(current.top_left.x(), current.top_left.y()), Point(current.top_left.x() + current.size.width(), current.top_left.y()), *color, clipper);
-			draw_line(surface, Point(Point(current.top_left.x() + current.size.width(), current.top_left.y())), Point(current.top_left.x() + current.size.width(), current.top_left.y() + current.size.height()), *color, clipper);
+			draw_line(surface, Point(current.top_left.x() + current.size.width(), current.top_left.y()), Point(current.top_left.x() + current.size.width(), current.top_left.y() + current.size.height()), *color, clipper);
 			draw_line(surface, Point(current.top_left.x() + current.size.width(), current.top_left.y() + current.size.height()), Point(current.top_left.x(), current.top_left.y() + current.size.height()), *color, clipper);
 			draw_line(surface, Point(current.top_left.x(), current.top_left.y() + current.size.height()), Point(current.top_left.x(), current.top_left.y()), *color, clipper);
 
@@ -156,7 +149,6 @@ void Frame::draw(surface_t surface,
 			current.top_left.y() += 1;
 		}
 	}
-
 }
 
 void Frame::configure(Size *requested_size,
@@ -171,6 +163,7 @@ void Frame::configure(Size *requested_size,
 					  Rect **img_rect,
 					  anchor_t *img_anchor)
 {
+
 	if (color)
 		this->color = color;
 	else
@@ -189,7 +182,7 @@ void Frame::configure(Size *requested_size,
 		*this->relief = ei_relief_none;
 	}
 
-	if (!img)
+	if (text != NULL && img == NULL)
 	{
 		if (text)
 			this->text = text;
@@ -219,10 +212,11 @@ void Frame::configure(Size *requested_size,
 		}
 	}
 
-	if (!text)
+	if (text == NULL && img != NULL)
 	{
-		if (img)
+		if (img) {
 			this->img = img;
+		}
 		if (img_rect)
 			this->img_rect = img_rect;
 
