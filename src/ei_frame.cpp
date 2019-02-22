@@ -34,6 +34,11 @@ void Frame::draw(surface_t surface,
 	// PICK SURFACE
 	drawOffscreen(pick_surface, clipper);
 
+	// FRAME BACKGROUND
+	surface_t fill_background = hw_surface_create(surface, &(base.size));
+	fill(fill_background,color,EI_TRUE);
+	ei_copy_surface(surface, fill_background, &base.top_left, EI_TRUE);
+
 	// FRAME IMAGE
 	if (img && parent)
 	{
@@ -115,6 +120,14 @@ void Frame::draw(surface_t surface,
 		draw_text(surface, &(position->top_left), *text, text_font, text_color);
 	}
 
+	int color_coef = 50;
+	color_t dark_color = {
+            (unsigned char)(color->red * color_coef / 100),
+            (unsigned char)(color->green * color_coef / 100),
+            (unsigned char)(color->blue * color_coef / 100),
+            255
+        };
+
 	// FRAME BORDER
 	if (border_width)
 	{
@@ -128,7 +141,7 @@ void Frame::draw(surface_t surface,
 			points.push_front(Point(current.top_left.x() - 1,current.top_left.y() + current.size.height())); // -1 because of a hole otherwise appearing
 			points.push_front(Point(current.top_left.x(),current.top_left.y()));
 
-			draw_polyline(surface,points,*color,clipper);
+			draw_polyline(surface,points,dark_color,clipper);
 
 			if (current.size.height() >= 2)
 				current.size.height() -= 2;
