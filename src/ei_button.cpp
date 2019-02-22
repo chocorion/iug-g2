@@ -32,7 +32,7 @@ namespace ei {
         Rect base = Rect(Point(screen_location.top_left), Size(screen_location.size));
         Rect top = Rect(Point(base.top_left),Size(base.size));
         Rect flat = Rect(Point(screen_location.top_left.x() + *border_width, screen_location.top_left.y() + *border_width),
-                                 Size((double) (requested_size.width() - *border_width * 2),(double) (requested_size.height() - *border_width * 2)));
+                                 Size((double) (screen_location.size.width() - *border_width * 2),(double) (screen_location.size.height() - *border_width * 2)));
         Rect bottom = Rect(Point(base.top_left),Size(base.size));
         Rect current = Rect(Point(base.top_left),Size(base.size));
 
