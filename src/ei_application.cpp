@@ -25,8 +25,8 @@ Frame *Application::root = new Frame(nullptr);
 Application::Application(Size *main_window_size)
 {
     hw_init();
-    
-    surface_t* img = new surface_t;
+
+    surface_t *img = new surface_t;
     *img = hw_create_window(main_window_size, EI_FALSE);
     _pick = hw_surface_create(*img, main_window_size);
 
@@ -41,8 +41,9 @@ Application::Application(Size *main_window_size)
         NULL,
         img,
         NULL,
-        NULL
-    );
+        NULL);
+
+    root->geomnotify(*(new Rect(Point(),*main_window_size)));
 
     continue_running = true;
 }
@@ -52,34 +53,47 @@ Application::~Application()
     hw_quit();
 }
 
-typedef enum {MOUSE, TOUCH, OTHER} mouse_e;
+typedef enum
+{
+    MOUSE,
+    TOUCH,
+    OTHER
+} mouse_e;
 
-mouse_e need_picking(Event* event) {
+mouse_e need_picking(Event *event)
+{
     if (
         event->type == ei_ev_mouse_buttondown ||
-        event->type == ei_ev_mouse_buttonup   ||
-        event->type == ei_ev_mouse_move
-    )
+        event->type == ei_ev_mouse_buttonup ||
+        event->type == ei_ev_mouse_move)
     {
         return MOUSE;
-    } else if (
-        event->type == ei_ev_touch_begin      ||
-        event->type == ei_ev_touch_end        ||
-        event->type == ei_ev_touch_move
-    )
+    }
+    else if (
+        event->type == ei_ev_touch_begin ||
+        event->type == ei_ev_touch_end ||
+        event->type == ei_ev_touch_move)
     {
         return TOUCH;
-    } else 
+    }
+    else
     {
         return OTHER;
     }
 }
 
-void Application::renderDisplayRec(Widget* widget)
+void Application::renderDisplayRec(Widget *widget)
 {
-    widget->draw(root_surface(),pick_surface(),nullptr);
+    if (widget->getParent())
+    {
+        widget->draw(root_surface(), pick_surface(), widget->getParent()->getContentRect());
+    }
+    else
+    {
+        widget->draw(root_surface(), pick_surface(), nullptr);
+    }
 
-    for (Widget* child :widget->getChildren()) 
+    for (Widget *child : widget->getChildren())
     {
         renderDisplayRec(child);
     }
@@ -89,21 +103,21 @@ void Application::renderDisplay()
 {
     renderDisplayRec(root);
 
-    linked_rect_t* rects = new linked_rect_t();
+    linked_rect_t *rects = new linked_rect_t();
     rects->push_back(hw_surface_get_rect(root_surface()));
     hw_surface_update_rects(*rects);
 }
 
 void Application::run()
 {
-    Event* event;
-    
-    mouse_e isMouseEvent; 
+    Event *event;
+
+    mouse_e isMouseEvent;
     Point mouseCoord;
-    Widget* concerned_widget;
+    Widget *concerned_widget;
 
     bool isEventHandled = false;
-    while(continue_running)
+    while (continue_running)
     {
         concerned_widget = nullptr;
         isEventHandled = false;
@@ -117,11 +131,11 @@ void Application::run()
         {
             if (isMouseEvent == MOUSE)
             {
-                mouseCoord = ((MouseEvent*)event)->where;
+                mouseCoord = ((MouseEvent *)event)->where;
             }
             else if (isMouseEvent == TOUCH)
             {
-                mouseCoord = ((TouchEvent*)event)->where;
+                mouseCoord = ((TouchEvent *)event)->where;
             }
             concerned_widget = widget_pick(mouseCoord);
         }
@@ -132,7 +146,6 @@ void Application::run()
         {
             isEventHandled = EventManager::getInstance().execute(event, concerned_widget);
         }
-        
     }
 }
 
@@ -163,19 +176,15 @@ surface_t Application::pick_surface()
 bool isColorEquals(const color_t color_1, const color_t color_2, bool use_alpha)
 {
     return (
-        color_1.red == color_2.red      &&
-        color_1.green == color_2.green  &&
-        color_1.blue == color_2.blue    &&
-        (
-            (use_alpha)?
-                color_1.alpha == color_2.alpha:
-                true
-        )
-        
+        color_1.red == color_2.red &&
+        color_1.green == color_2.green &&
+        color_1.blue == color_2.blue &&
+        ((use_alpha) ? color_1.alpha == color_2.alpha : true)
+
     );
 }
 
-Widget* rec_widget_pick(const color_t color, Widget* widget)
+Widget *rec_widget_pick(const color_t color, Widget *widget)
 {
     if (isColorEquals(widget->get_pick_color(), color, false))
     {
@@ -188,7 +197,7 @@ Widget* rec_widget_pick(const color_t color, Widget* widget)
         return nullptr;
     }
 
-    Widget* result;
+    Widget *result;
     for (std::list<Widget *>::iterator it = l.begin(); it != l.end(); ++it)
     {
         if ((result = rec_widget_pick(color, (*it))))
@@ -203,7 +212,7 @@ Widget* rec_widget_pick(const color_t color, Widget* widget)
 Widget *Application::widget_pick(const Point &where)
 {
     color_t picking_color = hw_get_pixel(pick_surface(), where);
-    
+
     return rec_widget_pick(picking_color, root);
 }
 
