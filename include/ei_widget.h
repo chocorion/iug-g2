@@ -93,6 +93,7 @@ public:
 
 protected:
    virtual void drawOffscreen(surface_t pick_surface, Rect *clipper);
+   Rect limitRectToClipper(Rect *clipper);
   
   widgetclass_name_t name; ///< The string name of this class of widget.
 

@@ -76,25 +76,69 @@ namespace ei {
 
 	void Widget::drawOffscreen(surface_t pick_surface, Rect *clipper)
 	{
+		Rect where;
 		//If clipper is null, we use screen location
 		if (!clipper)
 		{
-			Rect location = Rect(
-				Point(
-					screen_location.top_left.x(),
-					screen_location.top_left.y()),
-				Size(
-					(double)requested_size.width(),
-					(double)requested_size.height())
-			);
+			where = screen_location;
+		}
+		else
+		{
+		
+			where = limitRectToClipper(clipper);
 
-			clipper = &location;
+			//printf("box : %d, %d ; %f, %f\n", where.top_left.x(), where.top_left.y(),
+			//		where.size.width(), where.size.height());
 		}
 
 		//Vérifier que le clipper est bien géré dans le cas ou il n'est pas nul !
-		surface_t pick = hw_surface_create(pick_surface, &clipper->size);
+		surface_t pick = hw_surface_create(pick_surface, &where.size);
 		fill(pick, &pick_color, EI_FALSE);
-		ei_copy_surface(pick_surface, pick, &clipper->top_left, EI_FALSE);
+		ei_copy_surface(pick_surface, pick, &where.top_left, EI_FALSE);
+
+	}
+
+	Rect Widget::limitRectToClipper(Rect *clipper){
+        
+		int x = 0, y = 0;
+		float width = screen_location.size.width();
+		float height = screen_location.size.height();
+
+
+		if(screen_location.top_left.x() < clipper->top_left.x())
+		{
+			x = clipper->top_left.x();
+			width -= x - screen_location.top_left.x();
+		}
+		else if(screen_location.top_left.x() > clipper->top_left.x() + clipper->size.width())
+			return Rect(Point(0, 0), Size(0, 0));
+		else
+			x = screen_location.top_left.x();
+	
+		if(screen_location.top_left.y() < clipper->top_left.y())
+		{
+			y = clipper->top_left.y();
+			height -= y - screen_location.top_left.y();
+		}
+		else if(screen_location.top_left.y() > clipper->top_left.y() + clipper->size.height())
+			return Rect(Point(0, 0), Size(0, 0));
+		else
+			y = screen_location.top_left.y();
+
+
+
+		if(x + width > clipper->top_left.x() + clipper->size.width())
+		{
+			width = clipper->top_left.x() + clipper->size.width() - x;
+		}
+
+		if(y + height > clipper->top_left.y() + clipper->size.height())
+		{
+			height = clipper->top_left.y() + clipper->size.height() - y;
+		}
+		
+
+		return Rect(Point(x, y), Size(width, height));
 
 	}
 
