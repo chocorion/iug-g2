@@ -192,7 +192,12 @@ Placer::Placer():
                 std::list<Widget*> l;
                 for (std::list<Widget*>::iterator it = (l = widget->getChildren()).begin(); it != l.end(); ++it)
                 {
-                    run(*it);
+                    GeometryManager* child_manager;
+                    if ((child_manager = (*it)->getGeometryManager()))
+                    {
+                        //Use the manager of the child
+                        child_manager->run((*it));
+                    }
                 }
             }
         }
