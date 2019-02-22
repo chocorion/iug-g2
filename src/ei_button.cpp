@@ -64,65 +64,93 @@ namespace ei {
 
         //end shapes
 
-        //text
+        // FRAME IMAGE
+		if(img && parent) {
+			ei_copy_surface(surface, img, &base.top_left, EI_TRUE);
+		}
 
-        if(text){
+		// FRAME TEXT
+		if(text) {
+			Size* text_size = new Size();
 
+			hw_text_compute_size(*this->text, *this->text_font, *text_size);
 			
-            Point anchor;
-
-			if(!text_anchor){
-
-				anchor = Point(base.top_left.x() + *border_width, base.top_left.y() + *border_width);
-
-			}
-			else{
-
-				switch(*text_anchor){
-
-					case ei_anc_none :
-						anchor = Point(base.top_left);
-						break;
-					case ei_anc_center :
-						anchor = Point(base.top_left);
-						break;
-					case ei_anc_north :
-						anchor = Point(base.top_left);
-						break;
-					case ei_anc_northeast :
-						anchor = Point(base.top_left);
-						break;
-					case ei_anc_east :
-						anchor = Point(base.top_left);
-						break;
-					case ei_anc_southeast :
-						anchor = Point(base.top_left);
-						break;
-					case ei_anc_south :
-						anchor = Point(base.top_left);
-						break;
-					case ei_anc_southwest :
-						anchor = Point(base.top_left);
-						break;
-					case ei_anc_west :
-						anchor = Point(base.top_left);
-						break;
-					case ei_anc_northwest :
-						anchor = Point(base.top_left.x() + *border_width, base.top_left.y() + *border_width);
-						break;
-					default:
-						break;
-				}
-			}
+			Rect* position = new Rect(Point(),*text_size);
 		
-			if(!text_font){
-				draw_text(surface, &anchor, *text, hw_text_font_create(default_font_filename, font_default_size), text_color);
-			}
-			else{
-				draw_text(surface, &anchor, *text, *text_font, text_color);
+			anchor_t _anchor = *text_anchor;
+			Point anchor = Point(base.top_left.x()+base.size.width()/2,base.top_left.y()+base.size.height()/2);
+
+			switch (_anchor)
+			{
+				case ei_anc_none:   //Northwest by default
+				case ei_anc_northwest:
+					position->top_left = Point(
+						anchor.x() - base.size.width() / 2,
+						anchor.y() - base.size.height() / 2
+					);
+					break;
+				
+				case ei_anc_north:
+					position->top_left = Point(
+						anchor.x() - position->size.width()/2,
+						anchor.y() - base.size.height() / 2
+					);
+					break;
+				
+				case ei_anc_northeast:
+					position->top_left = Point(
+						anchor.x() + base.size.width() / 2 - position->size.width(),
+						anchor.y() - base.size.height() / 2
+					);
+					break;
+
+				case ei_anc_south:
+					position->top_left = Point(
+						anchor.x() - position->size.width()/2,
+						anchor.y() + base.size.height() / 2 - position->size.height()
+					);
+					break;
+
+				case ei_anc_southwest:
+					position->top_left = Point(
+						anchor.x(),
+						anchor.y() - position->size.height()
+					);
+					break;
+
+				case ei_anc_southeast:
+					position->top_left = Point(
+						anchor.x() - position->size.width(),
+						anchor.y() - position->size.height()
+					);
+					break;
+
+				case ei_anc_west:
+					position->top_left = Point(
+						anchor.x() - base.size.width() / 2,
+						anchor.y() - position->size.height()/2
+					);
+					break;
+
+				case ei_anc_east:
+					position->top_left = Point(
+						anchor.x() + base.size.width() / 2 - position->size.width(),
+						anchor.y() - position->size.height()
+					);
+					break;
+
+				case ei_anc_center:
+					position->top_left = Point(
+						anchor.x() - position->size.width()/2,
+						anchor.y() - position->size.height()/2
+					);
+					break;
+				default:
+					break;
 			}
 			
-        }
+			draw_text(surface, &position->top_left, *text, *text_font, text_color);
+		}
     }
 
 	void Button::configure(Size *requested_size,
@@ -138,21 +166,77 @@ namespace ei {
                    Rect **img_rect,
                    anchor_t *img_anchor)
 	{
-		if(requested_size) this->requested_size = *requested_size;
-		if(color) this->color = color;
-		if(border_width) this->border_width = border_width;
-        if(corner_radius) this->corner_radius = corner_radius;
-		if(relief) this->relief = relief;
-		if(text) this->text = text;
-		if(text_font) this->text_font = text_font;
-		if(text_color) this->text_color = text_color;
-		if(text_anchor) this->text_anchor = text_anchor;
-		if(img) this->img = img;
-		if(img_rect) this->img_rect = img_rect;
-		if(img_anchor) this->img_anchor = img_anchor;
+		if (color)
+			this->color = color;
+		else
+			this->color = &default_background_color;
 
-		if(!text_color){
-			*this->text_color = font_default_color;
+		if (border_width)
+			this->border_width = border_width;
+		else
+			this->border_width = 0;
+		
+		if (corner_radius)
+			this->corner_radius = corner_radius;
+		else
+			this->corner_radius = 0;
+		
+
+		if (relief)
+			this->relief = relief;
+		else
+		{
+			this->relief = new relief_t;
+			*this->relief = ei_relief_none;
 		}
+
+			if (!img)
+		{
+			if (text)
+				this->text = text;
+			if (text_color)
+				this->text_color = text_color;
+			else
+			{
+				this->text_color = new color_t;
+				*this->text_color = font_default_color;
+			}
+
+			if (text_anchor)
+				this->text_anchor = text_anchor;
+			else
+			{
+				this->text_anchor = new anchor_t;
+				*this->text_anchor = ei_anc_center;
+			}
+
+			if (text_font)
+				this->text_font = text_font;
+			else
+			{
+				font_t *font = new font_t();
+				*font = hw_text_font_create(default_font_filename, font_default_size);
+				this->text_font = font;
+			}
+		}
+	
+		if (requested_size)
+			this->requested_size = *requested_size;
+		else
+		{
+			Size *default_size = new Size();
+
+			if (this->text)
+			{
+				hw_text_compute_size(*this->text, this->text_font, *default_size);
+			}
+			else if (this->img)
+			{
+				*default_size = hw_surface_get_size(this->img);
+			}
+
+			this->requested_size = *default_size;
+		}
+		
 	}
 };
