@@ -91,6 +91,9 @@ public:
   void setGeometryManager(GeometryManager *geometryManager);
 
 protected:
+   void drawOffscreen(surface_t pick_surface, Rect *cliper);
+   void drawChildren(surface_t surface, surface_t pick_surface, Rect* clipper);
+
   widgetclass_name_t name; ///< The string name of this class of widget.
 
   static uint32_t s_idGenerator; ///< Static counter to assure the uniqueness of the generated Ids

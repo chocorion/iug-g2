@@ -73,18 +73,46 @@ namespace ei {
 		return nullptr;
 	}
 
-	void Widget::draw(surface_t surface,
-		surface_t pick_surface,
-		Rect*     clipper)
-	{
-		// if(geom_manager) {
-		// 	geom_manager->run(this);
-		// }
 
+	void Widget::drawOffscreen(surface_t pick_surface, Rect *clipper)
+	{
+		//If clipper is null, we use screen location
+		if (!clipper)
+		{
+			Rect location = Rect(
+				Point(
+					screen_location.top_left.x(),
+					screen_location.top_left.y()),
+				Size(
+					(double)requested_size.width(),
+					(double)requested_size.height())
+			);
+
+			clipper = &location;
+		}
+
+		//Vérifier que le clipper est bien géré dans le cas ou il n'est pas nul !
+		surface_t pick = hw_surface_create(pick_surface, &clipper->size);
+		fill(pick, &pick_color, EI_FALSE);
+		ei_copy_surface(pick_surface, pick, &clipper->top_left, EI_FALSE);
+
+	}
+
+	void Widget::drawChildren(surface_t surface, surface_t pick_surface, Rect* clipper)
+	{
 		for(Widget* child : children)
 		{
 			child->draw(surface, pick_surface, clipper);
 		}
+	}
+
+	void Widget::draw(surface_t surface,
+		surface_t pick_surface,
+		Rect*     clipper)
+	{
+		drawOffscreen(pick_surface, clipper);
+		drawChildren(surface, pick_surface, clipper);
+		
 	}
 	void Widget::geomnotify(Rect rect) {
 		this->screen_location = rect;

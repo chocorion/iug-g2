@@ -25,7 +25,7 @@ Frame::~Frame()
 void Frame::draw(surface_t surface,
 				 surface_t pick_surface,
 				 Rect *clipper)
-{
+{ 
 
 	Rect base = Rect(Point(screen_location.top_left.x(), screen_location.top_left.y()), Size((double)requested_size.width(), (double)requested_size.height()));
 	Rect current = Rect(Point(base.top_left), Size(base.size));
