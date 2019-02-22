@@ -169,6 +169,13 @@ Placer::Placer():
                     anchor.y() - new_widget_location.size.height()
                 );
                 break;
+
+            case ei_anc_center:
+                 new_widget_location.top_left = Point(
+                    anchor.x() - new_widget_location.size.width()/2,
+                    anchor.y() - new_widget_location.size.height()/2
+                );
+                break;
             default:
                 break;
         }

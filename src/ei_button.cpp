@@ -56,9 +56,7 @@ namespace ei {
             255
         };
 
-        surface_t pick = hw_surface_create(pick_surface, &base.size);
-        fill(pick,&pick_color,EI_TRUE); // warning: check alpha
-        ei_copy_surface(pick_surface,pick,&base.top_left,EI_FALSE);
+        drawOffscreen(pick_surface, clipper);
 
         linked_point_t top_points = rounded_frame(top, (float)*corner_radius, BT_TOP);
         linked_point_t bottom_points = rounded_frame(bottom, (float)*corner_radius, BT_BOTTOM);
