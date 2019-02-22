@@ -64,14 +64,14 @@ mouse_e need_picking(Event *event)
 {
     if (
         event->type == ei_ev_mouse_buttondown ||
-        event->type == ei_ev_mouse_buttonup ||
+        event->type == ei_ev_mouse_buttonup   ||
         event->type == ei_ev_mouse_move)
     {
         return MOUSE;
     }
     else if (
         event->type == ei_ev_touch_begin ||
-        event->type == ei_ev_touch_end ||
+        event->type == ei_ev_touch_end   ||
         event->type == ei_ev_touch_move)
     {
         return TOUCH;
@@ -117,8 +117,8 @@ void Application::run()
     mouse_e isMouseEvent;
     Point mouseCoord;
     Widget *concerned_widget;
-
     bool isEventHandled = false;
+
     while (continue_running)
     {
         concerned_widget = nullptr;
@@ -139,9 +139,11 @@ void Application::run()
             {
                 mouseCoord = ((TouchEvent *)event)->where;
             }
+            
             concerned_widget = widget_pick(mouseCoord);
         }
 
+        //Do handler with tag "all" in priority
         isEventHandled = EventManager::getInstance().execute(event, "all");
 
         if (!isEventHandled && concerned_widget)
@@ -181,9 +183,9 @@ surface_t Application::pick_surface()
 bool isColorEquals(const color_t color_1, const color_t color_2, bool use_alpha)
 {
     return (
-        color_1.red == color_2.red &&
+        color_1.red   == color_2.red   &&
         color_1.green == color_2.green &&
-        color_1.blue == color_2.blue &&
+        color_1.blue  == color_2.blue  &&
         ((use_alpha) ? color_1.alpha == color_2.alpha : true)
 
     );

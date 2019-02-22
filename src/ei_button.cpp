@@ -16,7 +16,7 @@ namespace ei {
 	Button::Button(Widget* parent) : Widget("Button", parent)
 	{
 		text = NULL;
-		img = NULL;
+		img  = NULL;
 		corner_radius = NULL;
 	}
 
@@ -31,37 +31,48 @@ namespace ei {
         //drawing shapes
 
         Rect top = Rect(screen_location);
-        Rect flat = Rect(Point(screen_location.top_left.x() + *border_width, screen_location.top_left.y() + *border_width),
-                                 Size((double) (screen_location.size.width() - *border_width * 2),(double) (screen_location.size.height() - *border_width * 2)));
+		
+        Rect flat = Rect(
+			Point(
+				screen_location.top_left.x() + *border_width,
+				screen_location.top_left.y() + *border_width
+			),
+
+            Size(
+				(double) (screen_location.size.width() - *border_width * 2),
+				(double) (screen_location.size.height() - *border_width * 2)
+			)
+		);
+
         Rect bottom = Rect(screen_location);
         Rect current = Rect(screen_location);
 
         int color_coef = 50;
 
         color_t dark_color = {
-            (unsigned char)(color->red * color_coef / 100),
+            (unsigned char)(color->red   * color_coef / 100),
             (unsigned char)(color->green * color_coef / 100),
-            (unsigned char)(color->blue * color_coef / 100),
+            (unsigned char)(color->blue  * color_coef / 100),
             255
         };
 
 
         color_t light_color = {
-            (unsigned char)(color->red * (color_coef + 100) + (color->red != 0) * (255 - color_coef / 100 * 255)),
-            (unsigned char)(color->green * (color_coef + 100)+ (color->green != 0) * (255 - color_coef / 100 * 255)),
-            (unsigned char)(color->blue * (color_coef + 100)+ (color->blue != 0) * (255 - color_coef / 100 * 255)),
+            (unsigned char)(color->red   * (color_coef + 100) + (color->red != 0)   * (255 - color_coef / 100 * 255)),
+            (unsigned char)(color->green * (color_coef + 100) + (color->green != 0) * (255 - color_coef / 100 * 255)),
+            (unsigned char)(color->blue  * (color_coef + 100) + (color->blue != 0)  * (255 - color_coef / 100 * 255)),
             255
         };
 
         drawOffscreen(pick_surface, clipper);
 
-        linked_point_t top_points = rounded_frame(top, (float)*corner_radius, BT_TOP);
+        linked_point_t top_points    = rounded_frame(top,    (float)*corner_radius, BT_TOP);
         linked_point_t bottom_points = rounded_frame(bottom, (float)*corner_radius, BT_BOTTOM);
-        linked_point_t flat_points = rounded_frame(flat, (float)*corner_radius, BT_FULL);
+        linked_point_t flat_points   = rounded_frame(flat,   (float)*corner_radius, BT_FULL);
 
-        draw_polygon(surface, top_points, light_color, clipper);
-        draw_polygon(surface, bottom_points, dark_color, clipper);
-        draw_polygon(surface, flat_points, *color, clipper);
+        draw_polygon(surface, top_points,    light_color, clipper);
+        draw_polygon(surface, bottom_points, dark_color,  clipper);
+        draw_polygon(surface, flat_points,   *color,      clipper);
 
         //end shapes
 

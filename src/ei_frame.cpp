@@ -16,8 +16,8 @@ namespace ei
 
 Frame::Frame(Widget *parent) : Widget("Frame", parent)
 {
-		this->img = NULL;
-		this->text = NULL;
+	img = NULL;
+	text = NULL;
 }
 
 Frame::~Frame()
@@ -59,12 +59,13 @@ void Frame::draw(surface_t surface,
 	}
 
 	int color_coef = 50;
-	color_t dark_color = {
-            (unsigned char)(color->red * color_coef / 100),
-            (unsigned char)(color->green * color_coef / 100),
-            (unsigned char)(color->blue * color_coef / 100),
-            255
-        };
+	color_t dark_color =
+	{
+        (unsigned char)(color->red   * color_coef / 100),
+        (unsigned char)(color->green * color_coef / 100),
+        (unsigned char)(color->blue  * color_coef / 100),
+        255
+    };
 
 	// FRAME BORDER
 	if (border_width)
@@ -85,6 +86,7 @@ void Frame::draw(surface_t surface,
 				current.size.height() -= 2;
 			if (current.size.width() >= 2)
 				current.size.width() -= 2;
+				
 			current.top_left.x() += 1;
 			current.top_left.y() += 1;
 		}

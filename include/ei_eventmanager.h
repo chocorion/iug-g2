@@ -18,10 +18,12 @@ namespace ei {
 
 class BoundEventBank;
 
+/**
+ * @brief Represent a bound event in memory
+ */
 class BoundEvent
 {
     private:
-        //ei_eventtype_t eventtype;
         Widget*        _widget;
         tag_t          _tag;
         ei_callback_t  _callback;
@@ -38,9 +40,16 @@ class BoundEvent
             ei_callback_t callback,
             void* user_param
         );
+
+        /**
+         * @brief execute the callback function for this event
+         */
         bool execute(Event* event);
 };
 
+/**
+ * Manage all the bound events
+ */
 class BoundEventBank
 {
     private:
@@ -50,10 +59,20 @@ class BoundEventBank
     public:
         ~BoundEventBank();
 
+        /**
+         * @brief Get event data. 
+         */
         std::list<BoundEvent*>* get(ei_eventtype_t event);
         void add(ei_eventtype_t event, BoundEvent* data);
+
+        /**
+         * @brief remove all event lied to a specific event type
+         */
         void remove(ei_eventtype_t event);
 
+        /**
+         * @brief remove a specific bound event data
+         */
         void remove(
             ei_eventtype_t event,
             Widget* widget,
@@ -62,7 +81,19 @@ class BoundEventBank
             void* user_param
         );
         
+        /**
+         * @brief remove the data if it's lied to event
+         */
         void remove(ei_eventtype_t event, BoundEvent *data);
+
+        /**
+         * Find and execute the callback for the event by widget or tag
+         * @param event the event to handle
+         * @param Widget concerned by the event
+         * @param tag of the event
+         * 
+         * @return true if the event was handle, else false
+         */
         bool execute(Event* event, Widget* widget, tag_t tag);
 
 };
@@ -118,7 +149,22 @@ public:
                  ei_callback_t  callback,
                  void*          user_param);
 
+    /**
+     * @brief Execute the callback
+     * @param event event to treat
+     * @param widget the widget concerned by the event
+     * 
+     * @return true if the event is handled, else false
+     */
     bool execute(Event *event, Widget* widget);
+
+    /**
+     * @brief Execute the callback
+     * @param event event to treat
+     * @param tag the tag concerned by the event
+     * 
+     * @return true if the event is handled, else false
+     */
     bool execute(Event *event, tag_t tag);
 };
 

@@ -2,6 +2,7 @@
 #include "ei_event.h"
 namespace ei
 {
+    
 BoundEvent::BoundEvent()
 {
     return;
