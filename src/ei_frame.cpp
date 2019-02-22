@@ -215,8 +215,7 @@ void Frame::configure(Size *requested_size,
 	if (text == NULL && img != NULL)
 	{
 		if (img) {
-			this->img = new surface_t;
-			*this->img = img;
+			this->img = img;
 		}
 		if (img_rect)
 			this->img_rect = img_rect;
