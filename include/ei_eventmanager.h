@@ -44,7 +44,8 @@ class BoundEvent
 class BoundEventBank
 {
     private:
-        std::unordered_map<ei_eventtype_t, std::list<BoundEvent*>*> _bank;
+        typedef std::unordered_map<ei_eventtype_t, std::list<BoundEvent*>*, std::hash<int>> bank_set;
+        bank_set _bank;
     
     public:
         ~BoundEventBank();

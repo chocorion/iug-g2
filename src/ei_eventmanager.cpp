@@ -157,7 +157,7 @@ bool BoundEventBank::execute(Event* event, Widget* widget, tag_t tag)
 
 BoundEventBank::~BoundEventBank()
 {
-    std::unordered_map<ei_eventtype_t, std::list<BoundEvent*>*>::iterator it_bank;
+    bank_set::iterator it_bank;
 
     for (it_bank = _bank.begin(); it_bank != _bank.end(); ++it_bank)
     {
