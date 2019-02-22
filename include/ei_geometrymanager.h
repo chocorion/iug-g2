@@ -13,7 +13,6 @@
 
 #include "ei_types.h"
 #include "ei_widget.h"
-#include "ei_widgetdatabank.h"
 
 
 namespace ei {
@@ -57,8 +56,10 @@ public:
 class Placer : public GeometryManager
 {
 private:
-    WidgetDataBank _widgetData;
-
+    anchor_t _anchor;
+    int _x, _y, _width, _height;
+    float _rel_x, _rel_y, _rel_width, _rel_height;
+    bool _is_default_width, _is_default_height;
 public:
 
     /**
@@ -102,11 +103,10 @@ public:
                     float*     rel_height);
 
     virtual void run (Widget* widget);
-
     virtual void release (Widget* widget);
+    static void setPosFromAnchor(Rect object, anchor_t _anchor, Point anchor);
 
     Placer();
-
 };
 
 }

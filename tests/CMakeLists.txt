@@ -16,10 +16,6 @@ add_executable(frame frame.cpp
     ../src/ei_widget.cpp 
     ../src/ei_frame.cpp 
     ../include/ei_widget.h
-    ../include/ei_widgetdatabank.h
-    ../include/ei_widgetplacerdata.h
-    ../src/ei_widgetdatabank.cpp
-    ../src/ei_widgetplacerdata.cpp
     ../src/ei_application.cpp
     ../src/ei_eventmanager.cpp
     ../include/ei_eventmanager.h)
@@ -34,10 +30,6 @@ target_link_libraries(frame ei eibase ${Allegro_LIBRARIES} m)
 #    ../src/ei_widget.cpp 
 #    ../src/ei_frame.cpp 
 #    ../include/ei_widget.h
-#    ../include/ei_widgetdatabank.h
-#    ../include/ei_widgetplacerdata.h
-#    ../src/ei_widgetdatabank.cpp
-#    ../src/ei_widgetplacerdata.cpp
 #    ../src/ei_application.cpp
 #    ../src/ei_eventmanager.cpp
 #    ../include/ei_eventmanager.h
@@ -60,10 +52,6 @@ add_executable(
     ../src/ei_frame.cpp 
     ../src/ei_button.cpp 
     ../include/ei_widget.h
-    ../include/ei_widgetdatabank.h
-    ../include/ei_widgetplacerdata.h
-    ../src/ei_widgetdatabank.cpp
-    ../src/ei_widgetplacerdata.cpp
     ../src/ei_application.cpp
     ../src/ei_eventmanager.cpp
     ../include/ei_eventmanager.h

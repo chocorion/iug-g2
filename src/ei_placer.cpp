@@ -1,6 +1,5 @@
 #include "ei_geometrymanager.h"
-#include "ei_widgetdatabank.h"
-#include "ei_widgetplacerdata.h"
+
 
 #include <iostream>
 
@@ -8,10 +7,17 @@ using namespace std;
 
 namespace ei
 {
-    Placer::Placer()
-    {
-        return;
-    }
+
+Placer::Placer():
+    _anchor(ei_anc_northwest),
+     _x(0),
+     _y(0),
+     _width(0.0f),
+     _height(0.0f),
+     _rel_x(0.0f),
+     _rel_y(0.0f),
+     _is_default_width(true),
+     _is_default_height(true) {}
 
     void Placer::configure (Widget*    widget,
                     anchor_t*  anchor,
@@ -24,207 +30,176 @@ namespace ei
                     float*     rel_width,
                     float*     rel_height)
     {
-        GeometryManager* currendWidgetManager = widget->getGeometryManager();
+        GeometryManager* currentGeometryManager = widget->getGeometryManager();
 
-        if (currendWidgetManager)
+        if (currentGeometryManager != this)
         {
-            if (currendWidgetManager != this)
+            //The widget is already managed by another geometry manager.
+            if (currentGeometryManager)
             {
-                //The widget is already managed by another geometry manager.
                 widget->getGeometryManager()->release(widget);
             }
-            else
-            {
-                WidgetPlacerData *data = _widgetData.get(widget);
-
-                if (!data)
-                {
-                    cerr << "Error in Placer::configure: No data found in the bank for this widget" << endl;
-                    //Had to quit
-                }
-                
-                data->set(
-                    anchor,
-                    x,
-                    y,
-                    width,
-                    height,
-                    rel_x,
-                    rel_y,
-                    rel_width,
-                    rel_height
-                );
-                return;
-            }
+            widget->setGeometryManager(this);
         }
-        widget->setGeometryManager(this);
-        //We need to add this widget to the list
-        //The place is normaly free because widget id is uniq
-        WidgetPlacerData* data = new WidgetPlacerData(widget);
-        data->set(
-            anchor,
-            x,
-            y,
-            width,
-            height,
-            rel_x,
-            rel_y,
-            rel_width,
-            rel_height
-        );
+        
+        if (anchor) {   _anchor = *anchor ; } 
+        if (x)      {   _x = *x ;           } 
+        if (y)      {   _y = *y ;           } 
 
-        //Put information in the data map
-        _widgetData.set(
-            widget,
-            data
-        );
+        if (width)  {
+            _width = *width   ; 
+            _is_default_width = false;
+        }
+
+        if (height) {
+            _height = *height ; 
+            _is_default_height = false;
+        }
+
+        if (rel_x)  {   _rel_x = *rel_x ;   }
+        if (rel_y)  {   _rel_y = *rel_y ;   }
+
+        if (rel_width) {  _rel_width = *rel_width   ;  }
+        if (rel_height){  _rel_height = *rel_height ;  }
+
+        //First run for the widget
+        run(widget);
+        
     }
 
     void Placer::run(Widget* widget)
     {
-        std::list<Widget*> children = widget->getChildren();
-        Rect* containerRect = widget->getContentRect();
+        Rect* container = nullptr;
+        Widget* parent  = nullptr;
 
-
-        Widget* currentChild;
-
-        const Rect* oldChildRect;
-        Rect newChildRect;
-        WidgetPlacerData* childData;
-        Point anchor;
-
-        //CHAQUE WIDGET SON PLACER
-        for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++) //Post-inccrémentation dans la doc !
+        if ((parent = widget->getParent()))
         {
-            currentChild = (Widget *)(*it);
-            oldChildRect = currentChild->getScreenLocation();  //ça fonctionne bien ce truc ?
-            childData = _widgetData.get(currentChild);
+            container = parent->getContentRect();
 
-
-            if (!childData)
+            if (!container)
             {
-                this->configure(
-                    currentChild,
-                    nullptr,
-                    nullptr,
-                    nullptr,
-                    nullptr,
-                    nullptr,
-                    nullptr,
-                    nullptr,
-                    nullptr,
-                    nullptr
-                );
-            }
-
-            childData = _widgetData.get(currentChild);
-
-            if (!childData)
-            {
-                cerr << "Fatal error, can't make data for widget !" << endl;
+                cerr << "Error in placer run: parent widget don't have content_rect !" << endl;
                 exit(EXIT_FAILURE);
             }
+        } else
+        {
+            cerr << "You cant' call Placer::run on root widget !" << endl;
+            exit(EXIT_FAILURE);
+        }
 
-            cout << "RUN --> " << containerRect->size.width() << " " << containerRect->size.height() << endl;
-            
-            //anchor point 
-            anchor = (
-                childData->_rel_x.getValue() * containerRect->size.width()  + childData->_x.getValue(),
-                childData->_rel_y.getValue() * containerRect->size.height() + childData->_y.getValue()
-            );
-            
+        const Rect* current_widget_location = widget->getScreenLocation();
+        Rect new_widget_location;
 
-            double width = (childData->_rel_width.isDefault())?
-                    currentChild->get_requested_size().width():
-                    childData->_rel_width.getValue() * containerRect->size.width() + childData->_width.getValue();
 
-            double height = (childData->_rel_height.isDefault())?
-                    currentChild->get_requested_size().height():
-                    childData->_rel_height.getValue() * containerRect->size.height() + childData->_height.getValue();
+
+        Point anchor = Point(
+            _rel_x * container->size.width()  + _x,
+            _rel_y * container->size.height() + _y
+        );
+
+        double width = (_is_default_width) ?
+            widget->get_requested_size().width() :
+            _rel_width * container->size.width() + _width;
+
+        double height = (_is_default_height) ?
+            widget->get_requested_size().height() :
+            _rel_height * container->size.height() + _height;
+        
             //Calculate width and height 
-            newChildRect.size  = Size(
-                width,
-                height
-            );
+        new_widget_location.size = Size(
+            width,
+            height
+        );
             
-            switch (childData->_anchor.getValue())
-            {
-                case ei_anc_none:   //Northwest by default
-                case ei_anc_northwest:
-                    newChildRect.top_left = (
-                        anchor.x(),
-                        anchor.y()
-                    );
-                    break;
-                
-                case ei_anc_north:
-                    newChildRect.top_left = (
-                        anchor.x() - newChildRect.size.width()/2,
-                        anchor.y()
-                    );
-                    break;
-                
-                case ei_anc_northeast:
-                    newChildRect.top_left = (
-                        anchor.x() - newChildRect.size.width(),
-                        anchor.y()
-                    );
-                    break;
+        switch (_anchor)
+        {
+            case ei_anc_none:   //Northwest by default
+            case ei_anc_northwest:
+                new_widget_location.top_left = Point(
+                    anchor.x(),
+                    anchor.y()
+                );
+                break;
+            
+            case ei_anc_north:
+                new_widget_location.top_left = Point(
+                    anchor.x() - new_widget_location.size.width()/2,
+                    anchor.y()
+                );
+                break;
+            
+            case ei_anc_northeast:
+                new_widget_location.top_left = Point(
+                    anchor.x() - new_widget_location.size.width(),
+                    anchor.y()
+                );
+                break;
 
-                case ei_anc_south:
-                    newChildRect.top_left = (
-                        anchor.x() - newChildRect.size.width()/2,
-                        anchor.y() - newChildRect.size.height()
-                    );
-                    break;
+            case ei_anc_south:
+                new_widget_location.top_left = Point(
+                    anchor.x() - new_widget_location.size.width()/2,
+                    anchor.y() - new_widget_location.size.height()
+                );
+                break;
 
-                case ei_anc_southwest:
-                    newChildRect.top_left = (
-                        anchor.x(),
-                        anchor.y() - newChildRect.size.height()
-                    );
-                    break;
+            case ei_anc_southwest:
+                new_widget_location.top_left = Point(
+                    anchor.x(),
+                    anchor.y() - new_widget_location.size.height()
+                );
+                break;
 
-                case ei_anc_southeast:
-                    newChildRect.top_left = (
-                        anchor.x() - newChildRect.size.width(),
-                        anchor.y() - newChildRect.size.height()
-                    );
-                    break;
+            case ei_anc_southeast:
+                new_widget_location.top_left = Point(
+                    anchor.x() - new_widget_location.size.width(),
+                    anchor.y() - new_widget_location.size.height()
+                );
+                break;
 
-                case ei_anc_west:
-                    newChildRect.top_left = (
-                        anchor.x(),
-                        anchor.y() - newChildRect.size.height()/2
-                    );
-                    break;
+            case ei_anc_west:
+                new_widget_location.top_left = Point(
+                    anchor.x(),
+                    anchor.y() - new_widget_location.size.height()/2
+                );
+                break;
 
-                case ei_anc_east:
-                    newChildRect.top_left = (
-                        anchor.x() - newChildRect.size.width(),
-                        anchor.y() - newChildRect.size.height()
-                    );
-                    break;
-                default:
-                    break;
-            }
+            case ei_anc_east:
+                new_widget_location.top_left = Point(
+                    anchor.x() - new_widget_location.size.width(),
+                    anchor.y() - new_widget_location.size.height()
+                );
+                break;
+
+            case ei_anc_center:
+                 new_widget_location.top_left = Point(
+                    anchor.x() - new_widget_location.size.width()/2,
+                    anchor.y() - new_widget_location.size.height()/2
+                );
+                break;
+            default:
+                break;
+        }
 
             //Vérifier si newChildRect et oldChildRect son différent ou non
             if (
-                newChildRect.top_left.x() != oldChildRect->top_left.x() ||
-                newChildRect.top_left.y() != oldChildRect->top_left.y() ||
-                newChildRect.size.width() != oldChildRect->size.width() ||
-                newChildRect.size.height() != oldChildRect->size.height()
+                new_widget_location.top_left.x() != current_widget_location->top_left.x() ||
+                new_widget_location.top_left.y() != current_widget_location->top_left.y() ||
+                new_widget_location.size.width() != current_widget_location->size.width() ||
+                new_widget_location.size.height() != current_widget_location->size.height()
             ) {
-                run(currentChild);
-                currentChild->geomnotify(newChildRect);
+                widget->geomnotify(new_widget_location);
+
+                std::list<Widget*> l;
+                for (std::list<Widget*>::iterator it = (l = widget->getChildren()).begin(); it != l.end(); ++it)
+                {
+                    run(*it);
+                }
             }
         }
-    }
 
     void Placer::release(Widget *widget)
     {
-        _widgetData.remove(widget);
+        widget->setGeometryManager(nullptr);
     }
 
 }
