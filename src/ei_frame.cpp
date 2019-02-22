@@ -48,13 +48,13 @@ void Frame::draw(surface_t surface,
 	// FRAME TEXT
 	if (text && text_font)
 	{
-		Size* text_size = new Size();
-		hw_text_compute_size(*text, *text_font, *text_size);
-		Rect* textBox = new Rect(Point(),*text_size);
+		Size text_size = Size();
+		hw_text_compute_size(*text, *text_font, text_size);
+		Rect textBox = Rect(Point(), text_size);
 
-		Point* where = Tools::findAnchor(&base, textBox, text_anchor);
-
+		Point* where = Tools::findAnchor(&base, &textBox, text_anchor);
 		draw_text(surface, where, *text, *text_font, text_color);
+		delete where;
 		
 	}
 
