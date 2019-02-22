@@ -25,8 +25,6 @@ void Toplevel::draw(surface_t surface,
                     surface_t pick_surface,
                     Rect *clipper)
 {
-    //Draw only the frame on clipper
-    drawOffscreen(pick_surface, clipper);
 
     main_frame->draw(surface, pick_surface, clipper);
     panel_frame->draw(surface, pick_surface, clipper);
@@ -35,6 +33,9 @@ void Toplevel::draw(surface_t surface,
     {
         resize_button->draw(surface, pick_surface, clipper);
     }
+    
+    //Draw only the frame on clipper
+    drawOffscreen(pick_surface, clipper);
 }
 
 void Toplevel::geomnotify(Rect rect)
