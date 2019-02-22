@@ -30,9 +30,7 @@ namespace ei {
         Rect base = Rect(Point(screen_location.top_left.x(),screen_location.top_left.y()),Size((double) requested_size.width(),(double) requested_size.height()));
         Rect current = Rect(Point(base.top_left),Size(base.size));
 
-        surface_t pick = hw_surface_create(pick_surface, &base.size);
-        fill(pick,&pick_color,EI_TRUE); // warning: check alpha
-        ei_copy_surface(pick_surface,pick,&base.top_left,EI_FALSE);
+        drawOffscreen(pick_surface, clipper);
 
         linked_point_t points = rounded_frame(base,45, BT_FULL);
 
