@@ -244,6 +244,7 @@ public:
 private:
   const color_t *color;
   int *border_width;
+  int *corner_radius;
   relief_t *relief;
   const char **text;
   font_t *text_font;

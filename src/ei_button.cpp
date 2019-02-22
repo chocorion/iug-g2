@@ -26,22 +26,132 @@ namespace ei {
 		surface_t pick_surface,
 		Rect*     clipper)
 	{
+        //drawing shapes
 
         Rect base = Rect(Point(screen_location.top_left), Size(screen_location.size));
+        Rect top = Rect(Point(base.top_left),Size(base.size));
+        Rect flat = Rect(Point(screen_location.top_left.x() + *border_width, screen_location.top_left.y() + *border_width),
+        Rect bottom = Rect(Point(base.top_left),Size(base.size));
+                                 Size((double) (requested_size.width() - *border_width * 2),(double) (requested_size.height() - *border_width * 2)));
         Rect current = Rect(Point(base.top_left),Size(base.size));
+
+        int color_coef = 50;
+
+        color_t dark_color = {
+            (unsigned char)(color->red * color_coef / 100),
+            (unsigned char)(color->green * color_coef / 100),
+            (unsigned char)(color->blue * color_coef / 100),
+            255
+        };
+
+
+        color_t light_color = {
+            (unsigned char)(color->red * (color_coef + 100) + (color->red != 0) * (255 - color_coef / 100 * 255)),
+            (unsigned char)(color->green * (color_coef + 100)+ (color->green != 0) * (255 - color_coef / 100 * 255)),
+            (unsigned char)(color->blue * (color_coef + 100)+ (color->blue != 0) * (255 - color_coef / 100 * 255)),
+            255
+        };
 
         drawOffscreen(pick_surface, clipper);
 
-        linked_point_t points = rounded_frame(base,45, BT_FULL);
+        linked_point_t top_points = rounded_frame(top, (float)*corner_radius, BT_TOP);
+        linked_point_t bottom_points = rounded_frame(bottom, (float)*corner_radius, BT_BOTTOM);
+        linked_point_t flat_points = rounded_frame(flat, (float)*corner_radius, BT_FULL);
 
-       /* points.push_front(Point(current.top_left.x(),current.top_left.y()));
-        points.push_front(Point(current.top_left.x() + current.size.width(),current.top_left.y()));
-        points.push_front(Point(current.top_left.x() + current.size.width(),current.top_left.y() + current.size.height()));
-        points.push_front(Point(current.top_left.x(),current.top_left.y() + current.size.height()));
-        points.push_front(Point(current.top_left.x(),current.top_left.y()));*/
+        draw_polygon(surface, top_points, light_color, clipper);
+        draw_polygon(surface, bottom_points, dark_color, clipper);
+        draw_polygon(surface, flat_points, *color, clipper);
 
-        draw_polygon(surface, points, *color, clipper);
-	}
+        //end shapes
+
+        // FRAME IMAGE
+		if(img && parent) {
+			ei_copy_surface(surface, img, &base.top_left, EI_TRUE);
+		}
+
+		// FRAME TEXT
+		if(text) {
+			Size* text_size = new Size();
+
+			hw_text_compute_size(*this->text, *this->text_font, *text_size);
+			
+			Rect* position = new Rect(Point(),*text_size);
+		
+			anchor_t _anchor = *text_anchor;
+			Point anchor = Point(base.top_left.x()+base.size.width()/2,base.top_left.y()+base.size.height()/2);
+
+			switch (_anchor)
+			{
+				case ei_anc_none:   //Northwest by default
+				case ei_anc_northwest:
+					position->top_left = Point(
+						anchor.x() - base.size.width() / 2,
+						anchor.y() - base.size.height() / 2
+					);
+					break;
+				
+				case ei_anc_north:
+					position->top_left = Point(
+						anchor.x() - position->size.width()/2,
+						anchor.y() - base.size.height() / 2
+					);
+					break;
+				
+				case ei_anc_northeast:
+					position->top_left = Point(
+						anchor.x() + base.size.width() / 2 - position->size.width(),
+						anchor.y() - base.size.height() / 2
+					);
+					break;
+
+				case ei_anc_south:
+					position->top_left = Point(
+						anchor.x() - position->size.width()/2,
+						anchor.y() + base.size.height() / 2 - position->size.height()
+					);
+					break;
+
+				case ei_anc_southwest:
+					position->top_left = Point(
+						anchor.x(),
+						anchor.y() - position->size.height()
+					);
+					break;
+
+				case ei_anc_southeast:
+					position->top_left = Point(
+						anchor.x() - position->size.width(),
+						anchor.y() - position->size.height()
+					);
+					break;
+
+				case ei_anc_west:
+					position->top_left = Point(
+						anchor.x() - base.size.width() / 2,
+						anchor.y() - position->size.height()/2
+					);
+					break;
+
+				case ei_anc_east:
+					position->top_left = Point(
+						anchor.x() + base.size.width() / 2 - position->size.width(),
+						anchor.y() - position->size.height()
+					);
+					break;
+
+				case ei_anc_center:
+					position->top_left = Point(
+						anchor.x() - position->size.width()/2,
+						anchor.y() - position->size.height()/2
+					);
+					break;
+				default:
+					break;
+			}
+			
+			draw_text(surface, &position->top_left, *text, *text_font, text_color);
+		}
+    }
 
 	void Button::configure(Size *requested_size,
                    const color_t *color,
@@ -56,16 +166,77 @@ namespace ei {
                    Rect **img_rect,
                    anchor_t *img_anchor)
 	{
-		if(requested_size) this->requested_size = *requested_size;
-		if(color) this->color = color;
-		if(border_width) this->border_width = border_width;
-		if(relief) this->relief = relief;
-		if(text) this->text = text;
-		if(text_font) this->text_font = text_font;
-		if(text_color) this->text_color = text_color;
-		if(text_anchor) this->text_anchor = text_anchor;
-		if(img) this->img = img;
-		if(img_rect) this->img_rect = img_rect;
-		if(img_anchor) this->img_anchor = img_anchor;
+		if (color)
+			this->color = color;
+		else
+			this->color = &default_background_color;
+
+		if (border_width)
+			this->border_width = border_width;
+		else
+			this->border_width = 0;
+		
+		if (corner_radius)
+			this->corner_radius = corner_radius;
+		else
+			this->corner_radius = 0;
+		
+
+		if (relief)
+			this->relief = relief;
+		else
+		{
+			this->relief = new relief_t;
+			*this->relief = ei_relief_none;
+		}
+
+			if (!img)
+		{
+			if (text)
+				this->text = text;
+			if (text_color)
+				this->text_color = text_color;
+			else
+			{
+				this->text_color = new color_t;
+				*this->text_color = font_default_color;
+			}
+
+			if (text_anchor)
+				this->text_anchor = text_anchor;
+			else
+			{
+				this->text_anchor = new anchor_t;
+				*this->text_anchor = ei_anc_center;
+			}
+
+			if (text_font)
+				this->text_font = text_font;
+			else
+			{
+				font_t *font = new font_t();
+				*font = hw_text_font_create(default_font_filename, font_default_size);
+				this->text_font = font;
+			}
+		}
+	
+		if (requested_size)
+			this->requested_size = *requested_size;
+		else
+		{
+			Size *default_size = new Size();
+
+			if (this->text)
+			{
+				hw_text_compute_size(*this->text, this->text_font, *default_size);
+			}
+			else if (this->img)
+			{
+				*default_size = hw_surface_get_size(this->img);
+			}
+
+			this->requested_size = *default_size;
+		}
+		
 	}
 };
