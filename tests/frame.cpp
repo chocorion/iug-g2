@@ -23,17 +23,18 @@ int ei_main(int argc, char** argv)
     Size frame_size = Size(300, 200);
     int frame_x = 150;
     int frame_y = 200;
-    color_t frame_color = { 0xFF, 0x00, 0x00, 0xff };
+    color_t frame_color = { 0xaa, 0x00, 0x00, 0xff };
     relief_t frame_relief = ei_relief_raised;
     int frame_border_width = 6;
 
     Size button_size = Size(300, 200);
     int button_x = 150;
     int button_y = 200;
-    color_t button_color = { 0xFF, 0x00, 0x00, 0xff };
+    color_t button_color = { 0xaa, 0x00, 0x00, 0xff };
     relief_t button_relief = ei_relief_raised;
     int button_border_width = 6;
     int button_corner_radius = 45;
+    anchor_t button_anchor = ei_anc_southeast;
 
     /* Create the application and change the color of the background. */
     Application* app = new Application(&screen_size);
@@ -46,7 +47,7 @@ int ei_main(int argc, char** argv)
                      &frame_relief, NULL, NULL, NULL, NULL, NULL, NULL, NULL);*/
     Button* button = new Button(app->root_widget());
     button->configure(&button_size, &button_color, &button_border_width, &button_corner_radius,
-                     &button_relief, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+                     &button_relief,NULL,NULL, NULL, &button_anchor,NULL, NULL, NULL);
 
 
     Placer* p = new Placer();

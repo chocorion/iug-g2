@@ -26,24 +26,95 @@ namespace ei {
 		surface_t pick_surface,
 		Rect*     clipper)
 	{
+        //drawing shapes
 
         Rect base = Rect(Point(screen_location.top_left.x(),screen_location.top_left.y()),Size((double) requested_size.width(),(double) requested_size.height()));
+        Rect top = Rect(Point(base.top_left),Size(base.size));
+        Rect bottom = Rect(Point(base.top_left),Size(base.size));
+        Rect flat = Rect(Point(screen_location.top_left.x() + *border_width, screen_location.top_left.y() + *border_width),
+                                 Size((double) (requested_size.width() - *border_width * 2),(double) (requested_size.height() - *border_width * 2)));
         Rect current = Rect(Point(base.top_left),Size(base.size));
+
+        int color_coef = 70;
+
+        printf("rgb : %d, %d, %d\n", (unsigned char)(color->red * (color_coef + 100)),
+               (unsigned char)(color->green * (color_coef + 100)),
+               (unsigned char)(color->blue * (color_coef + 100)));
+
+        color_t dark_color = {
+            (unsigned char)(color->red * color_coef / 100),
+            (unsigned char)(color->green * color_coef / 100),
+            (unsigned char)(color->blue * color_coef / 100),
+            255
+        };
+
+
+        color_t light_color = {
+            (unsigned char)(color->red * (color_coef + 100)),
+            (unsigned char)(color->green * (color_coef + 100)),
+            (unsigned char)(color->blue * (color_coef + 100)),
+            255
+        };
 
         surface_t pick = hw_surface_create(pick_surface, &base.size);
         fill(pick,&pick_color,EI_TRUE); // warning: check alpha
         ei_copy_surface(pick_surface,pick,&base.top_left,EI_FALSE);
 
-        linked_point_t points = rounded_frame(base, (float)*corner_radius, BT_FULL);
+        linked_point_t top_points = rounded_frame(top, (float)*corner_radius, BT_TOP);
+        linked_point_t bottom_points = rounded_frame(bottom, (float)*corner_radius, BT_BOTTOM);
+        linked_point_t flat_points = rounded_frame(flat, (float)*corner_radius, BT_FULL);
 
-       /* points.push_front(Point(current.top_left.x(),current.top_left.y()));
-        points.push_front(Point(current.top_left.x() + current.size.width(),current.top_left.y()));
-        points.push_front(Point(current.top_left.x() + current.size.width(),current.top_left.y() + current.size.height()));
-        points.push_front(Point(current.top_left.x(),current.top_left.y() + current.size.height()));
-        points.push_front(Point(current.top_left.x(),current.top_left.y()));*/
+        draw_polygon(surface, top_points, light_color, clipper);
+        draw_polygon(surface, bottom_points, dark_color, clipper);
+        draw_polygon(surface, flat_points, *color, clipper);
 
-        draw_polygon(surface, points, *color, clipper);
-	}
+        //end shapes
+
+        //text
+
+        if(text_anchor){
+
+            Point anchor;
+
+            switch(*text_anchor){
+
+                case ei_anc_none :
+                    anchor = Point(base.top_left);
+                    break;
+                case ei_anc_center :
+                    anchor = Point(base.top_left);
+                    break;
+                case ei_anc_north :
+                    anchor = Point(base.top_left);
+                    break;
+                case ei_anc_northeast :
+                    anchor = Point(base.top_left);
+                    break;
+                case ei_anc_east :
+                    anchor = Point(base.top_left);
+                    break;
+                case ei_anc_southeast :
+                    anchor = Point(base.top_left);
+                    break;
+                case ei_anc_south :
+                    anchor = Point(base.top_left);
+                    break;
+                case ei_anc_southwest :
+                    anchor = Point(base.top_left);
+                    break;
+                case ei_anc_west :
+                    anchor = Point(base.top_left);
+                    break;
+                case ei_anc_northwest :
+                    anchor = Point(base.top_left);
+                    break;
+                default:
+                    break;
+            }
+
+            //draw_text(surface, &anchor, *text, *text_font, text_color);
+        }
+    }
 
 	void Button::configure(Size *requested_size,
                    const color_t *color,
