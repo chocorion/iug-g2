@@ -25,16 +25,40 @@ void Toplevel::draw(surface_t surface,
                     surface_t pick_surface,
                     Rect *clipper)
 {
+    //Draw only the frame on clipper
+    drawOffscreen(pick_surface, clipper);
+
     main_frame->draw(surface, pick_surface, clipper);
     panel_frame->draw(surface, pick_surface, clipper);
-    resize_button->draw(surface, pick_surface, clipper);
+
+    if (resizable && *resizable != ei_axis_none)
+    {
+        resize_button->draw(surface, pick_surface, clipper);
+    }
 }
 
 void Toplevel::geomnotify(Rect rect)
 {
     this->screen_location = rect;
 
-    
+    //ATTENTION VALEUR FIXE !!
+    Rect panel_location = Rect (
+        rect.top_left,
+        Size(
+            rect.size.width(),
+            35  //Faire un pourcentage de la taille si < 35 !
+        )
+    );
+    panel_frame->geomnotify(panel_location);
+
+    Rect button_location = Rect (
+        Point(
+            rect.top_left.x() + rect.size.width() - 30,
+            rect.top_left.y() + rect.size.height() - 30
+        ),
+        Size(30, 30)
+    );
+    resize_button->geomnotify(button_location);
 }
 
 void Toplevel::configure(Size *requested_size,
@@ -71,7 +95,7 @@ void Toplevel::configure(Size *requested_size,
         this->title = title;
     else
     {
-        this->title = new char *;
+        this->title = new const char*;
         *this->title = "Toplevel";
     }
 
@@ -111,7 +135,7 @@ void Toplevel::configure(Size *requested_size,
 
     // CREATE RESIZE BUTTON
 
-    if (resizable)
+    if (resizable && *resizable != ei_axis_none)
     {
         resize_button = new Button(this);
 

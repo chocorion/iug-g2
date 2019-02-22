@@ -36,8 +36,21 @@ add_executable(button button.cpp
 )
 target_link_libraries(button ei eibase ${Allegro_LIBRARIES} m)
 
-# add_executable(toplevel toplevel.cpp)
-# target_link_libraries(toplevel ei eibase ${Allegro_LIBRARIES} m)
+add_executable(toplevel toplevel.cpp
+    ../include/hw_interface.h
+    ../include/ei_event.h
+    ../include/keycodes.h
+    ../src/ei_placer.cpp 
+    ../include/ei_geometrymanager.h 
+    ../src/ei_widget.cpp 
+    ../src/ei_frame.cpp 
+    ../include/ei_widget.h
+    ../src/ei_application.cpp
+    ../src/ei_eventmanager.cpp
+    ../include/ei_eventmanager.h
+    ../src/ei_toplevel.cpp
+    ../src/ei_button.cpp)
+target_link_libraries(toplevel ei eibase ${Allegro_LIBRARIES} m)
 
 
 # Unit tests
