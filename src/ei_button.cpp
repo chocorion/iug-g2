@@ -113,15 +113,15 @@ namespace ei {
 
 				case ei_anc_southwest:
 					position->top_left = Point(
-						anchor.x(),
-						anchor.y() - position->size.height()
+						anchor.x() - base.size.width() / 2,
+						anchor.y() + base.size.height() / 2 - position->size.height()
 					);
 					break;
 
 				case ei_anc_southeast:
 					position->top_left = Point(
-						anchor.x() - position->size.width(),
-						anchor.y() - position->size.height()
+						anchor.x() + base.size.width() / 2 - position->size.width(),
+						anchor.y() + base.size.height() / 2 - position->size.height()
 					);
 					break;
 
