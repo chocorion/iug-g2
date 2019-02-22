@@ -49,7 +49,8 @@ set(include_files
         include/ei_widget.h
         include/ei_draw.h
         include/ei_event.h
-        include/ei_types.h
+		include/ei_types.h
+		include/ei_tools.h
         include/hw_interface.h
 	)
 add_custom_target(headers SOURCES ${include_files})
@@ -61,7 +62,8 @@ set(EI_SRC
         src/ei_button.cpp
         src/ei_frame.cpp
         src/ei_placer.cpp
-        src/ei_widget.cpp
+		src/ei_widget.cpp
+		src/ei_tools.cpp
         )
 add_library(ei ${EI_SRC})
 

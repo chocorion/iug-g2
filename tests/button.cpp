@@ -80,8 +80,7 @@ int ei_main(int argc, char** argv)
     /* Create and configure the button */
     Button* button = new Button(app->root_widget());
     button->configure (&button_size, &button_color,
-                       &button_border_width, &button_corner_radius, &button_relief, 
-                       &button_title, NULL, &button_text_color, NULL,
+                       &button_border_width, &button_corner_radius, &button_relief, &button_title, NULL, &button_text_color, NULL,
                        NULL, NULL, NULL);
     /* Place the button on screen. */
     Placer* p = new Placer();
