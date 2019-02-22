@@ -110,7 +110,6 @@ void Application::run()
 
         renderDisplay();
 
-        cout << "Waiting for event..." << endl;
         event = hw_event_wait_next();
 
         //Search the good widget
@@ -119,16 +118,12 @@ void Application::run()
             if (isMouseEvent == MOUSE)
             {
                 mouseCoord = ((MouseEvent*)event)->where;
-                cout << "\tMouse event in " << mouseCoord.x() << " " << mouseCoord.y() << endl;
             }
             else if (isMouseEvent == TOUCH)
             {
                 mouseCoord = ((TouchEvent*)event)->where;
-                cout << "\tTouch event in " << mouseCoord.x() << " " << mouseCoord.y() << endl;
             }
             concerned_widget = widget_pick(mouseCoord);
-            cout << "widget id under the mouse --> " << concerned_widget->getPick_id() << endl;
-            //Faire une rechercher récursive à partir de la racine dans les widgets pour trouver à qui correspond la couleure prise dans l'offscreen picking
         }
 
         isEventHandled = EventManager::getInstance().execute(event, "all");
@@ -147,7 +142,6 @@ void Application::invalidate_rect(const Rect &rect)
 
 void Application::quit_request()
 {
-    std::cout << "QUIT REQUEST CATCHED !" << std::endl;
     continue_running = false;
 }
 
