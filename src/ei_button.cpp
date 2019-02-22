@@ -17,6 +17,7 @@ namespace ei {
 	{
 		text = NULL;
 		img = NULL;
+		corner_radius = NULL;
 	}
 
 	Button::~Button()
