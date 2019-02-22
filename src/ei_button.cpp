@@ -72,85 +72,14 @@ namespace ei {
 
 		// FRAME TEXT
 		if(text) {
+
 			Size* text_size = new Size();
+			hw_text_compute_size(*text, *text_font, *text_size);
+			Rect* textBox = new Rect(Point(),*text_size);
 
-			hw_text_compute_size(*this->text, *this->text_font, *text_size);
-			
-			Rect* position = new Rect(Point(),*text_size);
-		
-			anchor_t _anchor = *text_anchor;
-			Point anchor = Point(base.top_left.x()+base.size.width()/2,base.top_left.y()+base.size.height()/2);
+			Point* where = Tools::findAnchor(&base, textBox, text_anchor);
 
-			switch (_anchor)
-			{
-				case ei_anc_none:   //Northwest by default
-				case ei_anc_northwest:
-					position->top_left = Point(
-						anchor.x() - base.size.width() / 2,
-						anchor.y() - base.size.height() / 2
-					);
-					break;
-				
-				case ei_anc_north:
-					position->top_left = Point(
-						anchor.x() - position->size.width()/2,
-						anchor.y() - base.size.height() / 2
-					);
-					break;
-				
-				case ei_anc_northeast:
-					position->top_left = Point(
-						anchor.x() + base.size.width() / 2 - position->size.width(),
-						anchor.y() - base.size.height() / 2
-					);
-					break;
-
-				case ei_anc_south:
-					position->top_left = Point(
-						anchor.x() - position->size.width()/2,
-						anchor.y() + base.size.height() / 2 - position->size.height()
-					);
-					break;
-
-				case ei_anc_southwest:
-					position->top_left = Point(
-						anchor.x(),
-						anchor.y() - position->size.height()
-					);
-					break;
-
-				case ei_anc_southeast:
-					position->top_left = Point(
-						anchor.x() - position->size.width(),
-						anchor.y() - position->size.height()
-					);
-					break;
-
-				case ei_anc_west:
-					position->top_left = Point(
-						anchor.x() - base.size.width() / 2,
-						anchor.y() - position->size.height()/2
-					);
-					break;
-
-				case ei_anc_east:
-					position->top_left = Point(
-						anchor.x() + base.size.width() / 2 - position->size.width(),
-						anchor.y() - position->size.height()
-					);
-					break;
-
-				case ei_anc_center:
-					position->top_left = Point(
-						anchor.x() - position->size.width()/2,
-						anchor.y() - position->size.height()/2
-					);
-					break;
-				default:
-					break;
-			}
-			
-			draw_text(surface, &position->top_left, *text, *text_font, text_color);
+			draw_text(surface, where, *text, *text_font, text_color);
 		}
     }
 

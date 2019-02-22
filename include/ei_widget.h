@@ -12,6 +12,7 @@
 
 #include "ei_draw.h"
 #include "ei_types.h"
+#include "ei_tools.h"
 
 #include <functional>
 
