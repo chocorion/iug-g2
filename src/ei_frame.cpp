@@ -43,76 +43,14 @@ void Frame::draw(surface_t surface,
 	// FRAME TEXT
 	if (text && text_font)
 	{
-		Size *text_size = new Size();
-		hw_text_compute_size(*this->text, this->text_font, *text_size);
+		Size* text_size = new Size();
+		hw_text_compute_size(*text, *text_font, *text_size);
+		Rect* textBox = new Rect(Point(),*text_size);
 
-		Rect *position = new Rect(Point(), *text_size);
+		Point* where = Tools::findAnchor(&base, textBox, text_anchor);
 
-		Rect object = *position;
-		anchor_t _anchor = ei_anc_center;
-		Point anchor = Point(base.top_left.x() + base.size.width() / 2, base.top_left.y() + base.size.height() / 2);
-
-		switch (_anchor)
-		{
-		case ei_anc_none: //Northwest by default
-		case ei_anc_northwest:
-			object.top_left = Point(
-				anchor.x(),
-				anchor.y());
-			break;
-
-		case ei_anc_north:
-			object.top_left = Point(
-				anchor.x() - object.size.width() / 2,
-				anchor.y());
-			break;
-
-		case ei_anc_northeast:
-			object.top_left = Point(
-				anchor.x() - object.size.width(),
-				anchor.y());
-			break;
-
-		case ei_anc_south:
-			object.top_left = Point(
-				anchor.x() - object.size.width() / 2,
-				anchor.y() - object.size.height());
-			break;
-
-		case ei_anc_southwest:
-			object.top_left = Point(
-				anchor.x(),
-				anchor.y() - object.size.height());
-			break;
-
-		case ei_anc_southeast:
-			object.top_left = Point(
-				anchor.x() - object.size.width(),
-				anchor.y() - object.size.height());
-			break;
-
-		case ei_anc_west:
-			object.top_left = Point(
-				anchor.x(),
-				anchor.y() - object.size.height() / 2);
-			break;
-
-		case ei_anc_east:
-			object.top_left = Point(
-				anchor.x() - object.size.width(),
-				anchor.y() - object.size.height());
-			break;
-
-		case ei_anc_center:
-			object.top_left = Point(
-				anchor.x() - object.size.width() / 2,
-				anchor.y() - object.size.height() / 2);
-			break;
-		default:
-			break;
-		}
-
-		draw_text(surface, &(position->top_left), *text, text_font, text_color);
+		draw_text(surface, where, *text, *text_font, text_color);
+		
 	}
 
 	// FRAME BORDER

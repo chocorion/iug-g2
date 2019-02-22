@@ -23,7 +23,7 @@ int ei_main(int argc, char** argv)
     Size frame_size = Size(300, 200);
     int frame_x = 150;
     int frame_y = 200;
-    color_t frame_color = { 0xFF, 0x00, 0x00, 0xff };
+    color_t frame_color = { 0xaa, 0x00, 0x00, 0xff };
     relief_t frame_relief = ei_relief_raised;
     int frame_border_width = 6;
 

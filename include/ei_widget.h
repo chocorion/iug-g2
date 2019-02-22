@@ -12,6 +12,7 @@
 
 #include "ei_draw.h"
 #include "ei_types.h"
+#include "ei_tools.h"
 
 #include <functional>
 
@@ -244,6 +245,7 @@ public:
 private:
   const color_t *color;
   int *border_width;
+  int *corner_radius;
   relief_t *relief;
   const char **text;
   font_t *text_font;
