@@ -51,14 +51,17 @@ void Toplevel::geomnotify(Rect rect)
     );
     panel_frame->geomnotify(panel_location);
 
-    Rect button_location = Rect (
-        Point(
-            rect.top_left.x() + rect.size.width() - 30,
-            rect.top_left.y() + rect.size.height() - 30
-        ),
-        Size(30, 30)
-    );
-    resize_button->geomnotify(button_location);
+    if (resizable && *resizable != ei_axis_none)
+    {
+        Rect button_location = Rect (
+            Point(
+                rect.top_left.x() + rect.size.width() - 30,
+                rect.top_left.y() + rect.size.height() - 30
+            ),
+            Size(30, 30)
+        );
+        resize_button->geomnotify(button_location);
+    }
 }
 
 void Toplevel::configure(Size *requested_size,
@@ -138,8 +141,7 @@ void Toplevel::configure(Size *requested_size,
     if (resizable && *resizable != ei_axis_none)
     {
         resize_button = new Button(this);
-
-        resize_button->configure(NULL, &default_background_color, NULL, new int(0), none, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+        resize_button->configure(NULL, &default_background_color, new int (0), NULL, none, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
     }
     else
     {

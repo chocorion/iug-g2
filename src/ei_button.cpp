@@ -15,7 +15,8 @@ namespace ei {
 
 	Button::Button(Widget* parent) : Widget("Button", parent)
 	{
-		
+		text = NULL;
+		img = NULL;
 	}
 
 	Button::~Button()
@@ -174,12 +175,12 @@ namespace ei {
 		if (border_width)
 			this->border_width = border_width;
 		else
-			this->border_width = 0;
+			this->border_width = new int(0);
 		
 		if (corner_radius)
 			this->corner_radius = corner_radius;
 		else
-			this->corner_radius = 0;
+			this->corner_radius = new int(0);
 		
 
 		if (relief)
