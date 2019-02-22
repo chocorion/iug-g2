@@ -103,9 +103,11 @@ void Application::renderDisplay()
 {
     renderDisplayRec(root);
 
-    linked_rect_t *rects = new linked_rect_t();
-    rects->push_back(hw_surface_get_rect(root_surface()));
-    hw_surface_update_rects(*rects);
+    linked_rect_t rects = linked_rect_t();
+    rects.push_back(hw_surface_get_rect(root_surface()));
+    hw_surface_update_rects(rects);
+
+
 }
 
 void Application::run()
@@ -146,6 +148,9 @@ void Application::run()
         {
             isEventHandled = EventManager::getInstance().execute(event, concerned_widget);
         }
+
+        //Something take a lot of memory at each handled event...
+        delete event;
     }
 }
 
