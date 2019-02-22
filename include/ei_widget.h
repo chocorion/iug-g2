@@ -306,7 +306,7 @@ private:
 
   Frame* main_frame;
   Frame* panel_frame;
-  Button* resize_button;
+  Frame* resize_button;
 };
 
 } // namespace ei

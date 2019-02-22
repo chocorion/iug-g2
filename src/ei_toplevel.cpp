@@ -25,8 +25,6 @@ void Toplevel::draw(surface_t surface,
                     surface_t pick_surface,
                     Rect *clipper)
 {
-    //Draw only the frame on clipper
-    drawOffscreen(pick_surface, clipper);
 
     main_frame->draw(surface, pick_surface, clipper);
     panel_frame->draw(surface, pick_surface, clipper);
@@ -35,6 +33,9 @@ void Toplevel::draw(surface_t surface,
     {
         resize_button->draw(surface, pick_surface, clipper);
     }
+    
+    //Draw only the frame on clipper
+    drawOffscreen(pick_surface, clipper);
 }
 
 void Toplevel::geomnotify(Rect rect)
@@ -130,7 +131,7 @@ void Toplevel::configure(Size *requested_size,
 
     // CREATE MAIN TOPLEVEL FRAME
 
-    main_frame = new Frame(this);
+    main_frame = new Frame(nullptr);
 
     relief_t *none = new relief_t;
     *none = ei_relief_none;
@@ -140,8 +141,8 @@ void Toplevel::configure(Size *requested_size,
 
     if (resizable && *resizable != ei_axis_none)
     {
-        resize_button = new Button(this);
-        resize_button->configure(NULL, &default_background_color, new int (0), NULL, none, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+        resize_button = new Frame(this);
+        resize_button->configure(NULL, &default_background_color, new int(default_border_width), none, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
     }
     else
     {
@@ -150,7 +151,7 @@ void Toplevel::configure(Size *requested_size,
 
     // CREATE PANEL FRAME
 
-    panel_frame = new Frame(this);
+    panel_frame = new Frame(nullptr);
 
     // Use default font because no other parameter
     font_t *font = new font_t();
