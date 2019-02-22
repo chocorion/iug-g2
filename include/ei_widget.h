@@ -291,6 +291,8 @@ public:
                  axis_set_t *resizable,
                  Size *min_size);
 
+   void geomnotify(Rect rect);
+
 private:
   color_t *color;
   int *border_width;
@@ -298,6 +300,10 @@ private:
   bool_t *closable;
   axis_set_t *resizable;
   Size *min_size;
+
+  Frame* main_frame;
+  Frame* panel_frame;
+  Button* resize_button;
 };
 
 } // namespace ei
