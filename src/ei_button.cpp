@@ -27,7 +27,7 @@ namespace ei {
 		Rect*     clipper)
 	{
 
-        Rect base = Rect(Point(screen_location.top_left.x(),screen_location.top_left.y()), screen_location.size);
+        Rect base = Rect(Point(screen_location.top_left), Size(screen_location.size));
         Rect current = Rect(Point(base.top_left),Size(base.size));
 
         drawOffscreen(pick_surface, clipper);
