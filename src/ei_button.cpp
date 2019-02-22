@@ -30,12 +30,11 @@ namespace ei {
 	{
         //drawing shapes
 
-        Rect base = Rect(Point(screen_location.top_left), Size(screen_location.size));
-        Rect top = Rect(Point(base.top_left),Size(base.size));
+        Rect top = Rect(screen_location);
         Rect flat = Rect(Point(screen_location.top_left.x() + *border_width, screen_location.top_left.y() + *border_width),
-                                 Size((double) (requested_size.width() - *border_width * 2),(double) (requested_size.height() - *border_width * 2)));
-        Rect bottom = Rect(Point(base.top_left),Size(base.size));
-        Rect current = Rect(Point(base.top_left),Size(base.size));
+                                 Size((double) (screen_location.size.width() - *border_width * 2),(double) (screen_location.size.height() - *border_width * 2)));
+        Rect bottom = Rect(screen_location);
+        Rect current = Rect(screen_location);
 
         int color_coef = 50;
 
@@ -68,7 +67,7 @@ namespace ei {
 
         // FRAME IMAGE
 		if(img && parent) {
-			ei_copy_surface(surface, img, &base.top_left, EI_TRUE);
+			ei_copy_surface(surface, img, &screen_location.top_left, EI_TRUE);
 		}
 
 		// FRAME TEXT
@@ -78,7 +77,7 @@ namespace ei {
 			hw_text_compute_size(*text, *text_font, text_size);
 			Rect textBox = Rect(Point(),text_size);
 
-			Point* where = Tools::findAnchor(&base, &textBox, text_anchor);
+			Point* where = Tools::findAnchor(&screen_location, &textBox, text_anchor);
 
 			draw_text(surface, where, *text, *text_font, text_color);
 			delete where;
