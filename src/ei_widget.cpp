@@ -95,7 +95,7 @@ namespace ei {
 		surface_t pick = hw_surface_create(pick_surface, &where.size);
 		fill(pick, &pick_color, EI_FALSE);
 		ei_copy_surface(pick_surface, pick, &where.top_left, EI_FALSE);
-
+		hw_surface_free(pick);
 	}
 
 	Rect Widget::limitRectToClipper(Rect *clipper){
