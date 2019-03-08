@@ -41,7 +41,7 @@ void Toplevel::draw(surface_t surface,
 void Toplevel::geomnotify(Rect rect)
 {
     this->screen_location = rect;
-
+    main_frame->geomnotify(rect);
     //ATTENTION VALEUR FIXE !!
     Rect panel_location = Rect (
         rect.top_left,
@@ -135,7 +135,9 @@ void Toplevel::configure(Size *requested_size,
 
     relief_t *none = new relief_t;
     *none = ei_relief_none;
-    main_frame->configure(NULL, &default_background_color, new int(default_border_width), none, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+    //Use top-level color for the background
+    main_frame->configure(NULL, color, new int(default_border_width), none, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
     // CREATE RESIZE BUTTON
 
