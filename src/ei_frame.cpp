@@ -52,7 +52,7 @@ void Frame::draw(surface_t surface,
 		hw_text_compute_size(*text, *text_font, text_size);
 		Rect textBox = Rect(Point(), text_size);
 
-		Point* where = Tools::findAnchor(&base, &textBox, text_anchor);
+		Point* where = Tools::findAnchor(&screen_location, &textBox, text_anchor);
 		draw_text(surface, where, *text, *text_font, text_color);
 		delete where;
 		
@@ -97,7 +97,7 @@ void Frame::configure(Size *requested_size,
 					  const color_t *color,
 					  int *border_width,
 					  relief_t *relief,
-					  char **text,
+					  const char **text,
 					  font_t *text_font,
 					  color_t *text_color,
 					  anchor_t *text_anchor,

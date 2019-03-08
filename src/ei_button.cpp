@@ -76,12 +76,12 @@ namespace ei {
 
         //end shapes
 
-        // FRAME IMAGE
+        //  IMAGE
 		if(img && parent) {
 			ei_copy_surface(surface, img, &screen_location.top_left, EI_TRUE);
 		}
 
-		// FRAME TEXT
+		// TEXT
 		if(text) {
 
 			Size text_size = Size();

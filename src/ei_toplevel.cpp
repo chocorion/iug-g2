@@ -159,7 +159,8 @@ void Toplevel::configure(Size *requested_size,
 
     anchor_t *topleft = new anchor_t;
     *topleft = ei_anc_northwest;
-
-    panel_frame->configure(NULL, &default_background_color, new int(default_border_width), none, NULL, font, &default_font_color, topleft, NULL, NULL, NULL);
+    Size *panel_frame_size = new Size();
+    panel_frame->configure(panel_frame_size, &default_background_color, new int(default_border_width), none, 
+        this->title, font, &default_font_color, NULL, NULL, NULL, NULL);
 }
 } // namespace ei
