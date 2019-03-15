@@ -46,6 +46,7 @@ Application::Application(Size *main_window_size)
     root->geomnotify(*(new Rect(Point(),*main_window_size)));
 
     continue_running = true;
+    EventManager::getInstance().bind(ei_ev_mouse_buttondown, this, "", callback_press, NULL);
 }
 
 Application::~Application()

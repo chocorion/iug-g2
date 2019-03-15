@@ -307,6 +307,7 @@ private:
   Frame* main_frame;
   Frame* panel_frame;
   Frame* resize_button;
+      bool_t callback_pressed(Widget* widget, Event* event, void* user_param);
 };
 
 } // namespace ei

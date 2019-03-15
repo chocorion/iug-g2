@@ -164,4 +164,29 @@ void Toplevel::configure(Size *requested_size,
 
     panel_frame->configure(NULL, &default_background_color, new int(default_border_width), none, NULL, font, &default_font_color, topleft, NULL, NULL, NULL);
 }
+
+bool_t Toplevel::callback_move(Widget* widget, Event* event, void* user_param)
+{
+    MouseEvent* e = static_cast<MouseEvent*>(event);
+    Rect *panel  = panel_frame.getScreenLocation();
+    Rect *button = resize_button.getScreenLocation();
+
+    //Regarder ou qu'il est le clic !
+    if (e->where.x )
+    return EI_TRUE;
+}
+
+bool_t callback_pressed(Widget* widget, Event* event, void* user_param)
+{
+    MouseEvent* e = static_cast<MouseEvent*>(event);
+    Point where = e.where;
+    return EI_TRUE;
+}
+
+bool_t callback_panel_release(Widget* widget, Event* event, void* user_param)
+{
+    MouseEvent* e = static_cast<MouseEvent*>(event);
+    std::cout << "Click " << e->button_number << std::endl;
+    return EI_TRUE;
+}
 } // namespace ei
