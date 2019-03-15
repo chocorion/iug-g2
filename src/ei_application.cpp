@@ -124,9 +124,14 @@ void Application::run()
         concerned_widget = nullptr;
         isEventHandled = false;
 
+        cout << "Rendering..." << endl;
         renderDisplay();
+        cout << "Ending rendering !" << endl;
 
+
+        cout << "Waiting event..." << endl;
         event = hw_event_wait_next();
+        cout << "Event !" << endl;
 
         //Search the good widget
         if ((isMouseEvent = need_picking(event)) != OTHER)
@@ -143,12 +148,16 @@ void Application::run()
             concerned_widget = widget_pick(mouseCoord);
         }
 
+        cout << "Executing for tag all..." << endl;
         //Do handler with tag "all" in priority
         isEventHandled = EventManager::getInstance().execute(event, "all");
+        cout << "End !" << endl;
 
         if (!isEventHandled && concerned_widget)
         {
+            cout << "Executing for a specific widget..." << endl;
             isEventHandled = EventManager::getInstance().execute(event, concerned_widget);
+            cout << "End !" << endl;
         }
 
         //Something take a lot of memory at each handled event...
