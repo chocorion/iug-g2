@@ -140,10 +140,11 @@ public:
     Size size;       ///< Size of the rectangle.
     Rect(Point top_left = Point(), Size size = Size())
         : top_left(top_left), size(size) {}
-    isIn(Point p) {
+    
+    bool hasIn(Point p) const {
         return !(
-            (p.x < top_left.x || p.x > top_left.x + size.width) ||
-            (p.y < top_left.y || p.y > top_left.y + size.height)
+            (p.x() < top_left.x() || p.x() > top_left.x() + size.width()) ||
+            (p.y() < top_left.y() || p.y() > top_left.y() + size.height())
         );
     }
 };

@@ -8,6 +8,8 @@
 
 #include "ei_widget.h"
 #include <iostream>
+#include "ei_eventmanager.h"
+#include "ei_toplevel.h"
 
 using namespace std;
 
@@ -15,6 +17,7 @@ namespace ei
 {
 Toplevel::Toplevel(Widget *parent) : Widget("Toplevel", parent)
 {
+    EventManager::getInstance().bind(ei_ev_mouse_buttondown, this, "", callback_pressed, NULL);
 }
 
 Toplevel::~Toplevel()
@@ -42,12 +45,14 @@ void Toplevel::geomnotify(Rect rect)
 {
     this->screen_location = rect;
     main_frame->geomnotify(rect);
-    //ATTENTION VALEUR FIXE !!
+
+    
+    //TODO use percent not pixel
     Rect panel_location = Rect (
         rect.top_left,
         Size(
             rect.size.width(),
-            35  //Faire un pourcentage de la taille si < 35 !
+            35  
         )
     );
     panel_frame->geomnotify(panel_location);
@@ -73,27 +78,9 @@ void Toplevel::configure(Size *requested_size,
                          axis_set_t *resizable,
                          Size *min_size)
 {
-    if (requested_size)
-        this->requested_size = *requested_size;
-    else
-    {
-        this->requested_size = *(new Size(320, 240));
-    }
-
-    if (color)
-        this->color = color;
-    else
-    {
-        this->color = new color_t;
-        *this->color = default_background_color;
-    }
-
-    if (border_width)
-        this->border_width = border_width;
-    else
-    {
-        this->border_width = new int(4);
-    }
+    this->requested_size = (requested_size)? *requested_size : *(new Size(320, 240));
+    this->color = (color)? color : new color_t(default_background_color);
+    this->border_width = (border_width)? border_width : new int(4);
 
     if (title)
         this->title = title;
@@ -166,28 +153,47 @@ void Toplevel::configure(Size *requested_size,
         this->title, font, &default_font_color, NULL, NULL, NULL, NULL);
 }
 
-bool_t Toplevel::callback_move(Widget* widget, Event* event, void* user_param)
+const Rect* Toplevel::getPanelLocation() const
 {
-    MouseEvent* e = static_cast<MouseEvent*>(event);
-    Rect *panel  = panel_frame.getScreenLocation();
-    Rect *button = resize_button.getScreenLocation();
+    return panel_frame->getScreenLocation();
+}
 
-    //Regarder ou qu'il est le clic !
-    if (e->where.x )
-    return EI_TRUE;
+const Rect* Toplevel::getResizeButtonLocation() const
+{
+    return resize_button->getScreenLocation();
 }
 
 bool_t callback_pressed(Widget* widget, Event* event, void* user_param)
 {
+    Toplevel* toplevel = static_cast<Toplevel*>(widget);
     MouseEvent* e = static_cast<MouseEvent*>(event);
-    Point where = e.where;
+    Point where = e->where;
+
+    Rect const *panelRect = toplevel->getPanelLocation();
+
+    if (panelRect->hasIn(where)) {
+        cout << "Click on the panel !" << endl;
+    }
+    //Penser à retourner EI_FALSE si on ne clique pas sur un des deux boutons
     return EI_TRUE;
 }
 
-bool_t callback_panel_release(Widget* widget, Event* event, void* user_param)
-{
-    MouseEvent* e = static_cast<MouseEvent*>(event);
-    std::cout << "Click " << e->button_number << std::endl;
-    return EI_TRUE;
-}
+
+// bool_t Toplevel::callback_move(Widget* widget, Event* event, void* user_param)
+// {
+//     MouseEvent* e = static_cast<MouseEvent*>(event);
+//     Rect *panel  = panel_frame.getScreenLocation();
+//     Rect *button = resize_button.getScreenLocation();
+
+//     //Regarder ou qu'il est le clic !
+//     if (e->where.x )
+//     return EI_TRUE;
+// }
+
+// bool_t callback_panel_release(Widget* widget, Event* event, void* user_param)
+// {
+//     MouseEvent* e = static_cast<MouseEvent*>(event);
+//     std::cout << "Click " << e->button_number << std::endl;
+//     return EI_TRUE;
+// }
 } // namespace ei
