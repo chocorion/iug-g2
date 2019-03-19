@@ -81,37 +81,11 @@ void Toplevel::configure(Size *requested_size,
     this->requested_size = (requested_size)? *requested_size : *(new Size(320, 240));
     this->color = (color)? color : new color_t(default_background_color);
     this->border_width = (border_width)? border_width : new int(4);
+    this->title = (title)? title : new const char*("Toplevel");
+    this->closable = (closable)? closable : new bool_t(EI_TRUE);
+    this->resizable = (resizable)? resizable : new axis_set_t(ei_axis_both);
+    this->min_size = (min_size)? min_size : new Size(160, 120);
 
-    if (title)
-        this->title = title;
-    else
-    {
-        this->title = new const char*;
-        *this->title = "Toplevel";
-    }
-
-    if (closable)
-        this->closable = closable;
-    else
-    {
-        this->closable = new bool_t;
-        *this->closable = EI_TRUE;
-    }
-
-    if (resizable)
-        this->resizable = resizable;
-    else
-    {
-        this->resizable = new axis_set_t;
-        *this->resizable = ei_axis_both;
-    }
-
-    if (min_size)
-        this->min_size = min_size;
-    else
-    {
-        this->min_size = new Size(160, 120);
-    }
 
     int default_border_width = 2;
     color_t default_font_color = {0x00, 0xFF, 0x00, 0xff};
