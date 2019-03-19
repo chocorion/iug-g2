@@ -76,20 +76,8 @@ namespace ei {
 
 	void Widget::drawOffscreen(surface_t pick_surface, Rect *clipper)
 	{
-		Rect where;
 		//If clipper is null, we use screen location
-		if (!clipper)
-		{
-			where = screen_location;
-		}
-		else
-		{
-		
-			where = limitRectToClipper(clipper);
-
-			//printf("box : %d, %d ; %f, %f\n", where.top_left.x(), where.top_left.y(),
-			//		where.size.width(), where.size.height());
-		}
+		Rect where = (clipper)? limitRectToClipper(clipper) : screen_location;
 
 		//Vérifier que le clipper est bien géré dans le cas ou il n'est pas nul !
 		surface_t pick = hw_surface_create(pick_surface, &where.size);

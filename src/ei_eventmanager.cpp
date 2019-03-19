@@ -1,5 +1,10 @@
 #include "ei_eventmanager.h"
 #include "ei_event.h"
+#include <iostream>
+
+using namespace std;
+
+
 namespace ei
 {
     
@@ -130,6 +135,11 @@ void BoundEventBank::remove(ei_eventtype_t event, Widget* widget,tag_t tag,
 
 bool BoundEventBank::execute(Event* event, Widget* widget, tag_t tag)
 {
+    cout << "BoundEventBank execute called !" << endl;
+    cout << "\tWidget: " << widget << endl;
+    cout << "\tTag:    "<< tag << endl << endl;
+
+    
     std::list<BoundEvent*>* l = get(event->type);
 
     if (!l)
