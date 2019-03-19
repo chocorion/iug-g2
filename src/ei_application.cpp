@@ -119,14 +119,17 @@ void Application::run()
     Point mouseCoord;
     Widget *concerned_widget;
     bool isEventHandled = false;
+    
+    cout << "ONLY one display for testing" << endl;
 
+    renderDisplay();
     while (continue_running)
     {
         concerned_widget = nullptr;
         isEventHandled = false;
 
-        renderDisplay();
-        
+        //renderDisplay();
+
         event = hw_event_wait_next();
 
         //Search the good widget

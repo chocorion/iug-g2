@@ -79,12 +79,12 @@ void Toplevel::configure(Size *requested_size,
                          Size *min_size)
 {
     this->requested_size = (requested_size)? *requested_size : *(new Size(320, 240));
-    this->color = (color)? color : new color_t(default_background_color);
-    this->border_width = (border_width)? border_width : new int(4);
-    this->title = (title)? title : new const char*("Toplevel");
-    this->closable = (closable)? closable : new bool_t(EI_TRUE);
-    this->resizable = (resizable)? resizable : new axis_set_t(ei_axis_both);
-    this->min_size = (min_size)? min_size : new Size(160, 120);
+    this->color          = (color)?          color           : new color_t(default_background_color);
+    this->border_width   = (border_width)?   border_width    : new int(4);
+    this->title          = (title)?          title           : new const char*("Toplevel");
+    this->closable       = (closable)?       closable        : new bool_t(EI_TRUE);
+    this->resizable      = (resizable)?      resizable       : new axis_set_t(ei_axis_both);
+    this->min_size       = (min_size)?       min_size        : new Size(160, 120);
 
 
     int default_border_width = 2;
@@ -93,10 +93,7 @@ void Toplevel::configure(Size *requested_size,
     // CREATE MAIN TOPLEVEL FRAME
 
     main_frame = new Frame(nullptr);
-
-    relief_t *none = new relief_t;
-    *none = ei_relief_none;
-
+    relief_t *none = new relief_t(ei_relief_none);
     //Use top-level color for the background
     main_frame->configure(NULL, color, new int(default_border_width), none, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
@@ -143,10 +140,25 @@ bool_t callback_pressed(Widget* widget, Event* event, void* user_param)
     MouseEvent* e = static_cast<MouseEvent*>(event);
     Point where = e->where;
 
-    Rect const *panelRect = toplevel->getPanelLocation();
+    Rect const *panelRect        = toplevel->getPanelLocation();
+    Rect const *resizeButtonRect = toplevel->getResizeButtonLocation();
 
-    if (panelRect->hasIn(where)) {
+    cout << "Clic in " << where.x() << " " << where.y() << endl;
+    cout << "Panel in " << panelRect->top_left.x() << " " << panelRect->top_left.y() << " ";
+    cout << panelRect->size.width() << " " << panelRect->size.height() << endl;
+
+    cout << "Button in " << resizeButtonRect->top_left.x() << " " << resizeButtonRect->top_left.y() << " ";
+    cout << resizeButtonRect->size.width() << " " << resizeButtonRect->size.height() << endl;
+    
+    
+    
+    if (panelRect->hasIn(where))
+    {
         cout << "Click on the panel !" << endl;
+    } else if (resizeButtonRect->hasIn(where)) {
+        cout << "Click on the button !" << endl;
+    } else {
+        return EI_FALSE;
     }
     //Penser à retourner EI_FALSE si on ne clique pas sur un des deux boutons
     return EI_TRUE;
