@@ -256,6 +256,7 @@ private:
   Rect **img_rect;
   anchor_t *img_anchor;
 };
+
 } // namespace ei
 
 #endif

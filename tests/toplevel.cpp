@@ -6,6 +6,7 @@
 #include "hw_interface.h"
 #include "ei_widget.h"
 #include "ei_geometrymanager.h"
+#include "ei_toplevel.h"
 
 using namespace ei;
 

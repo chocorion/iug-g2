@@ -66,6 +66,6 @@ class Toplevel : public Widget
     Frame *resize_button;
     
 };
-}
 
+}
 #endif
