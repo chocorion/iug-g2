@@ -101,7 +101,7 @@ void Toplevel::configure(Size *requested_size,
 
     if (resizable && *resizable != ei_axis_none)
     {
-        resize_button = new Frame(this);
+        resize_button = new Frame(nullptr);
         resize_button->configure(NULL, &default_background_color, new int(default_border_width), none, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
     }
     else
