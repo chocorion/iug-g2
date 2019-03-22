@@ -16,6 +16,9 @@ using namespace std;
 
 namespace ei
 {
+
+typedef std::function<bool_t(Widget *, Event *, void *)> ei_callback_t;
+
 Toplevel::Toplevel(Widget *parent) : Widget("Toplevel", parent)
 {
     EventManager::getInstance().bind(ei_ev_mouse_buttondown, this, "", this->callback_pressed, nullptr);
@@ -135,6 +138,12 @@ const Rect* Toplevel::getResizeButtonLocation() const
     return resize_button->getScreenLocation();
 }
 
+typedef struct {
+    ei_eventtype_t event;
+    Widget* widget;
+    ei_callback_t callback;
+} param_t;
+
 bool_t Toplevel::callback_pressed(Widget* widget, Event* event, void* user_param)
 {
     Toplevel* toplevel = static_cast<Toplevel*>(widget);
@@ -158,11 +167,14 @@ bool_t Toplevel::callback_pressed(Widget* widget, Event* event, void* user_param
         cout << "\tPanel offset : " << toplevel->tmp_offset.x() << " " << toplevel->tmp_offset.y() << endl;
 
         EventManager::getInstance().bind(ei_ev_mouse_move, widget, "", toplevel->callback_move_panel, nullptr);
-        void **array = new void*[2];
-        array[0] = new ei_eventtype_t(ei_ev_mouse_move);
-        array[1] = (void *)(toplevel->callback_move_panel);
 
-        EventManager::getInstance().bind(ei_ev_mouse_buttonup, nullptr, "all", toplevel->callback_released, (void *)array);
+        param_t* param = new param_t;
+
+        param->event = ei_ev_mouse_move;
+        param->widget = widget;
+        param->callback = callback_move_panel;
+
+        EventManager::getInstance().bind(ei_ev_mouse_buttonup, nullptr, "all", callback_released, (void *)param);
 
     } else if (resizeButtonRect->hasIn(where)) {
         cout << "Click on the button !" << endl;
@@ -174,13 +186,15 @@ bool_t Toplevel::callback_pressed(Widget* widget, Event* event, void* user_param
 
         cout << "\tButton offset : " << toplevel->tmp_offset.x() << " " << toplevel->tmp_offset.y() << endl;
 
-        EventManager::getInstance().bind(ei_ev_mouse_move, widget, "", toplevel->callback_move_resize_button, nullptr);
+        EventManager::getInstance().bind(ei_ev_mouse_move, widget, "", callback_move_resize_button, nullptr);
 
-        void **array = new void *[2];
-        array[0] = new ei_eventtype_t(ei_ev_mouse_move);
-        array[1] = (void*)(toplevel->callback_move_resize_button);
+        param_t *param = new param_t;
 
-        EventManager::getInstance().bind(ei_ev_mouse_buttonup, nullptr, "all", toplevel->callback_released, (void *)array);
+        param->event = ei_ev_mouse_move;
+        param->widget = widget;
+        param->callback = callback_move_resize_button;
+
+        EventManager::getInstance().bind(ei_ev_mouse_buttonup, nullptr, "all", callback_released, (void *)param);
     } else {
         return EI_FALSE;
     }
@@ -191,24 +205,23 @@ bool_t Toplevel::callback_released(Widget *widget, Event *event, void *user_para
 
     cout << "UNBIND !" << endl;
 
-    void** tab = (void **) user_param;
+    param_t* param = (param_t*) user_param;
     EventManager::getInstance().unbind(
-        *(ei_eventtype_t *)(tab[0]),
-        nullptr,
-        "all",
-        (ei::bool_t(*)(ei::Widget *, ei::Event *, void *)) tab[2],
+        param->event,
+        param->widget,
+        "",
+        param->callback,
         nullptr);
 
     EventManager::getInstance().unbind(
         ei_ev_mouse_buttonup,
         nullptr,
         "all",
-        ((Toplevel*)tab[1])->callback_released,
-        nullptr
+        callback_released,
+        user_param
     );
 
-    delete (ei_eventtype_t *)tab[0];
-    delete tab;
+    delete param;
 
     return EI_TRUE;
 }
