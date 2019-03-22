@@ -122,14 +122,14 @@ void BoundEventBank::remove(ei_eventtype_t event, Widget* widget,tag_t tag,
         cout << "\t\tCompare with: Widget -> " << (*it_list)->_widget << " Tag -> " << (*it_list)->_tag << " Callback -> " << &(*it_list)->_callback << " User param -> " << (*it_list)->_user_param << endl;
         if (
             (
-                (widget != nullptr)?    //== was here. Bug i suppose
+                (widget != nullptr)?    // == was here. Bug I suppose
                     (*it_list)->_widget == widget :
                     (*it_list)->_tag == tag
             ) &&
-            &(*it_list)->_callback == &callback &&    //Can't compare callback, we compare pointers
+            (*it_list)->_callback.target<bool_t(Widget *, Event *, void *)>() == callback.target<bool_t(Widget *, Event *, void *)>() &&    //Can't compare callback, we compare pointers
             (*it_list)->_user_param == user_param
         )
-        
+        //param->callback.target<bool_t(Widget *, Event *, void *)>()
         {
             cout << "\t\t EVENT FIND -> Remove it !" << endl;
             free(*it_list);

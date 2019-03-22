@@ -17,8 +17,6 @@ using namespace std;
 namespace ei
 {
 
-typedef std::function<bool_t(Widget *, Event *, void *)> ei_callback_t;
-
 Toplevel::Toplevel(Widget *parent) : Widget("Toplevel", parent)
 {
     EventManager::getInstance().bind(ei_ev_mouse_buttondown, this, "", this->callback_pressed, nullptr);
@@ -144,6 +142,7 @@ typedef struct {
     ei_callback_t callback;
 } param_t;
 
+//Called when we click on the Toplevel
 bool_t Toplevel::callback_pressed(Widget* widget, Event* event, void* user_param)
 {
     Toplevel* toplevel = static_cast<Toplevel*>(widget);
@@ -153,47 +152,39 @@ bool_t Toplevel::callback_pressed(Widget* widget, Event* event, void* user_param
     Rect const *panelRect        = toplevel->getPanelLocation();
     Rect const *resizeButtonRect = toplevel->getResizeButtonLocation();
 
-    cout << "Toplevel clic on " << where.x() << " " << where.y() << endl;
-    
+    //Quand on clique sur la barre en haut de Toplevel
     if (panelRect->hasIn(where))
     {
-        cout << "Click on the panel !" << endl;
         //Calculate offSet with the top_left corner :
         toplevel->tmp_offset = Point (
             where.x() - toplevel->screen_location.top_left.x(),
             where.y() - toplevel->screen_location.top_left.y()
         );
 
-        cout << "\tPanel offset : " << toplevel->tmp_offset.x() << " " << toplevel->tmp_offset.y() << endl;
-
-        EventManager::getInstance().bind(ei_ev_mouse_move, widget, "", toplevel->callback_move_panel, nullptr);
 
         param_t* param = new param_t;
+            param->event = ei_ev_mouse_move;
+            param->widget = widget;
+            param->callback = callback_move_panel;
 
-        param->event = ei_ev_mouse_move;
-        param->widget = widget;
-        param->callback = callback_move_panel;
-
+        EventManager::getInstance().bind(ei_ev_mouse_move, widget, "", toplevel->callback_move_panel, nullptr);
         EventManager::getInstance().bind(ei_ev_mouse_buttonup, nullptr, "all", callback_released, (void *)param);
 
+    //Quand on clique sur le bouton de redimensionnement :
     } else if (resizeButtonRect->hasIn(where)) {
-        cout << "Click on the button !" << endl;
         //Calculate offSet with the bottom_rigth corner :
         toplevel->tmp_offset = Point(
             toplevel->screen_location.top_left.x() + toplevel->screen_location.size.width() - where.x(),
             toplevel->screen_location.top_left.y() + toplevel->screen_location.size.height() - where.y()
         );
 
-        cout << "\tButton offset : " << toplevel->tmp_offset.x() << " " << toplevel->tmp_offset.y() << endl;
-
-        EventManager::getInstance().bind(ei_ev_mouse_move, widget, "", callback_move_resize_button, nullptr);
 
         param_t *param = new param_t;
+            param->event = ei_ev_mouse_move;
+            param->widget = widget;
+            param->callback = callback_move_resize_button;
 
-        param->event = ei_ev_mouse_move;
-        param->widget = widget;
-        param->callback = callback_move_resize_button;
-
+        EventManager::getInstance().bind(ei_ev_mouse_move, widget, "", callback_move_resize_button, nullptr);
         EventManager::getInstance().bind(ei_ev_mouse_buttonup, nullptr, "all", callback_released, (void *)param);
     } else {
         return EI_FALSE;
@@ -204,8 +195,12 @@ bool_t Toplevel::callback_pressed(Widget* widget, Event* event, void* user_param
 bool_t Toplevel::callback_released(Widget *widget, Event *event, void *user_param) {
 
     cout << "UNBIND !" << endl;
-
     param_t* param = (param_t*) user_param;
+
+    //int (*const *ptr)(int, int) = arg.target<int (*)(int, int)>();
+    cout << "Pointer : " <<  param->callback.target<bool_t(Widget *, Event *, void *)>();
+
+    //cout << "Pointeur : " << ptr << endl;
     EventManager::getInstance().unbind(
         param->event,
         param->widget,
@@ -213,6 +208,7 @@ bool_t Toplevel::callback_released(Widget *widget, Event *event, void *user_para
         param->callback,
         nullptr);
 
+    //All tant que la fenêtre ne se déplace pas vraiment, car pas de dessin dans l'offscreen pour le moment
     EventManager::getInstance().unbind(
         ei_ev_mouse_buttonup,
         nullptr,
@@ -228,7 +224,6 @@ bool_t Toplevel::callback_released(Widget *widget, Event *event, void *user_para
 
 bool_t Toplevel::callback_move_panel(Widget *widget, Event *event, void *user_param) {
     cout << "Moving toplevel !" << endl;
-    //Penser à bind le release dans le pressed !
 
     MouseEvent* e = static_cast<MouseEvent*>(event);
     Toplevel* toplevel = static_cast<Toplevel*>(widget);
