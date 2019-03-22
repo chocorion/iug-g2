@@ -15,6 +15,10 @@ class Toplevel : public Widget
 {
   public:
     static bool_t callback_pressed(Widget *widget, Event *event, void *user_param);
+    static bool_t callback_released(Widget *widget, Event *event, void *user_param);
+    static bool_t callback_move_panel(Widget *widget, Event *event, void *user_param);
+    static bool_t callback_move_resize_button(Widget *widget, Event *event, void *user_param);
+    
     Toplevel(Widget *parent);
 
     virtual ~Toplevel();
@@ -67,7 +71,6 @@ class Toplevel : public Widget
 
     //Offset for the click on the panel/resize button
     Point tmp_offset;
-    
 };
 
 }

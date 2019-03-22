@@ -10,6 +10,7 @@
 #include <iostream>
 #include "ei_eventmanager.h"
 #include "ei_toplevel.h"
+#include "ei_geometrymanager.h"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ namespace ei
 {
 Toplevel::Toplevel(Widget *parent) : Widget("Toplevel", parent)
 {
-    EventManager::getInstance().bind(ei_ev_mouse_buttondown, this, "", this->callback_pressed, NULL);
+    EventManager::getInstance().bind(ei_ev_mouse_buttondown, this, "", this->callback_pressed, nullptr);
 }
 
 Toplevel::~Toplevel()
@@ -95,18 +96,18 @@ void Toplevel::configure(Size *requested_size,
     main_frame = new Frame(nullptr);
     relief_t *none = new relief_t(ei_relief_none);
     //Use top-level color for the background
-    main_frame->configure(NULL, color, new int(default_border_width), none, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+    main_frame->configure(nullptr, color, new int(default_border_width), none, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
 
     // CREATE RESIZE BUTTON
 
     if (resizable && *resizable != ei_axis_none)
     {
         resize_button = new Frame(nullptr);
-        resize_button->configure(NULL, &default_background_color, new int(default_border_width), none, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+        resize_button->configure(nullptr, &default_background_color, new int(default_border_width), none, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
     }
     else
     {
-        resize_button = NULL;
+        resize_button = nullptr;
     }
 
     // CREATE PANEL FRAME
@@ -121,7 +122,7 @@ void Toplevel::configure(Size *requested_size,
     *topleft = ei_anc_northwest;
     Size *panel_frame_size = new Size();
     panel_frame->configure(panel_frame_size, &default_background_color, new int(default_border_width), none, 
-        this->title, font, &default_font_color, NULL, NULL, NULL, NULL);
+        this->title, font, &default_font_color, nullptr, nullptr, nullptr, nullptr);
 }
 
 const Rect* Toplevel::getPanelLocation() const
@@ -155,6 +156,14 @@ bool_t Toplevel::callback_pressed(Widget* widget, Event* event, void* user_param
         );
 
         cout << "\tPanel offset : " << toplevel->tmp_offset.x() << " " << toplevel->tmp_offset.y() << endl;
+
+        EventManager::getInstance().bind(ei_ev_mouse_move, widget, "", toplevel->callback_move_panel, nullptr);
+        void **array = new void*[2];
+        array[0] = new ei_eventtype_t(ei_ev_mouse_move);
+        array[1] = (void *)(toplevel->callback_move_panel);
+
+        EventManager::getInstance().bind(ei_ev_mouse_buttonup, nullptr, "all", toplevel->callback_released, (void *)array);
+
     } else if (resizeButtonRect->hasIn(where)) {
         cout << "Click on the button !" << endl;
         //Calculate offSet with the bottom_rigth corner :
@@ -164,14 +173,83 @@ bool_t Toplevel::callback_pressed(Widget* widget, Event* event, void* user_param
         );
 
         cout << "\tButton offset : " << toplevel->tmp_offset.x() << " " << toplevel->tmp_offset.y() << endl;
+
+        EventManager::getInstance().bind(ei_ev_mouse_move, widget, "", toplevel->callback_move_resize_button, nullptr);
+
+        void **array = new void *[2];
+        array[0] = new ei_eventtype_t(ei_ev_mouse_move);
+        array[1] = (void*)(toplevel->callback_move_resize_button);
+
+        EventManager::getInstance().bind(ei_ev_mouse_buttonup, nullptr, "all", toplevel->callback_released, (void *)array);
     } else {
         return EI_FALSE;
     }
-    //Penser à retourner EI_FALSE si on ne clique pas sur un des deux boutons
     return EI_TRUE;
 }
 
+bool_t Toplevel::callback_released(Widget *widget, Event *event, void *user_param) {
 
+    cout << "UNBIND !" << endl;
+
+    void** tab = (void **) user_param;
+    EventManager::getInstance().unbind(
+        *(ei_eventtype_t *)(tab[0]),
+        nullptr,
+        "all",
+        (ei::bool_t(*)(ei::Widget *, ei::Event *, void *)) tab[2],
+        nullptr);
+
+    EventManager::getInstance().unbind(
+        ei_ev_mouse_buttonup,
+        nullptr,
+        "all",
+        ((Toplevel*)tab[1])->callback_released,
+        nullptr
+    );
+
+    delete (ei_eventtype_t *)tab[0];
+    delete tab;
+
+    return EI_TRUE;
+}
+
+bool_t Toplevel::callback_move_panel(Widget *widget, Event *event, void *user_param) {
+    cout << "Moving toplevel !" << endl;
+    //Penser à bind le release dans le pressed !
+
+    MouseEvent* e = static_cast<MouseEvent*>(event);
+    Toplevel* toplevel = static_cast<Toplevel*>(widget);
+
+    //Bypass the geometrymanager
+    toplevel->screen_location.top_left = Point(
+        e->where.x() - toplevel->tmp_offset.x(),
+        e->where.y() - toplevel->tmp_offset.y()
+    );
+
+    std::list<Widget *> l;
+    for (std::list<Widget *>::iterator it = (l = widget->getChildren()).begin(); it != l.end(); ++it)
+    {
+        GeometryManager *child_manager;
+        if ((child_manager = (*it)->getGeometryManager()))
+        {
+            //Use the manager of the child
+            child_manager->run((*it));
+        }
+    }
+
+    return EI_TRUE;
+    //Désactiver le gestionnaire de géométrie skip avec geomnotify ? => Run sur tous ses fils après ?
+
+}
+bool_t Toplevel::callback_move_resize_button(Widget *widget, Event *event, void *user_param) {
+    MouseEvent* e = static_cast<MouseEvent*>(event);
+    Toplevel* toplevel = static_cast<Toplevel*>(widget);
+
+    cout << "Resize not implemented !" << endl;
+
+    return EI_FALSE;
+
+}
 // bool_t Toplevel::callback_move(Widget* widget, Event* event, void* user_param)
 // {
 //     MouseEvent* e = static_cast<MouseEvent*>(event);
