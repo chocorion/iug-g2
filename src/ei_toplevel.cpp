@@ -17,7 +17,7 @@ namespace ei
 {
 Toplevel::Toplevel(Widget *parent) : Widget("Toplevel", parent)
 {
-    EventManager::getInstance().bind(ei_ev_mouse_buttondown, this, "", callback_pressed, NULL);
+    EventManager::getInstance().bind(ei_ev_mouse_buttondown, this, "", this->callback_pressed, NULL);
 }
 
 Toplevel::~Toplevel()
@@ -134,7 +134,7 @@ const Rect* Toplevel::getResizeButtonLocation() const
     return resize_button->getScreenLocation();
 }
 
-bool_t callback_pressed(Widget* widget, Event* event, void* user_param)
+bool_t Toplevel::callback_pressed(Widget* widget, Event* event, void* user_param)
 {
     Toplevel* toplevel = static_cast<Toplevel*>(widget);
     MouseEvent* e = static_cast<MouseEvent*>(event);
@@ -143,14 +143,7 @@ bool_t callback_pressed(Widget* widget, Event* event, void* user_param)
     Rect const *panelRect        = toplevel->getPanelLocation();
     Rect const *resizeButtonRect = toplevel->getResizeButtonLocation();
 
-    cout << "Clic in " << where.x() << " " << where.y() << endl;
-    cout << "Panel in " << panelRect->top_left.x() << " " << panelRect->top_left.y() << " ";
-    cout << panelRect->size.width() << " " << panelRect->size.height() << endl;
-
-    cout << "Button in " << resizeButtonRect->top_left.x() << " " << resizeButtonRect->top_left.y() << " ";
-    cout << resizeButtonRect->size.width() << " " << resizeButtonRect->size.height() << endl;
-    
-    
+    cout << "Toplevel clic on " << where.x() << " " << where.y() << endl;
     
     if (panelRect->hasIn(where))
     {

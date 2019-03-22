@@ -10,11 +10,11 @@
 
 namespace ei {
 
-bool_t callback_pressed(Widget *widget, Event *event, void *user_param);
 
 class Toplevel : public Widget
 {
   public:
+    static bool_t callback_pressed(Widget *widget, Event *event, void *user_param);
     Toplevel(Widget *parent);
 
     virtual ~Toplevel();

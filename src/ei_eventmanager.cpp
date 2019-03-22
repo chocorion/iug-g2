@@ -122,7 +122,7 @@ void BoundEventBank::remove(ei_eventtype_t event, Widget* widget,tag_t tag,
                 (*it_list)->_widget == widget :
                 (*it_list)->_tag == tag
             ) &&
-            &(*it_list)->_callback == &callback &&    //Can't compare callback
+            &(*it_list)->_callback == &callback &&    //Can't compare callback, we compare pointers
             (*it_list)->_user_param == user_param
         )
         
@@ -135,11 +135,6 @@ void BoundEventBank::remove(ei_eventtype_t event, Widget* widget,tag_t tag,
 
 bool BoundEventBank::execute(Event* event, Widget* widget, tag_t tag)
 {
-    cout << "BoundEventBank execute called !" << endl;
-    cout << "\tWidget: " << widget << endl;
-    cout << "\tTag:    "<< tag << endl << endl;
-
-    
     std::list<BoundEvent*>* l = get(event->type);
 
     if (!l)
