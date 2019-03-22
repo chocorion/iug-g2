@@ -194,7 +194,7 @@ namespace ei {
 	void Widget::focus(Widget* child)
 	{
 		children.remove(child);
-		children.push_front(child);
+		children.push_back(child);
 
 		if(parent) {
 			parent->focus(this);
