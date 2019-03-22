@@ -190,4 +190,14 @@ namespace ei {
 	{
 		return &screen_location;
 	}
+
+	void Widget::focus(Widget* child)
+	{
+		children.remove(child);
+		children.push_front(child);
+
+		if(parent) {
+			parent->focus(this);
+		}
+	}
 }

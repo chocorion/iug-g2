@@ -89,6 +89,11 @@ public:
   Rect *getContentRect() const;
   const Rect *getScreenLocation() const;
 
+   /**
+    * \brief Method called by a child to refocus itself (move itself in the first position in the children array)
+    */
+   void focus(Widget* child);
+
   void setGeometryManager(GeometryManager *geometryManager);
 
 protected:
