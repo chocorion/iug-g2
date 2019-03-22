@@ -64,9 +64,6 @@ class Toplevel : public Widget
     Frame *main_frame;
     Frame *panel_frame;
     Frame *resize_button;
-
-    //Offset for the click on the panel/resize button
-    Point tmp_offset;
     
 };
 

@@ -148,22 +148,8 @@ bool_t Toplevel::callback_pressed(Widget* widget, Event* event, void* user_param
     if (panelRect->hasIn(where))
     {
         cout << "Click on the panel !" << endl;
-        //Calculate offSet with the top_left corner :
-        toplevel->tmp_offset = Point (
-            where.x() - toplevel->screen_location.top_left.x(),
-            where.y() - toplevel->screen_location.top_left.y()
-        );
-
-        cout << "\tPanel offset : " << toplevel->tmp_offset.x() << " " << toplevel->tmp_offset.y() << endl;
     } else if (resizeButtonRect->hasIn(where)) {
         cout << "Click on the button !" << endl;
-        //Calculate offSet with the bottom_rigth corner :
-        toplevel->tmp_offset = Point(
-            toplevel->screen_location.top_left.x() + toplevel->screen_location.size.width() - where.x(),
-            toplevel->screen_location.top_left.y() + toplevel->screen_location.size.height() - where.y()
-        );
-
-        cout << "\tButton offset : " << toplevel->tmp_offset.x() << " " << toplevel->tmp_offset.y() << endl;
     } else {
         return EI_FALSE;
     }
