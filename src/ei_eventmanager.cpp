@@ -126,7 +126,7 @@ void BoundEventBank::remove(ei_eventtype_t event, Widget* widget,tag_t tag,
                     (*it_list)->_widget == widget :
                     (*it_list)->_tag == tag
             ) &&
-            (*it_list)->_callback.target<bool_t(Widget *, Event *, void *)>() == callback.target<bool_t(Widget *, Event *, void *)>() &&    //Can't compare callback, we compare pointers
+            (*it_list)->_callback.target<ei_callback_t>() == callback.target<ei_callback_t>() &&    //Can't compare callback, we compare pointers
             (*it_list)->_user_param == user_param
         )
         //param->callback.target<bool_t(Widget *, Event *, void *)>()

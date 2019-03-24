@@ -198,7 +198,7 @@ bool_t Toplevel::callback_released(Widget *widget, Event *event, void *user_para
     param_t* param = (param_t*) user_param;
 
     //int (*const *ptr)(int, int) = arg.target<int (*)(int, int)>();
-    cout << "Pointer : " <<  param->callback.target<bool_t(Widget *, Event *, void *)>();
+    //cout << "Pointer : " <<  param->callback.target<bool_t(Widget *, Event *, void *)>();
 
     //cout << "Pointeur : " << ptr << endl;
     EventManager::getInstance().unbind(
