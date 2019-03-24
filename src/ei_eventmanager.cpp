@@ -117,7 +117,7 @@ void BoundEventBank::remove(ei_eventtype_t event, Widget* widget,tag_t tag,
 
     cout << "\t\tLooking for : Widget -> " << widget << " Tag -> " << tag << " Callback -> " << &callback << " User param -> " << user_param << endl; 
 
-    for (it_list = (*l).begin(); it_list != (*l).end(); ++it_list)
+    for (it_list = (*l).begin(); it_list != (*l).end(); )
     {
         cout << "\t\tCompare with: Widget -> " << (*it_list)->_widget << " Tag -> " << (*it_list)->_tag << " Callback -> " << &(*it_list)->_callback << " User param -> " << (*it_list)->_user_param << endl;
         if (
@@ -132,8 +132,10 @@ void BoundEventBank::remove(ei_eventtype_t event, Widget* widget,tag_t tag,
         //param->callback.target<bool_t(Widget *, Event *, void *)>()
         {
             cout << "\t\t EVENT FIND -> Remove it !" << endl;
-            free(*it_list);
-            l->erase(it_list);
+            delete (*it_list);
+            it_list = l->erase(it_list);
+        } else {
+            ++it_list;
         }
     }
 }
