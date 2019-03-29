@@ -142,7 +142,7 @@ const Rect* Toplevel::getPanelLocation() const
 
 const Rect* Toplevel::getResizeButtonLocation() const
 {
-    return resize_button->getScreenLocation();
+    return (resizable && *resizable != ei_axis_none)? resize_button->getScreenLocation() : nullptr;
 }
 
 typedef struct {
@@ -186,7 +186,7 @@ bool_t Toplevel::callback_pressed(Widget* widget, Event* event, void* user_param
         EventManager::getInstance().bind(ei_ev_mouse_buttonup, nullptr, "all", callback_released, (void *)param);
 
     //Quand on clique sur le bouton de redimensionnement :
-    } else if (resizeButtonRect->hasIn(where)) {
+    } else if (resizeButtonRect && resizeButtonRect->hasIn(where)) {
         //Calculate offSet with the bottom_rigth corner :
         toplevel->tmp_offset = Point(
             toplevel->screen_location.top_left.x() + toplevel->screen_location.size.width() - where.x(),
