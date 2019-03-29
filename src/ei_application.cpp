@@ -128,7 +128,7 @@ void Application::run()
         concerned_widget = nullptr;
         isEventHandled = false;
 
-        //renderDisplay();
+        renderDisplay();
 
         event = hw_event_wait_next();
 
