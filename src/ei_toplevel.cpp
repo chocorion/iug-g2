@@ -62,7 +62,7 @@ void Toplevel::setResizeButtonLocation() {
             screen_location.top_left.y() + screen_location.size.height() - 30),
         Size(30, 30)
     );
-    
+
     resize_button->geomnotify(button_location);
 }
 
@@ -247,6 +247,9 @@ bool_t Toplevel::callback_move_panel(Widget *widget, Event *event, void *user_pa
         e->where.x() - toplevel->tmp_offset.x(),
         e->where.y() - toplevel->tmp_offset.y()
     );
+
+    toplevel->setPanelLocation();
+    toplevel->setResizeButtonLocation();
 
     std::list<Widget *> l;
     for (std::list<Widget *>::iterator it = (l = widget->getChildren()).begin(); it != l.end(); ++it)
