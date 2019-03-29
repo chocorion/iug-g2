@@ -54,11 +54,14 @@ class Toplevel : public Widget
                    Size *min_size);
 
     void geomnotify(Rect rect);
-    const Rect* getPanelLocation() const;
+    
+	const Rect* getPanelLocation() const;
     const Rect *getResizeButtonLocation() const;
+	void setPanelLocation();
+	void setResizeButtonLocation();
 
-
-    private : color_t *color;
+    private : 
+    color_t *color;
     int *border_width;
     const char **title;
     bool_t *closable;

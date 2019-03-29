@@ -43,32 +43,39 @@ void Toplevel::draw(surface_t surface,
     drawOffscreen(pick_surface, clipper);
 }
 
+void Toplevel::setPanelLocation() {
+    Rect panel_location = Rect(
+        screen_location.top_left,
+        Size(
+            screen_location.size.width(),
+            35
+        )
+    );
+
+    panel_frame->geomnotify(panel_location);
+}
+
+void Toplevel::setResizeButtonLocation() {
+    Rect button_location = Rect(
+        Point(
+            screen_location.top_left.x() + screen_location.size.width() - 30,
+            screen_location.top_left.y() + screen_location.size.height() - 30),
+        Size(30, 30)
+    );
+    
+    resize_button->geomnotify(button_location);
+}
+
 void Toplevel::geomnotify(Rect rect)
 {
     this->screen_location = rect;
     main_frame->geomnotify(rect);
 
+    setPanelLocation();
     
-    //TODO use percent not pixel
-    Rect panel_location = Rect (
-        rect.top_left,
-        Size(
-            rect.size.width(),
-            35  
-        )
-    );
-    panel_frame->geomnotify(panel_location);
-
     if (resizable && *resizable != ei_axis_none)
     {
-        Rect button_location = Rect (
-            Point(
-                rect.top_left.x() + rect.size.width() - 30,
-                rect.top_left.y() + rect.size.height() - 30
-            ),
-            Size(30, 30)
-        );
-        resize_button->geomnotify(button_location);
+        setResizeButtonLocation();
     }
 }
 
@@ -152,6 +159,12 @@ bool_t Toplevel::callback_pressed(Widget* widget, Event* event, void* user_param
     Rect const *panelRect        = toplevel->getPanelLocation();
     Rect const *resizeButtonRect = toplevel->getResizeButtonLocation();
 
+
+
+    cout << "Toplevel is in " << toplevel->screen_location.top_left.x() << " " << toplevel->screen_location.top_left.y() << endl;
+
+
+    
     //Quand on clique sur la barre en haut de Toplevel
     if (panelRect->hasIn(where))
     {
@@ -229,6 +242,7 @@ bool_t Toplevel::callback_move_panel(Widget *widget, Event *event, void *user_pa
     Toplevel* toplevel = static_cast<Toplevel*>(widget);
 
     //Bypass the geometrymanager
+    //Attention ! bouge seulement la frame et pas le panel et tout le bazarre !
     toplevel->screen_location.top_left = Point(
         e->where.x() - toplevel->tmp_offset.x(),
         e->where.y() - toplevel->tmp_offset.y()
