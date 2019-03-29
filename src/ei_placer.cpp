@@ -72,10 +72,12 @@ Placer::Placer():
         Rect* container = nullptr;
         Widget* parent  = nullptr;
 
+        cout << "Before " << widget->getScreenLocation()->top_left.x() << " " << widget->getScreenLocation()->top_left.y() << endl;
+
         if ((parent = widget->getParent()))
         {
             container = parent->getContentRect();
-
+            cout << container->top_left.x() << " " << container->top_left.y() << endl;
             if (!container)
             {
                 cerr << "Error in placer run: parent widget don't have content_rect !" << endl;
@@ -93,8 +95,8 @@ Placer::Placer():
 
 
         Point anchor = Point(
-            _rel_x * container->size.width()  + _x,
-            _rel_y * container->size.height() + _y
+            _rel_x * container->size.width()  + _x + container->top_left.x(),
+            _rel_y * container->size.height() + _y + container->top_left.y()
         );
 
         double width = (_is_default_width) ?
@@ -181,6 +183,7 @@ Placer::Placer():
         }
 
             //Vérifier si newChildRect et oldChildRect son différent ou non
+                cout << "After : " << new_widget_location.top_left.x() << " " << new_widget_location.top_left.y() << endl;
             if (
                 new_widget_location.top_left.x() != current_widget_location->top_left.x() ||
                 new_widget_location.top_left.y() != current_widget_location->top_left.y() ||
@@ -188,7 +191,6 @@ Placer::Placer():
                 new_widget_location.size.height() != current_widget_location->size.height()
             ) {
                 widget->geomnotify(new_widget_location);
-
                 std::list<Widget*> l;
                 for (std::list<Widget*>::iterator it = (l = widget->getChildren()).begin(); it != l.end(); ++it)
                 {

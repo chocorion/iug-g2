@@ -131,6 +131,8 @@ void Toplevel::configure(Size *requested_size,
     Size *panel_frame_size = new Size();
     panel_frame->configure(panel_frame_size, &default_background_color, new int(default_border_width), none, 
         this->title, font, &default_font_color, nullptr, nullptr, nullptr, nullptr);
+
+    this->content_rect = &screen_location;
 }
 
 const Rect* Toplevel::getPanelLocation() const
