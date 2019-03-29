@@ -250,10 +250,14 @@ bool_t Toplevel::callback_move_panel(Widget *widget, Event *event, void *user_pa
 
     toplevel->setPanelLocation();
     toplevel->setResizeButtonLocation();
+    toplevel->main_frame->geomnotify(toplevel->screen_location);
 
     std::list<Widget *> l;
     for (std::list<Widget *>::iterator it = (l = widget->getChildren()).begin(); it != l.end(); ++it)
     {
+
+        cout << "Running geometryManager on child.." << endl;
+        
         GeometryManager *child_manager;
         if ((child_manager = (*it)->getGeometryManager()))
         {
