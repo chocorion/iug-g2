@@ -35,6 +35,7 @@ class Placer;
 class Widget
 {
 public:
+  Widget() {return;}
   /**
      * @brief   Construct a new instance of a widget of some particular class, as a descendant of an existing widget.
      *
@@ -139,6 +140,7 @@ typedef std::function<bool_t(Widget *, Event *, void *)> ei_callback_t;
 class Frame : public Widget
 {
 public:
+  Frame() {return;}
   Frame(Widget *parent);
 
   virtual ~Frame();
