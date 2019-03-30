@@ -34,6 +34,13 @@ void Toplevel::draw(surface_t surface,
     main_frame->draw(surface, pick_surface, clipper);
     panel_frame->draw(surface, pick_surface, clipper);
 
+    std::list<Widget *> l;
+    for (std::list<Widget *>::iterator it = (l = panel_frame->getChildren()).begin(); it != l.end(); ++it)
+    {
+        (*it)->draw(surface, pick_surface, clipper);
+        continue;
+    }
+
     if (resizable && *resizable != ei_axis_none)
     {
         resize_button->draw(surface, pick_surface, clipper);
@@ -72,7 +79,19 @@ void Toplevel::geomnotify(Rect rect)
     main_frame->geomnotify(rect);
 
     setPanelLocation();
-    
+    std::list<Widget *> l;
+    for (std::list<Widget *>::iterator it = (l = panel_frame->getChildren()).begin(); it != l.end(); ++it)
+    {
+
+        cout << "Running geoManager on panel child" << endl;
+
+        GeometryManager *child_manager;
+        if ((child_manager = (*it)->getGeometryManager()))
+        {
+            //Use the manager of the child
+            child_manager->run((*it));
+        }
+    }
     if (resizable && *resizable != ei_axis_none)
     {
         setResizeButtonLocation();
@@ -121,6 +140,23 @@ void Toplevel::configure(Size *requested_size,
     // CREATE PANEL FRAME
 
     panel_frame = new Frame(nullptr);
+
+    if (*closable) {
+        //I have problem with offscreen drawing if i use a button and not a frame
+        cout << "Create button for toplevel !" << endl;
+        Frame* closableButton = new Frame(panel_frame);
+        closableButton->configure(
+            nullptr, new color_t({255, 30, 30, 255}),
+            new int(1), nullptr, nullptr, nullptr, nullptr, 
+            nullptr, nullptr, nullptr, nullptr
+        );
+
+        Placer* closableButtonPlacer = new Placer();
+        closableButtonPlacer->configure(
+            closableButton, nullptr, new int(10), new int(10),
+            new float(20), new float(10), nullptr, nullptr, nullptr, nullptr
+        );
+    }
 
     // Use default font because no other parameter
     font_t *font = new font_t();
