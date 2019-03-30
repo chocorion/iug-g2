@@ -20,9 +20,9 @@ void TopPanel::configure(const color_t *color,
                     surface_t *img,
                     Rect **img_rect,
                     anchor_t *img_anchor,
-                    bool closable = true,
-                    bool resizable = false,
-                    bool reductible = false)
+                    bool closable,
+                    bool resizable,
+                    bool reductible)
 {
     Frame::configure(
         nullptr, color, border_width, relief, text, text_font,
@@ -36,7 +36,7 @@ void TopPanel::configure(const color_t *color,
             new color_t({230, 30, 30, 255}),
             nullptr,
             nullptr,
-            new char*("X"),
+            new const char*("X"),
             nullptr,
             new color_t({40, 40, 40, 255}),
             new anchor_t(ei_anc_center),
