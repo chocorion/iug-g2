@@ -154,7 +154,7 @@ void Toplevel::configure(Size *requested_size,
         Placer* closableButtonPlacer = new Placer();
         closableButtonPlacer->configure(
             closableButton, nullptr, new int(10), new int(10),
-            new float(20), new float(10), nullptr, nullptr, nullptr, nullptr
+            new float(15), new float(15), nullptr, nullptr, nullptr, nullptr
         );
     }
 
