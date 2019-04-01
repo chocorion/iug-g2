@@ -1,5 +1,9 @@
 #include "ei_toppanel.h"
 #include "ei_geometrymanager.h"
+#include "ei_event.h"
+#include <iostream>
+
+using namespace std;
 
 namespace ei {
 
@@ -66,6 +70,18 @@ void TopPanel::configure(const color_t *color,
 void TopPanel::geomnotify(Rect rect){
     Frame::geomnotify(rect);
 
+    for (Widget *widget : Frame::getChildren())
+    {
+        cout << "Running geometryManager on child.." << endl;
+
+        GeometryManager *child_manager;
+        if ((child_manager = widget->getGeometryManager()))
+        {
+            //Use the manager of the child
+            child_manager->run(widget);
+        }
+    }
+
     if (CloseButton) {
         CloseButton->getGeometryManager()->run(CloseButton);
     }
@@ -106,4 +122,34 @@ void TopPanel::draw(surface_t surface, surface_t pick_surface, Rect *clipper) {
     }
 }
 
+void TopPanel::sendClick(Point where) {
+    click_offset = Point(
+        where.x() - Frame::getScreenLocation()->top_left.x(),
+        where.y() - Frame::getScreenLocation()->top_left.y());
+}
+
+void TopPanel::enableMoving() {
+
+}
+
+bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_param)
+{
+    cout << "Moving topPanle !" << endl;
+
+    MouseEvent *e = static_cast<MouseEvent *>(event);
+    TopPanel *toppanel = static_cast<TopPanel *>(widget);
+
+    Rect newPanelPos = Rect(
+        Point(
+            e->where.x() - toppanel->click_offset.x(),
+            e->where.y() - toppanel->click_offset.y()
+        ),
+        toppanel->getScreenLocation()->size
+    );
+
+    toppanel->geomnotify(newPanelPos);
+
+    return EI_TRUE;
+    //Désactiver le gestionnaire de géométrie skip avec geomnotify ? => Run sur tous ses fils après ?
+}
 }

@@ -3,7 +3,7 @@
 
 #include "ei_types.h"
 #include "ei_widget.h"
-
+ 
 namespace ei
 {
 
@@ -15,6 +15,7 @@ class TopPanel : public Frame {
         Widget *ReduceButton;
         Widget *ResizeButton;
 
+        void enableMoving();
 
 
     public:
@@ -28,6 +29,10 @@ class TopPanel : public Frame {
         virtual void draw(surface_t surface,
                           surface_t pick_surface,
                           Rect *clipper);
+
+
+        static bool_t callback_move_panel(Widget *widget, Event *event, void *user_param);
+        static bool_t callback_released(Widget *widget, Event *event, void *user_param);
         /**
          * @brief Overridden function
          * 
@@ -49,6 +54,9 @@ class TopPanel : public Frame {
                        bool resizable = false,
                        bool reductible = false
                        );
+
+        void sendClick(Point where);
+
 };
 
 }
