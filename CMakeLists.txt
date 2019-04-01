@@ -54,6 +54,7 @@ set(include_files
 		include/ei_tools.h
 		include/hw_interface.h
 		include/ei_toppanel.h
+		include/ei_movableonclick.h
 	)
 add_custom_target(headers SOURCES ${include_files})
 
@@ -68,6 +69,7 @@ set(EI_SRC
 		src/ei_toplevel.cpp
 		src/ei_tools.cpp
 		src/ei_toppanel.cpp
+		src/ei_movableonclick.cpp
         )
 add_library(ei ${EI_SRC})
 

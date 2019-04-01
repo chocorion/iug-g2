@@ -14,13 +14,12 @@ namespace ei{
 
 class MovableOnClick {
     private:
-        Widget* widget;
         ei_callback_t callback;
 
     public:
         MovableOnClick(Widget* widget, ei_callback_t callback);
-        bool_t enableMoving(Widget* widget, Event* event, void* user_param);
-        bool_t callback_released(Widget *widget, Event *event, void *user_param)
+        static bool_t enableMoving(Widget* widget, Event* event, void* user_param);
+        static bool_t callback_released(Widget *widget, Event *event, void *user_param);
 };
 }
 
