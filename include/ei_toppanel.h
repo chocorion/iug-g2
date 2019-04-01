@@ -3,6 +3,7 @@
 
 #include "ei_types.h"
 #include "ei_widget.h"
+#include "ei_movableonclick.h"
  
 namespace ei
 {
@@ -32,7 +33,6 @@ class TopPanel : public Frame {
 
 
         static bool_t callback_move_panel(Widget *widget, Event *event, void *user_param);
-        static bool_t callback_released(Widget *widget, Event *event, void *user_param);
         /**
          * @brief Overridden function
          * 

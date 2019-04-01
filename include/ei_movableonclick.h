@@ -11,15 +11,18 @@
 #include <functional>
 
 namespace ei{
+    
 
 class MovableOnClick {
     private:
-        ei_callback_t callback;
+        ei_callback_t *callbacks;
+        //ei_callback_t callback_on_release; Useless for the moment
 
     public:
-        MovableOnClick(Widget* widget, ei_callback_t callback);
-        static bool_t enableMoving(Widget* widget, Event* event, void* user_param);
-        static bool_t callback_released(Widget *widget, Event *event, void *user_param);
+      ~MovableOnClick();
+      MovableOnClick(Widget *widget, ei_callback_t callback_on_click, ei_callback_t callback_on_move);
+      static bool_t enableMoving(Widget *widget, Event *event, void *user_param);
+      static bool_t callback_released(Widget *widget, Event *event, void *user_param);
 };
 }
 
