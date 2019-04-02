@@ -20,6 +20,7 @@ class MovableOnClick {
 
     public:
       ~MovableOnClick();
+      MovableOnClick(){return;}
       MovableOnClick(Widget *widget, ei_callback_t callback_on_click, ei_callback_t callback_on_move);
       static bool_t enableMoving(Widget *widget, Event *event, void *user_param);
       static bool_t callback_released(Widget *widget, Event *event, void *user_param);

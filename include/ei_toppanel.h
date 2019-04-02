@@ -8,7 +8,7 @@
 namespace ei
 {
 
-class TopPanel : public Frame {
+class TopPanel : public Frame, public MovableOnClick {
     private:
         Point click_offset;
 
@@ -33,6 +33,8 @@ class TopPanel : public Frame {
 
 
         static bool_t callback_move_panel(Widget *widget, Event *event, void *user_param);
+        static bool_t callback_on_click(Widget* widget, Event *event, void* user_param);//
+
         /**
          * @brief Overridden function
          * 
@@ -55,7 +57,6 @@ class TopPanel : public Frame {
                        bool reductible = false
                        );
 
-        void sendClick(Point where);
 
 };
 

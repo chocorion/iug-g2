@@ -12,7 +12,7 @@ TopPanel::TopPanel() {
     return;
 }
 
-TopPanel::TopPanel(Widget *parent):Frame(parent) {}
+TopPanel::TopPanel(Widget *parent):Frame(parent), MovableOnClick(this, callback_on_click, callback_move_panel) {}
 
 void TopPanel::configure(const color_t *color,
                     int *border_width,
@@ -122,14 +122,18 @@ void TopPanel::draw(surface_t surface, surface_t pick_surface, Rect *clipper) {
     }
 }
 
-void TopPanel::sendClick(Point where) {
-    click_offset = Point(
-        where.x() - Frame::getScreenLocation()->top_left.x(),
-        where.y() - Frame::getScreenLocation()->top_left.y());
-}
+bool_t TopPanel::callback_on_click(Widget *widget, Event *event, void *user_param)
+{
 
-void TopPanel::enableMoving() {
+    MouseEvent *e = static_cast<MouseEvent *>(event);
+    TopPanel *toppanel = static_cast<TopPanel *>(widget);
 
+    toppanel->click_offset = Point(
+        e->where.x() - toppanel->getScreenLocation()->top_left.x(),
+        e->where.y() - toppanel->getScreenLocation()->top_left.y()
+    );
+
+    return EI_TRUE;
 }
 
 bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_param)
