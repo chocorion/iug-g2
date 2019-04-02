@@ -12,6 +12,7 @@ TopPanel::TopPanel() {
     return;
 }
 
+//Maybe we had to use parent in movable on click ?
 TopPanel::TopPanel(Widget *parent):Frame(parent), MovableOnClick(this, callback_on_click, callback_move_panel) {}
 
 void TopPanel::configure(const color_t *color,
@@ -152,6 +153,12 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
     );
 
     toppanel->geomnotify(newPanelPos);
+
+    Rect ParentPos = Rect(
+        newPanelPos.top_left,
+        toppanel->getParent()->getScreenLocation()->size
+    );
+    toppanel->getParent()->geomnotify(ParentPos);
 
     return EI_TRUE;
     //Désactiver le gestionnaire de géométrie skip avec geomnotify ? => Run sur tous ses fils après ?

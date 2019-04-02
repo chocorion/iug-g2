@@ -16,7 +16,7 @@ namespace ei{
 class MovableOnClick {
     private:
         ei_callback_t *callbacks;
-        //ei_callback_t callback_on_release; Useless for the moment
+
 
     public:
       ~MovableOnClick();
