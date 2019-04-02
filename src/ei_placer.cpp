@@ -72,12 +72,12 @@ Placer::Placer():
         Rect* container = nullptr;
         Widget* parent  = nullptr;
 
-        cout << "Before " << widget->getScreenLocation()->top_left.x() << " " << widget->getScreenLocation()->top_left.y() << endl;
+        cout << "Before " << widget->getScreenLocation()->top_left.x() << " " << widget->getScreenLocation()->top_left.y() << " " << widget->getScreenLocation()->size.width() << " " << widget->getScreenLocation()->size.height() << endl;
 
         if ((parent = widget->getParent()))
         {
             container = parent->getContentRect();
-            cout << container->top_left.x() << " " << container->top_left.y() << endl;
+            cout << " Parent : " << container->top_left.x() << " " << container->top_left.y() << " " << container->size.width() << " " << container->size.height() << endl;
             if (!container)
             {
                 cerr << "Error in placer run: parent widget don't have content_rect !" << endl;
@@ -183,24 +183,24 @@ Placer::Placer():
         }
 
             //Vérifier si newChildRect et oldChildRect son différent ou non
-                cout << "After : " << new_widget_location.top_left.x() << " " << new_widget_location.top_left.y() << endl;
-            if (
-                new_widget_location.top_left.x() != current_widget_location->top_left.x() ||
-                new_widget_location.top_left.y() != current_widget_location->top_left.y() ||
-                new_widget_location.size.width() != current_widget_location->size.width() ||
-                new_widget_location.size.height() != current_widget_location->size.height()
-            ) {
-                widget->geomnotify(new_widget_location);
-                std::list<Widget*> l;
-                for (std::list<Widget*>::iterator it = (l = widget->getChildren()).begin(); it != l.end(); ++it)
+        cout << "After " << widget->getScreenLocation()->top_left.x() << " " << widget->getScreenLocation()->top_left.y() << " " << widget->getScreenLocation()->size.width() << " " << widget->getScreenLocation()->size.height() << endl;
+        if (
+            new_widget_location.top_left.x() != current_widget_location->top_left.x() ||
+            new_widget_location.top_left.y() != current_widget_location->top_left.y() ||
+            new_widget_location.size.width() != current_widget_location->size.width() ||
+            new_widget_location.size.height() != current_widget_location->size.height())
+        {
+            widget->geomnotify(new_widget_location);
+            std::list<Widget *> l;
+            for (std::list<Widget *>::iterator it = (l = widget->getChildren()).begin(); it != l.end(); ++it)
+            {
+                GeometryManager *child_manager;
+                if ((child_manager = (*it)->getGeometryManager()))
                 {
-                    GeometryManager* child_manager;
-                    if ((child_manager = (*it)->getGeometryManager()))
-                    {
-                        //Use the manager of the child
-                        child_manager->run((*it));
-                    }
+                    //Use the manager of the child
+                    child_manager->run((*it));
                 }
+            }
             }
         }
 

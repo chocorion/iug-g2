@@ -91,7 +91,16 @@ void Toplevel::configure(Size *requested_size,
     anchor_t *topleft = new anchor_t;
     *topleft = ei_anc_northwest;
     topPanel->configure(&default_background_color, new int(default_border_width), none, 
-        this->title, font, &default_font_color, nullptr, nullptr, nullptr, nullptr);
+        nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
+
+    Placer* topPanelPlacer = new Placer();
+    topPanelPlacer->configure(
+        (Widget*)topPanel, nullptr, new int(0), new int(0), nullptr, new float(40.0),
+        new float(0.0), new float(0.0), new float(1.0), nullptr
+    );
+    cout << "After configure of topPanel's placer " << topPanel->getScreenLocation()->top_left.x() << " " << topPanel->getScreenLocation()->top_left.y() << " " << topPanel->getScreenLocation()->size.width() << " " << topPanel->getScreenLocation()->size.height() << endl;
+    // topPanel->configure(&default_background_color, new int(default_border_width), none, 
+    //     this->title, font, new color_t(default_font_color), nullptr, nullptr, nullptr, nullptr);
 
     this->content_rect = &screen_location;
 }

@@ -42,21 +42,34 @@ void TopPanel::configure(const color_t *color,
             new color_t({230, 30, 30, 255}),
             nullptr,
             nullptr,
-            new const char*("X"),
             nullptr,
-            new color_t({40, 40, 40, 255}),
-            new anchor_t(ei_anc_center),
-            Frame::getImg(),
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
             nullptr, //Hum maybe will cause problems....
             nullptr
         );
+        // ((Frame *)CloseButton)->configure(
+        //     nullptr,//Just for the moment
+        //     new color_t({230, 30, 30, 255}),
+        //     nullptr,
+        //     nullptr,
+        //     new const char*("X"),
+        //     nullptr,
+        //     new color_t({40, 40, 40, 255}),
+        //     new anchor_t(ei_anc_center),
+        //     Frame::getImg(),
+        //     nullptr, //Hum maybe will cause problems....
+        //     nullptr
+        // );
 
         Placer *CloseButtonPlacer = new Placer();
         CloseButtonPlacer->configure(
             CloseButton,
             nullptr,
-            new int(10), new int(10),
-            new float(15), new float(15),
+            new int(5), new int(5),
+            new float(10), new float(10),
             nullptr, nullptr, nullptr, nullptr
         );
     } else {
@@ -98,19 +111,15 @@ void TopPanel::geomnotify(Rect rect){
 }
 
 void TopPanel::draw(surface_t surface, surface_t pick_surface, Rect *clipper) {
+    cout << "Drawing frame..." << endl;
+    cout << Frame::getScreenLocation()->top_left.x() << " " << Frame::getScreenLocation()->top_left.y() << " " << Frame::getScreenLocation()->size.width() << " " << Frame::getScreenLocation()->size.height() << endl;
     Frame::draw(surface, pick_surface, clipper);
-
-    //Drawing all children
-    std::list<Widget *> l;
-    for (std::list<Widget *>::iterator it = (l = getChildren()).begin(); it != l.end(); ++it)
-    {
-        (*it)->draw(surface, pick_surface, clipper);
-        continue;
-    }
-
-    if (CloseButton)
-    {
+    cout << "Done !" << endl;
+    if (CloseButton)    {
+        cout << "Drawing close button..." << endl;
+        cout << CloseButton->getScreenLocation()->top_left.x() << " " << CloseButton->getScreenLocation()->top_left.y() << " " << CloseButton->getScreenLocation()->size.width() << " " << CloseButton->getScreenLocation()->size.height() << endl;
         CloseButton->draw(surface, pick_surface, clipper);
+        cout << "Done !" << endl;
     }
 
     if (ReduceButton)
