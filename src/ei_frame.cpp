@@ -180,7 +180,9 @@ void Frame::configure(Size *requested_size,
 
 		if (this->text)
 		{
+			cout << "Text to display : " << *this->text << " Texte font : " << this->text_font << endl;
 			hw_text_compute_size(*this->text, this->text_font, *default_size);
+			cout << "It's working !" << endl;
 		}
 		else if (this->img)
 		{
