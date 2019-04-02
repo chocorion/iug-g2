@@ -29,6 +29,7 @@ void TopPanel::configure(const color_t *color,
                     bool resizable,
                     bool reductible)
 {
+    printf("In TopPanel : \n\tText : %p\n\tText_font : %p\n\tText_color : %p\n\tText_anchor : %p\n", text, text_font, text_color, text_anchor);
     Frame::configure(
         nullptr, color, border_width, relief, text, text_font,
         text_color, text_anchor, img, img_rect, img_anchor

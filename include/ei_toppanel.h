@@ -16,16 +16,12 @@ class TopPanel : public Frame, public MovableOnClick {
         Widget *ReduceButton;
         Widget *ResizeButton;
 
-        void enableMoving();
-
 
     public:
         TopPanel();
         TopPanel(Widget *parent);
 
         virtual void geomnotify(Rect rect);
-
-        virtual ~TopPanel();
 
         virtual void draw(surface_t surface,
                           surface_t pick_surface,
