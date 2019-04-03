@@ -68,8 +68,8 @@ void TopPanel::configure(const color_t *color,
         CloseButtonPlacer->configure(
             CloseButton,
             nullptr,
-            new int(5), new int(5),
-            new float(10.0), new float(10.0),
+            new int(6), new int(6),
+            new float(15.0), new float(15.0),
             nullptr, nullptr, nullptr, nullptr
         );
     } else {
@@ -135,7 +135,7 @@ void TopPanel::draw(surface_t surface, surface_t pick_surface, Rect *clipper) {
 
 bool_t TopPanel::callback_on_click(Widget *widget, Event *event, void *user_param)
 {
-
+    cout << "TopPanel CLICK !" << endl;
     MouseEvent *e = static_cast<MouseEvent *>(event);
     TopPanel *toppanel = static_cast<TopPanel *>(widget);
 
@@ -149,11 +149,16 @@ bool_t TopPanel::callback_on_click(Widget *widget, Event *event, void *user_para
 
 bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_param)
 {
-    cout << "Moving topPanle !" << endl;
+    cout << "TopPanel MOVE !" << endl;
 
+    cout << "Static cast..." << endl;
     MouseEvent *e = static_cast<MouseEvent *>(event);
-    TopPanel *toppanel = static_cast<TopPanel *>(widget);
+    TopPanel *toppanel = static_cast<TopPanel *>(user_param);
 
+    cout << "Offset: " << toppanel->click_offset.x() << " " << toppanel->click_offset.y() << endl;
+    cout << "Click:  " << e->where.x() << " " << e->where.y() << endl;
+
+    cout << "Done !\nCompute newPanelPos..." << endl;
     Rect newPanelPos = Rect(
         Point(
             e->where.x() - toppanel->click_offset.x(),
@@ -161,14 +166,18 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
         ),
         toppanel->getScreenLocation()->size
     );
+    cout << "Done !\nGeomnotify topPanel..." << endl;
 
     toppanel->geomnotify(newPanelPos);
 
+    cout << "Done !\nCompute ParentPos..." << endl;
     Rect ParentPos = Rect(
         newPanelPos.top_left,
         toppanel->getParent()->getScreenLocation()->size
     );
+    cout << "Done !\nGeomnotify Parent..." << endl;
     toppanel->getParent()->geomnotify(ParentPos);
+    cout << "Done !" << endl;
 
     return EI_TRUE;
     //Désactiver le gestionnaire de géométrie skip avec geomnotify ? => Run sur tous ses fils après ?

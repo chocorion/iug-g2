@@ -98,7 +98,7 @@ void Toplevel::configure(Size *requested_size,
     cout << "Create and configuring placer for toppanel" << endl;
     Placer* topPanelPlacer = new Placer();
     topPanelPlacer->configure(
-        (Widget*)topPanel, nullptr, new int(0), new int(0), nullptr, new float(40.0),
+        (Widget*)topPanel, nullptr, new int(0), new int(0), nullptr, new float(30.0),
         new float(0.0), new float(0.0), new float(1.0), nullptr
     );
     cout << "After configure of topPanel's placer " << topPanel->getScreenLocation()->top_left.x() << " " << topPanel->getScreenLocation()->top_left.y() << " " << topPanel->getScreenLocation()->size.width() << " " << topPanel->getScreenLocation()->size.height() << endl;
