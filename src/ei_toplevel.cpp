@@ -81,7 +81,7 @@ void Toplevel::configure(Size *requested_size,
     }
 
     // CREATE PANEL FRAME
-
+    cout << "Create top panel" << endl;
     topPanel = new TopPanel(this);
 
     // Use default font because no other parameter
@@ -90,9 +90,12 @@ void Toplevel::configure(Size *requested_size,
 
     anchor_t *topleft = new anchor_t;
     *topleft = ei_anc_northwest;
+
+    cout << "Configuring topPanel" << endl;
     topPanel->configure(&default_background_color, new int(default_border_width), none, 
         nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
 
+    cout << "Create and configuring placer for toppanel" << endl;
     Placer* topPanelPlacer = new Placer();
     topPanelPlacer->configure(
         (Widget*)topPanel, nullptr, new int(0), new int(0), nullptr, new float(40.0),

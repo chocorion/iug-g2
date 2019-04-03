@@ -106,7 +106,6 @@ void Frame::configure(Size *requested_size,
 					  Rect **img_rect,
 					  anchor_t *img_anchor)
 {
-	printf("In Frame : \n\tText : %p\n\tText_font : %p\n\tText_color : %p\n\tText_anchor : %p\n", text, text_font, text_color, text_anchor);
 	if (color)
 		this->color = color;
 	else

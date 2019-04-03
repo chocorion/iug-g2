@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 
 #include "ei_application.h"
 #include "ei_eventmanager.h"
@@ -66,26 +67,31 @@ int ei_main(int argc, char* argv[])
     Application* app = new Application(&screen_size);
     app->root_widget()->configure(&screen_size, &root_bgcol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
+    std::cout << "\n\n\n\nCreating toplevel ! " << std::endl;
     Toplevel* toplevel = new Toplevel(app->root_widget());
+    std::cout << "Configure toplevel in test " << std::endl;
     toplevel->configure(&window_size, &window_color, &window_border_width, &window_title, &closable, &window_resizable, NULL);
+    std::cout << "Done ! \n\n\n\n\n" << std::endl;
 
-    Button* button_ok = new Button(toplevel);
-    button_ok->configure (&button_size, &button_color, &button_border_width, NULL, &relief, &button_title_ok, NULL, &text_color, NULL, NULL, NULL, NULL);
+    // Button* button_ok = new Button(toplevel);
+    // button_ok->configure (&button_size, &button_color, &button_border_width, NULL, &relief, &button_title_ok, NULL, &text_color, NULL, NULL, NULL, NULL);
 
-    Button* button_cancel = new Button(toplevel);
-    button_cancel->configure (&button_size, &button_color, &button_border_width, NULL, &relief, &button_title_cancel, NULL, &text_color, NULL, NULL, NULL, NULL);
+    // Button* button_cancel = new Button(toplevel);
+    // button_cancel->configure (&button_size, &button_color, &button_border_width, NULL, &relief, &button_title_cancel, NULL, &text_color, NULL, NULL, NULL, NULL);
 
-    Button* button_cut = new Button(toplevel);
-    button_cut->configure (&button_size, &button_color, &button_border_width, NULL, &relief, &button_title_cut, NULL, &text_color, NULL, NULL, NULL, NULL);
+    // Button* button_cut = new Button(toplevel);
+    // button_cut->configure (&button_size, &button_color, &button_border_width, NULL, &relief, &button_title_cut, NULL, &text_color, NULL, NULL, NULL, NULL);
 
     Placer* p1 = new Placer();
+    std::cout << "Configure Placer for toplevel in test toplevel ! " << std::endl;
     p1->configure(toplevel, NULL, &(window_position.x()), &(window_position.y()), NULL, NULL, NULL, NULL, NULL, NULL);
-    Placer* p2 = new Placer();
-    p2->configure(button_ok, &button_anchor, &button_x, &button_y, NULL,NULL, &button_rel_x, &button_rel_y, &button_rel_size_x, NULL);
-    Placer* p3 = new Placer();
-    p3->configure(button_cancel, &button_anchor_2, &button_x2, &button_y, NULL,NULL, &button_rel_x2, &button_rel_y, &button_rel_size_x, NULL);
-    Placer* p4 = new Placer();
-    p4->configure(button_cut, &button_anchor, &button_x2, &button_y2, NULL,NULL, &button_rel_x, &button_rel_y, &button_rel_size_x, NULL);
+    std::cout << "Done !" << std::endl;
+    // Placer* p2 = new Placer();
+    // p2->configure(button_ok, &button_anchor, &button_x, &button_y, NULL,NULL, &button_rel_x, &button_rel_y, &button_rel_size_x, NULL);
+    // Placer* p3 = new Placer();
+    // p3->configure(button_cancel, &button_anchor_2, &button_x2, &button_y, NULL,NULL, &button_rel_x2, &button_rel_y, &button_rel_size_x, NULL);
+    // Placer* p4 = new Placer();
+    // p4->configure(button_cut, &button_anchor, &button_x2, &button_y2, NULL,NULL, &button_rel_x, &button_rel_y, &button_rel_size_x, NULL);
 
     EventManager::getInstance().bind(ei_ev_keydown, NULL, "all", process_key, app);
     EventManager::getInstance().bind(ei_ev_display, NULL, "all", process_display, app);
@@ -97,9 +103,9 @@ int ei_main(int argc, char* argv[])
 
     delete app;
     delete p1;
-    delete p2;
-    delete p3;
-    delete p4;
+    // delete p2;
+    // delete p3;
+    // delete p4;
 
     return (EXIT_SUCCESS);
 }

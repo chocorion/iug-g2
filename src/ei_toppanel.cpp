@@ -29,7 +29,6 @@ void TopPanel::configure(const color_t *color,
                     bool resizable,
                     bool reductible)
 {
-    printf("In TopPanel : \n\tText : %p\n\tText_font : %p\n\tText_color : %p\n\tText_anchor : %p\n", text, text_font, text_color, text_anchor);
     Frame::configure(
         nullptr, color, border_width, relief, text, text_font,
         text_color, text_anchor, img, img_rect, img_anchor
@@ -38,7 +37,7 @@ void TopPanel::configure(const color_t *color,
     if (closable) {
         CloseButton = new Frame(this);
         ((Frame *)CloseButton)->configure(
-            nullptr,//Just for the moment
+            new Size(10.0, 10.0),
             new color_t({230, 30, 30, 255}),
             nullptr,
             nullptr,
@@ -64,12 +63,13 @@ void TopPanel::configure(const color_t *color,
         //     nullptr
         // );
 
+        cout << "Configure closeButton Placer" << endl;
         Placer *CloseButtonPlacer = new Placer();
         CloseButtonPlacer->configure(
             CloseButton,
             nullptr,
             new int(5), new int(5),
-            new float(10), new float(10),
+            new float(10.0), new float(10.0),
             nullptr, nullptr, nullptr, nullptr
         );
     } else {
