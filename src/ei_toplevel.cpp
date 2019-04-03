@@ -40,6 +40,11 @@ void Toplevel::geomnotify(Rect rect)
 {
     this->screen_location = rect;
     main_frame->geomnotify(rect);
+
+    for (Widget* w : getChildren()) {
+        if (w->getGeometryManager())
+            w->getGeometryManager()->run(w);
+    }
 }
 
 void Toplevel::configure(Size *requested_size,
@@ -81,7 +86,6 @@ void Toplevel::configure(Size *requested_size,
     }
 
     // CREATE PANEL FRAME
-    cout << "Create top panel" << endl;
     topPanel = new TopPanel(this);
 
     // Use default font because no other parameter
@@ -91,17 +95,14 @@ void Toplevel::configure(Size *requested_size,
     anchor_t *topleft = new anchor_t;
     *topleft = ei_anc_northwest;
 
-    cout << "Configuring topPanel" << endl;
     topPanel->configure(&default_background_color, new int(default_border_width), none, 
         nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
 
-    cout << "Create and configuring placer for toppanel" << endl;
     Placer* topPanelPlacer = new Placer();
     topPanelPlacer->configure(
         (Widget*)topPanel, nullptr, new int(0), new int(0), nullptr, new float(30.0),
         new float(0.0), new float(0.0), new float(1.0), nullptr
     );
-    cout << "After configure of topPanel's placer " << topPanel->getScreenLocation()->top_left.x() << " " << topPanel->getScreenLocation()->top_left.y() << " " << topPanel->getScreenLocation()->size.width() << " " << topPanel->getScreenLocation()->size.height() << endl;
     // topPanel->configure(&default_background_color, new int(default_border_width), none, 
     //     this->title, font, new color_t(default_font_color), nullptr, nullptr, nullptr, nullptr);
 

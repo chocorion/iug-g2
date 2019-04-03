@@ -63,7 +63,6 @@ void TopPanel::configure(const color_t *color,
         //     nullptr
         // );
 
-        cout << "Configure closeButton Placer" << endl;
         Placer *CloseButtonPlacer = new Placer();
         CloseButtonPlacer->configure(
             CloseButton,
@@ -87,8 +86,6 @@ void TopPanel::geomnotify(Rect rect){
 
     for (Widget *widget : Frame::getChildren())
     {
-        cout << "Running geometryManager on child.." << endl;
-
         GeometryManager *child_manager;
         if ((child_manager = widget->getGeometryManager()))
         {
@@ -111,15 +108,9 @@ void TopPanel::geomnotify(Rect rect){
 }
 
 void TopPanel::draw(surface_t surface, surface_t pick_surface, Rect *clipper) {
-    cout << "Drawing frame..." << endl;
-    cout << Frame::getScreenLocation()->top_left.x() << " " << Frame::getScreenLocation()->top_left.y() << " " << Frame::getScreenLocation()->size.width() << " " << Frame::getScreenLocation()->size.height() << endl;
     Frame::draw(surface, pick_surface, clipper);
-    cout << "Done !" << endl;
     if (CloseButton)    {
-        cout << "Drawing close button..." << endl;
-        cout << CloseButton->getScreenLocation()->top_left.x() << " " << CloseButton->getScreenLocation()->top_left.y() << " " << CloseButton->getScreenLocation()->size.width() << " " << CloseButton->getScreenLocation()->size.height() << endl;
         CloseButton->draw(surface, pick_surface, clipper);
-        cout << "Done !" << endl;
     }
 
     if (ReduceButton)

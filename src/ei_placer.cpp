@@ -80,19 +80,14 @@ Placer::Placer():
         Rect* container = nullptr;
         Widget* parent  = nullptr;
 
-        cout << "Before " << widget->getScreenLocation()->top_left.x() << " " << widget->getScreenLocation()->top_left.y() << " " << widget->getScreenLocation()->size.width() << " " << widget->getScreenLocation()->size.height() << endl;
-
         if ((parent = widget->getParent()))
         {
             container = parent->getContentRect();
-            cout << " Parent : " << container->top_left.x() << " " << container->top_left.y() << " " << container->size.width() << " " << container->size.height() << endl;
             if (!container)
             {
                 cerr << "Error in placer run: parent widget don't have content_rect !" << endl;
                 exit(EXIT_FAILURE);
             }
-            cout << "\n\tx : " << _x << "\n\ty : " << _y << "\n\twidth : " << _width << "\n\theight : " << _height << "\n\trel_x : " << _rel_x << "\n\trel_y : " << _rel_y;
-            cout << "\n\trel_width : " << _rel_width << "\n\trel_height : " << _rel_height << "\n\tis default width : " << _is_default_width << "\n\tis default height : " << _is_default_height << endl;   
 
         } else
         {
@@ -194,7 +189,6 @@ Placer::Placer():
         }
 
             //Vérifier si newChildRect et oldChildRect son différent ou non
-        cout << "After " << new_widget_location.top_left.x() << " " << new_widget_location.top_left.y() << " " << new_widget_location.size.width() << " " << new_widget_location.size.height() << endl;
         if (
             new_widget_location.top_left.x() != current_widget_location->top_left.x() ||
             new_widget_location.top_left.y() != current_widget_location->top_left.y() ||
