@@ -61,8 +61,14 @@ Placer::Placer():
         if (rel_x)  {   _rel_x = *rel_x ;   }
         if (rel_y)  {   _rel_y = *rel_y ;   }
 
-        if (rel_width) {  _rel_width = *rel_width   ;  }
-        if (rel_height){  _rel_height = *rel_height ;  }
+        if (rel_width) {  
+            _rel_width = *rel_width;
+            _is_default_width = false;
+        }
+        if (rel_height){
+            _rel_height = *rel_height;
+            _is_default_height = false;
+        }
 
         //First run for the widget
         run(widget);
