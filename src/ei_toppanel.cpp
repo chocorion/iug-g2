@@ -87,7 +87,6 @@ void TopPanel::draw(surface_t surface, surface_t pick_surface, Rect *clipper) {
 
 bool_t TopPanel::callback_on_click(Widget *widget, Event *event, void *user_param)
 {
-    cout << "TopPanel CLICK !" << endl;
     MouseEvent *e = static_cast<MouseEvent *>(event);
     TopPanel *toppanel = static_cast<TopPanel *>(widget);
 
@@ -109,10 +108,17 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
             e->where.x() - toppanel->click_offset.x(),
             e->where.y() - toppanel->click_offset.y()),
         toppanel->getParent()->getScreenLocation()->size);
-        
+
     toppanel->getParent()->geomnotify(ParentPos);
- 
+
+    //We had to do this because we bypass the normal use of geometryManager.
+    // I think it's better if we can just run on child...
+    for (Widget *w : toppanel->getParent()->getChildren())
+    {
+        if (w->getGeometryManager())
+            w->getGeometryManager()->run(w);
+    }
+
     return EI_TRUE;
-    //Désactiver le gestionnaire de géométrie skip avec geomnotify ? => Run sur tous ses fils après ?
 }
 }

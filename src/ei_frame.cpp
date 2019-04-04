@@ -38,7 +38,7 @@ void Frame::draw(surface_t surface,
 	surface_t fill_background = hw_surface_create(surface, &(base.size));
 	
 	fill(fill_background, color, EI_TRUE);
-	ei_copy_surface(surface, fill_background, &base.top_left, EI_TRUE);
+	ei_copy_surface(surface, fill_background, &base.top_left, EI_FALSE);
 	hw_surface_free(fill_background);
 	// FRAME IMAGE
 	if (img && parent)
