@@ -21,7 +21,6 @@ class TopPanel : public Frame, public MovableOnClick {
         TopPanel();
         TopPanel(Widget *parent);
 
-        virtual void geomnotify(Rect rect);
 
         virtual void draw(surface_t surface,
                           surface_t pick_surface,

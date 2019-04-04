@@ -81,20 +81,6 @@ void TopPanel::configure(const color_t *color,
 
 }
 
-void TopPanel::geomnotify(Rect rect){
-    Frame::geomnotify(rect);
-
-    for (Widget *widget : Frame::getChildren())
-    {
-        GeometryManager *child_manager;
-        if ((child_manager = widget->getGeometryManager()))
-        {
-            //Use the manager of the child
-            child_manager->run(widget);
-        }
-    }
-}
-
 void TopPanel::draw(surface_t surface, surface_t pick_surface, Rect *clipper) {
     Frame::draw(surface, pick_surface, clipper);
 }
@@ -118,20 +104,12 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
     MouseEvent *e = static_cast<MouseEvent *>(event);
     TopPanel *toppanel = static_cast<TopPanel *>(user_param);
 
-    Rect newPanelPos = Rect(
+    Rect ParentPos = Rect(
         Point(
             e->where.x() - toppanel->click_offset.x(),
-            e->where.y() - toppanel->click_offset.y()
-        ),
-        toppanel->getScreenLocation()->size
-    );
-
-    toppanel->geomnotify(newPanelPos);
-
-    Rect ParentPos = Rect(
-        newPanelPos.top_left,
-        toppanel->getParent()->getScreenLocation()->size
-    );
+            e->where.y() - toppanel->click_offset.y()),
+        toppanel->getParent()->getScreenLocation()->size);
+        
     toppanel->getParent()->geomnotify(ParentPos);
  
     return EI_TRUE;
