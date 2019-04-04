@@ -109,19 +109,6 @@ void TopPanel::geomnotify(Rect rect){
 
 void TopPanel::draw(surface_t surface, surface_t pick_surface, Rect *clipper) {
     Frame::draw(surface, pick_surface, clipper);
-    if (CloseButton)    {
-        CloseButton->draw(surface, pick_surface, clipper);
-    }
-
-    if (ReduceButton)
-    {
-        ReduceButton->draw(surface, pick_surface, clipper);
-    }
-
-    if (ResizeButton)
-    {
-        ResizeButton->draw(surface, pick_surface, clipper);
-    }
 }
 
 bool_t TopPanel::callback_on_click(Widget *widget, Event *event, void *user_param)

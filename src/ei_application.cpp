@@ -118,16 +118,13 @@ void Application::run()
     mouse_e isMouseEvent;
     Point mouseCoord;
     Widget *concerned_widget;
-    bool isEventHandled = false;
+    bool isEventHandled ;
     
-    cout << "ONLY one display for testing" << endl;
-
-    renderDisplay();
     while (continue_running)
     {
         concerned_widget = nullptr;
         isEventHandled = false;
-
+        cout << "Rendering display..."<<endl;
         renderDisplay();
         cout << "Waiting for event..." << endl;
         event = hw_event_wait_next();
