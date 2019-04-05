@@ -93,7 +93,7 @@ public:
    /**
     * \brief Method called by a child to refocus itself (move itself in the first position in the children array)
     */
-   void focus(Widget* child);
+   static bool_t focus(Widget* child, Event* event, void* user_param);
 
   void setGeometryManager(GeometryManager *geometryManager);
 
