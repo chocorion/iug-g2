@@ -146,9 +146,8 @@ void Frame::configure(Size *requested_size,
 			this->text_font = text_font;
 		else
 		{
-			font_t *font = new font_t();
-			*font = hw_text_font_create(default_font_filename, font_default_size);
-			this->text_font = font;
+			this->text_font = new font_t();
+			*(this->text_font )= hw_text_font_create(default_font_filename, font_default_size);
 		}
 	}
 
@@ -177,11 +176,7 @@ void Frame::configure(Size *requested_size,
 
 		if (this->text)
 		{
-			*(this->text_font) = hw_text_font_create(default_font_filename, font_default_size);
-
-			cout << "Text to display : " << *this->text << " Texte font : " << this->text_font << endl;
-			hw_text_compute_size("Window", *(this->text_font), default_size);
-			cout << "It's working !" << endl;
+			hw_text_compute_size(*(this->text), *(this->text_font), default_size);
 		}
 		else if (this->img)
 		{
