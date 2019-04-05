@@ -5,6 +5,7 @@ using namespace std;
 
 namespace ei {
 
+//Little structure for storing user_param
 typedef struct {
     ei_callback_t* callbacks;
     Widget* widget;
@@ -24,8 +25,11 @@ MovableOnClick::MovableOnClick(Widget *w, ei_callback_t callback_on_click, ei_ca
 bool_t MovableOnClick::enableMoving(Widget* widget, Event* event, void* user_param) {
     ei_callback_t* callbacks = ((param_t*) user_param)->callbacks;
 
+    //Call the user callback
     callbacks[0](widget, event, nullptr);
+    //Bind callback on move
     EventManager::getInstance().bind(ei_ev_mouse_move, nullptr, "all", callbacks[1], (void *)((param_t *)user_param)->widget);
+    //Bind callback on buttonUp
     EventManager::getInstance().bind(ei_ev_mouse_buttonup, nullptr, "all", callback_released, user_param);
 
     return EI_TRUE;
@@ -40,7 +44,6 @@ bool_t MovableOnClick::callback_released(Widget *widget, Event *event, void *use
         ((param_t *)user_param)->callbacks[1],
         (void *)((param_t *)user_param) -> widget);
 
-    //All tant que la fenêtre ne se déplace pas vraiment, car pas de dessin dans l'offscreen pour le moment
     EventManager::getInstance().unbind(
         ei_ev_mouse_buttonup,
         nullptr,

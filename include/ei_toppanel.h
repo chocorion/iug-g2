@@ -7,9 +7,13 @@
  
 namespace ei
 {
-
+/**
+ * @brief Represent the panel on the top of Toplevel (Can be used for every other widget)
+ * 
+ */
 class TopPanel : public Frame, public MovableOnClick {
     private:
+        //Position of the click in the panel reference
         Point click_offset;
 
         Widget *CloseButton;
@@ -21,13 +25,14 @@ class TopPanel : public Frame, public MovableOnClick {
         TopPanel();
         TopPanel(Widget *parent);
 
-
-        virtual void draw(surface_t surface,
-                          surface_t pick_surface,
-                          Rect *clipper);
-
-
+        /**
+         * @brief Overidden function
+         */
         static bool_t callback_move_panel(Widget *widget, Event *event, void *user_param);
+
+        /**
+         * @brief Overidden function
+         */
         static bool_t callback_on_click(Widget* widget, Event *event, void* user_param);//
 
         /**

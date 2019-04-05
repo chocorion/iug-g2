@@ -51,6 +51,7 @@ void Toplevel::configure(Size *requested_size,
     main_frame = new Frame(this);
     //Use top-level color for the background
     main_frame->configure(nullptr, color, new int(default_border_width), none, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
+
     Placer *main_frame_placer = new Placer();
     main_frame_placer->configure(
         main_frame, nullptr, nullptr, nullptr, nullptr, nullptr,
@@ -90,6 +91,5 @@ void Toplevel::configure(Size *requested_size,
 
     this->content_rect = &screen_location;
 }
-
 
 } // namespace ei

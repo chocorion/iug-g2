@@ -46,9 +46,11 @@ void TopPanel::configure(const color_t *color,
             nullptr,
             nullptr,
             nullptr,
-            nullptr, //Hum maybe will cause problems....
+            nullptr,
             nullptr
         );
+        
+        //Text cause problems for the moment
         // ((Frame *)CloseButton)->configure(
         //     nullptr,//Just for the moment
         //     new color_t({230, 30, 30, 255}),
@@ -81,15 +83,13 @@ void TopPanel::configure(const color_t *color,
 
 }
 
-void TopPanel::draw(surface_t surface, surface_t pick_surface, Rect *clipper) {
-    Frame::draw(surface, pick_surface, clipper);
-}
 
 bool_t TopPanel::callback_on_click(Widget *widget, Event *event, void *user_param)
 {
     MouseEvent *e = static_cast<MouseEvent *>(event);
     TopPanel *toppanel = static_cast<TopPanel *>(widget);
 
+    //Save the click coordinate in panel reference
     toppanel->click_offset = Point(
         e->where.x() - toppanel->getScreenLocation()->top_left.x(),
         e->where.y() - toppanel->getScreenLocation()->top_left.y()
@@ -111,7 +111,7 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
 
     toppanel->getParent()->geomnotify(ParentPos);
     //We had to do this because we bypass the normal use of geometryManager.
-    // I think it's better if we can just run on child...
+    // I think it's better if we can just run on child in geometryManager::run
     for (Widget *w : toppanel->getParent()->getChildren())
     {
         if (w->getGeometryManager())
