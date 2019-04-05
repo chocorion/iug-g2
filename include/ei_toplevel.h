@@ -6,6 +6,7 @@
 #include "ei_types.h"
 #include "ei_tools.h"
 #include "ei_toppanel.h"
+#include "ei_resizebutton.h"
 
 #include <functional>
 
@@ -46,7 +47,9 @@ class Toplevel : public Widget
                    axis_set_t *resizable,
                    Size *min_size);
 
-    private: 
+    axis_set_t getAxis();
+
+  private: 
     color_t *color;
     int *border_width;
     const char **title;
@@ -54,8 +57,8 @@ class Toplevel : public Widget
     axis_set_t *resizable;
     Size *min_size;
     TopPanel *topPanel;
+    ResizeButton *resizeButton;
     Frame *main_frame;
-    Frame *resizeButton; //TEMPORAIRE
 };
 
 }

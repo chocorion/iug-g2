@@ -55,6 +55,7 @@ set(include_files
 		include/hw_interface.h
 		include/ei_toppanel.h
 		include/ei_movableonclick.h
+		include/ei_resizebutton.h
 	)
 add_custom_target(headers SOURCES ${include_files})
 
@@ -70,6 +71,7 @@ set(EI_SRC
 		src/ei_tools.cpp
 		src/ei_toppanel.cpp
 		src/ei_movableonclick.cpp
+		src/ei_resizebutton.cpp
         )
 add_library(ei ${EI_SRC})
 

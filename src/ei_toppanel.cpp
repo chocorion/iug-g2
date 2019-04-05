@@ -36,20 +36,7 @@ void TopPanel::configure(const color_t *color,
 
     if (closable) {
         CloseButton = new Frame(this);
-        // ((Frame *)CloseButton)->configure(
-        //     new Size(10.0, 10.0),
-        //     new color_t({230, 30, 30, 255}),
-        //     nullptr,
-        //     nullptr,
-        //     nullptr,
-        //     nullptr,
-        //     nullptr,
-        //     nullptr,
-        //     nullptr,
-        //     nullptr,
-        //     nullptr
-        // );
-        
+
         //Text cause problems for the moment
         ((Frame *)CloseButton)->configure(
             nullptr,//Just for the moment
