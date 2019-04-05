@@ -158,6 +158,7 @@ Placer::Placer():
                 break;
 
             case ei_anc_southeast:
+                cout << "SOUTHEAST" << endl;
                 new_widget_location.top_left = Point(
                     anchor.x() - new_widget_location.size.width(),
                     anchor.y() - new_widget_location.size.height()

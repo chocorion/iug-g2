@@ -80,7 +80,7 @@ void Toplevel::configure(Size *requested_size,
         
         Placer *resizeButtonPlacer = new Placer();
         resizeButtonPlacer->configure(
-            (Widget*)resizeButton, new anchor_t(ei_anc_south), new int(40), new int(40), new float(40.0), new float(40.0), new float(0.0), new float(0.0), nullptr, nullptr
+            (Widget*)resizeButton, new anchor_t(ei_anc_southeast), nullptr, nullptr, new float(40.0), new float(40.0), new float(1.0), new float(1.0), nullptr, nullptr
         );
     }
     else

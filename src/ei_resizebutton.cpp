@@ -18,8 +18,8 @@ bool_t ResizeButton::callback_on_click(Widget *widget, Event *event, void *user_
 
     //Save the click coordinate in panel reference
     resizeButton->click_offset = Point(
-        resizeButton->getParent()->getScreenLocation()->size.width() + resizeButton->getScreenLocation()->size.width() + resizeButton->getScreenLocation()->top_left.x() - e->where.x(),
-        resizeButton->getParent()->getScreenLocation()->size.height() + resizeButton->getScreenLocation()->size.height() + resizeButton->getScreenLocation()->top_left.y() - e->where.y()
+        resizeButton->getScreenLocation()->size.width() + resizeButton->getScreenLocation()->top_left.x() - e->where.x(),
+        resizeButton->getScreenLocation()->size.height() + resizeButton->getScreenLocation()->top_left.y() - e->where.y()
     );
 
     return EI_TRUE;
