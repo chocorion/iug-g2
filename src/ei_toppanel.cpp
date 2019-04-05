@@ -109,9 +109,6 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
             e->where.y() - toppanel->click_offset.y()),
         toppanel->getParent()->getScreenLocation()->size);
 
-    cout << "Parent pos find : " << ParentPos.top_left.x() << " " << ParentPos.top_left.y();
-    cout << " " << ParentPos.size.width() << " " << ParentPos.size.height() << endl;
-
     toppanel->getParent()->geomnotify(ParentPos);
     //We had to do this because we bypass the normal use of geometryManager.
     // I think it's better if we can just run on child...

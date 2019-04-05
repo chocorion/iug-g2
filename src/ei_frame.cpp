@@ -28,23 +28,19 @@ void Frame::draw(surface_t surface,
 				 surface_t pick_surface,
 				 Rect *clipper) 
 {
-
-	Rect base = Rect(Point(screen_location.top_left), Size(screen_location.size));
-	Rect current = Rect(Point(base.top_left), Size(base.size));
-	  
-	// PICK SURFACE
 	drawOffscreen(pick_surface, clipper);
+	// PICK SURFACE
 
 	// FRAME BACKGROUND
-	surface_t fill_background = hw_surface_create(surface, &(base.size));
+	surface_t fill_background = hw_surface_create(surface, &getScreenLocation()->size);
 	
-	fill(fill_background, color, EI_TRUE);
-	ei_copy_surface(surface, fill_background, &base.top_left, EI_FALSE);
+	fill(fill_background, color, EI_FALSE);
+	ei_copy_surface(surface, fill_background, &getScreenLocation()->top_left, EI_FALSE);
 	hw_surface_free(fill_background);
 	// FRAME IMAGE
 	if (img && parent)
 	{
-		ei_copy_surface(surface, *img, &base.top_left, EI_TRUE);
+		ei_copy_surface(surface, *img, &getScreenLocation()->top_left, EI_TRUE);
 	}
 
 	// FRAME TEXT
@@ -69,6 +65,7 @@ void Frame::draw(surface_t surface,
         255
     };
 
+	Rect current = Rect(Point(getScreenLocation()->top_left), Size(getScreenLocation()->size));
 	// FRAME BORDER
 	if (border_width)
 	{

@@ -45,10 +45,10 @@ void Toplevel::configure(Size *requested_size,
     int default_border_width = 2;
     color_t default_font_color = {0x00, 0xFF, 0x00, 0xff};
 
-    // CREATE MAIN TOPLEVEL FRAME
-
-    main_frame = new Frame(this);
     relief_t *none = new relief_t(ei_relief_none);
+    
+    // CREATE MAIN TOPLEVEL FRAME
+    main_frame = new Frame(this);
     //Use top-level color for the background
     main_frame->configure(nullptr, color, new int(default_border_width), none, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
     Placer *main_frame_placer = new Placer();
@@ -77,6 +77,8 @@ void Toplevel::configure(Size *requested_size,
     anchor_t *topleft = new anchor_t;
     *topleft = ei_anc_northwest;
 
+    // topPanel->configure(&default_background_color, new int(default_border_width), none, 
+    //     this->title, font, new color_t(default_font_color), nullptr, nullptr, nullptr, nullptr);
     topPanel->configure(&default_background_color, new int(default_border_width), none, 
         nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
 
@@ -85,8 +87,6 @@ void Toplevel::configure(Size *requested_size,
         (Widget*)topPanel, nullptr, new int(0), new int(0), nullptr, new float(30.0),
         new float(0.0), new float(0.0), new float(1.0), nullptr
     );
-    // topPanel->configure(&default_background_color, new int(default_border_width), none, 
-    //     this->title, font, new color_t(default_font_color), nullptr, nullptr, nullptr, nullptr);
 
     this->content_rect = &screen_location;
 }
