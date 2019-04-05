@@ -36,34 +36,34 @@ void TopPanel::configure(const color_t *color,
 
     if (closable) {
         CloseButton = new Frame(this);
-        ((Frame *)CloseButton)->configure(
-            new Size(10.0, 10.0),
-            new color_t({230, 30, 30, 255}),
-            nullptr,
-            nullptr,
-            nullptr,
-            nullptr,
-            nullptr,
-            nullptr,
-            nullptr,
-            nullptr,
-            nullptr
-        );
-        
-        //Text cause problems for the moment
         // ((Frame *)CloseButton)->configure(
-        //     nullptr,//Just for the moment
+        //     new Size(10.0, 10.0),
         //     new color_t({230, 30, 30, 255}),
         //     nullptr,
         //     nullptr,
-        //     new const char*("X"),
         //     nullptr,
-        //     new color_t({40, 40, 40, 255}),
-        //     new anchor_t(ei_anc_center),
-        //     Frame::getImg(),
-        //     nullptr, //Hum maybe will cause problems....
+        //     nullptr,
+        //     nullptr,
+        //     nullptr,
+        //     nullptr,
+        //     nullptr,
         //     nullptr
         // );
+        
+        //Text cause problems for the moment
+        ((Frame *)CloseButton)->configure(
+            nullptr,//Just for the moment
+            new color_t({230, 30, 30, 255}),
+            nullptr,
+            nullptr,
+            new const char*("*"),
+            nullptr,
+            new color_t({40, 40, 40, 255}),
+            new anchor_t(ei_anc_center),
+            nullptr,
+            nullptr, //Hum maybe will cause problems....
+            nullptr
+        );
 
         Placer *CloseButtonPlacer = new Placer();
         CloseButtonPlacer->configure(
