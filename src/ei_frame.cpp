@@ -173,20 +173,22 @@ void Frame::configure(Size *requested_size,
 		this->requested_size = *requested_size;
 	else
 	{
-		Size *default_size = new Size();
+		Size default_size;
 
 		if (this->text)
 		{
+			*(this->text_font) = hw_text_font_create(default_font_filename, font_default_size);
+
 			cout << "Text to display : " << *this->text << " Texte font : " << this->text_font << endl;
-			hw_text_compute_size("Window", this->text_font, *default_size);
+			hw_text_compute_size("Window", *(this->text_font), default_size);
 			cout << "It's working !" << endl;
 		}
 		else if (this->img)
 		{
-			*default_size = hw_surface_get_size(this->img);
+			default_size = hw_surface_get_size(this->img);
 		}
 
-		this->requested_size = *default_size;
+		this->requested_size = default_size;
 	}
 }
 
