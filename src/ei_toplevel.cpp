@@ -78,10 +78,10 @@ void Toplevel::configure(Size *requested_size,
     anchor_t *topleft = new anchor_t;
     *topleft = ei_anc_northwest;
 
-    // topPanel->configure(&default_background_color, new int(default_border_width), none, 
-    //     this->title, font, new color_t(default_font_color), nullptr, nullptr, nullptr, nullptr);
     topPanel->configure(&default_background_color, new int(default_border_width), none, 
-        nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
+        this->title, font, new color_t(default_font_color), nullptr, nullptr, nullptr, nullptr);
+    // topPanel->configure(&default_background_color, new int(default_border_width), none, 
+    //     nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
 
     Placer* topPanelPlacer = new Placer();
     topPanelPlacer->configure(
