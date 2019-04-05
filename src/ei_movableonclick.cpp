@@ -22,7 +22,6 @@ MovableOnClick::MovableOnClick(Widget *w, ei_callback_t callback_on_click, ei_ca
 }
 
 bool_t MovableOnClick::enableMoving(Widget* widget, Event* event, void* user_param) {
-    cout << "MovableOnClick => Activation !" << endl;
     ei_callback_t* callbacks = ((param_t*) user_param)->callbacks;
 
     callbacks[0](widget, event, nullptr);
@@ -34,7 +33,6 @@ bool_t MovableOnClick::enableMoving(Widget* widget, Event* event, void* user_par
 
 bool_t MovableOnClick::callback_released(Widget *widget, Event *event, void *user_param)
 {
-    cout << "MovableOnClick => Desactivation !" << endl;
     EventManager::getInstance().unbind(
         ei_ev_mouse_move,
         nullptr,

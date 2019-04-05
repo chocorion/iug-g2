@@ -20,10 +20,6 @@ class Toplevel : public Widget
 
     virtual ~Toplevel();
 
-    virtual void draw(surface_t surface,
-                      surface_t pick_surface,
-                      Rect *clipper);
-
     /**
      * @brief   Configures the attributes of widgets of the class "toplevel".
      *

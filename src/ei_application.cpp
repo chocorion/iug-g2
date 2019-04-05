@@ -124,11 +124,8 @@ void Application::run()
     {
         concerned_widget = nullptr;
         isEventHandled = false;
-        cout << "Rendering display..."<<endl;
         renderDisplay();
-        cout << "Waiting for event..." << endl;
         event = hw_event_wait_next();
-        cout << "Computing..." << endl;
         
         //Search the good widget
         if ((isMouseEvent = need_picking(event)) != OTHER)

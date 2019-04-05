@@ -25,26 +25,10 @@ Toplevel::~Toplevel()
 {
 }
 
-void Toplevel::draw(surface_t surface,
-                    surface_t pick_surface,
-                    Rect *clipper)
-{
-
-    main_frame->draw(surface, pick_surface, clipper);
-    
-    //Draw only the frame on clipper
-    drawOffscreen(pick_surface, clipper);
-}
-
 void Toplevel::geomnotify(Rect rect)
 {
     this->screen_location = rect;
     main_frame->geomnotify(rect);
-
-    for (Widget* w : getChildren()) {
-        if (w->getGeometryManager())
-            w->getGeometryManager()->run(w);
-    }
 }
 
 void Toplevel::configure(Size *requested_size,
@@ -69,10 +53,14 @@ void Toplevel::configure(Size *requested_size,
 
     // CREATE MAIN TOPLEVEL FRAME
 
-    main_frame = new Frame(nullptr);
+    main_frame = new Frame(this);
     relief_t *none = new relief_t(ei_relief_none);
     //Use top-level color for the background
     main_frame->configure(nullptr, color, new int(default_border_width), none, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
+    Placer *main_frame_placer = new Placer();
+    main_frame_placer->configure(
+        main_frame, nullptr, nullptr, nullptr, nullptr, nullptr,
+        nullptr, nullptr, new float(1.0), new float(1.0));
 
     // Temporaire !
     if (resizable && *resizable != ei_axis_none)

@@ -206,8 +206,8 @@ Placer::Placer():
                     child_manager->run((*it));
                 }
             }
-            }
         }
+    }
 
     void Placer::release(Widget *widget)
     {
