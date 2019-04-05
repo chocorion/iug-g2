@@ -46,9 +46,6 @@ class Toplevel : public Widget
                    axis_set_t *resizable,
                    Size *min_size);
 
-    void geomnotify(Rect rect);
-    
-
     private: 
     color_t *color;
     int *border_width;

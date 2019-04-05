@@ -25,12 +25,6 @@ Toplevel::~Toplevel()
 {
 }
 
-void Toplevel::geomnotify(Rect rect)
-{
-    this->screen_location = rect;
-    main_frame->geomnotify(rect);
-}
-
 void Toplevel::configure(Size *requested_size,
                          color_t *color,
                          int *border_width,
