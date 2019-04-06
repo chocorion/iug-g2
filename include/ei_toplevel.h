@@ -5,6 +5,8 @@
 #include "ei_draw.h"
 #include "ei_types.h"
 #include "ei_tools.h"
+#include "ei_toppanel.h"
+#include "ei_resizebutton.h"
 
 #include <functional>
 
@@ -14,14 +16,10 @@ namespace ei {
 class Toplevel : public Widget
 {
   public:
-    static bool_t callback_pressed(Widget *widget, Event *event, void *user_param);
+    
     Toplevel(Widget *parent);
 
     virtual ~Toplevel();
-
-    virtual void draw(surface_t surface,
-                      surface_t pick_surface,
-                      Rect *clipper);
 
     /**
      * @brief   Configures the attributes of widgets of the class "toplevel".
@@ -49,25 +47,18 @@ class Toplevel : public Widget
                    axis_set_t *resizable,
                    Size *min_size);
 
-    void geomnotify(Rect rect);
-    const Rect* getPanelLocation() const;
-    const Rect *getResizeButtonLocation() const;
+    axis_set_t getAxis();
 
-
-    private : color_t *color;
+  private: 
+    color_t *color;
     int *border_width;
     const char **title;
     bool_t *closable;
     axis_set_t *resizable;
     Size *min_size;
-
+    TopPanel *topPanel;
+    ResizeButton *resizeButton;
     Frame *main_frame;
-    Frame *panel_frame;
-    Frame *resize_button;
-
-    //Offset for the click on the panel/resize button
-    Point tmp_offset;
-    
 };
 
 }

@@ -9,6 +9,7 @@
 
 #include "ei_widget.h"
 #include "ei_geometrymanager.h"
+#include "ei_eventmanager.h"
 
 #include <functional>
 #include <iostream>
@@ -16,6 +17,11 @@
 using namespace std;
 
 namespace ei {
+
+	typedef struct {
+		ei_callback_t* callbacks;
+		Widget* widget;
+	} param_t;
 
 	uint32_t Widget::s_idGenerator = 0;
 
@@ -45,6 +51,8 @@ namespace ei {
 		}
 
 		content_rect = &screen_location;
+
+    	EventManager::getInstance().bind(ei_ev_mouse_buttondown, this, "", this->focus, nullptr);
 	}
 
 	/**
@@ -189,5 +197,23 @@ namespace ei {
 	const Rect* Widget::getScreenLocation() const
 	{
 		return &screen_location;
+	}
+
+	bool_t Widget::focus(Widget* target, Event* event, void* user_param)
+	{
+
+		if(target->parent) {
+			// Refocus toplevel widgets only
+			if(target->name == "Toplevel") {
+				target->parent->children.remove(((Widget*) target));
+				target->parent->children.push_back(((Widget*) target));
+			}
+
+			if(target->parent->parent) {
+				focus(target->parent, event, nullptr);
+			} 
+		}
+
+		return EI_FALSE;
 	}
 }

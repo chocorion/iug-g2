@@ -118,20 +118,25 @@ void Application::run()
     mouse_e isMouseEvent;
     Point mouseCoord;
     Widget *concerned_widget;
-    bool isEventHandled = false;
-    
-    cout << "ONLY one display for testing" << endl;
+    bool isEventHandled;
 
-    renderDisplay();
+    double FRAME_RATE = 60;
+
+    double last = 0;
+    double now = 0;
+
     while (continue_running)
     {
-        concerned_widget = nullptr;
-        isEventHandled = false;
-
-        //renderDisplay();
-
         event = hw_event_wait_next();
 
+        now = hw_now();
+        if(now - last > (float) 1/FRAME_RATE) {
+            renderDisplay();
+            last = hw_now();
+        }
+        
+        concerned_widget = nullptr;
+            
         //Search the good widget
         if ((isMouseEvent = need_picking(event)) != OTHER)
         {
@@ -143,7 +148,7 @@ void Application::run()
             {
                 mouseCoord = ((TouchEvent *)event)->where;
             }
-            
+                
             concerned_widget = widget_pick(mouseCoord);
         }
 

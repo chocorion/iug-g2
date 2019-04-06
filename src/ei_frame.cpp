@@ -28,22 +28,19 @@ void Frame::draw(surface_t surface,
 				 surface_t pick_surface,
 				 Rect *clipper) 
 {
-	Rect base = Rect(Point(screen_location.top_left), Size(screen_location.size));
-	Rect current = Rect(Point(base.top_left), Size(base.size));
-
-	// PICK SURFACE
 	drawOffscreen(pick_surface, clipper);
+	// PICK SURFACE
 
 	// FRAME BACKGROUND
-	surface_t fill_background = hw_surface_create(surface, &(base.size));
+	surface_t fill_background = hw_surface_create(surface, &getScreenLocation()->size);
 	
-	fill(fill_background, color, EI_TRUE);
-	ei_copy_surface(surface, fill_background, &base.top_left, EI_TRUE);
+	fill(fill_background, color, EI_FALSE);
+	ei_copy_surface(surface, fill_background, &getScreenLocation()->top_left, EI_FALSE);
 	hw_surface_free(fill_background);
 	// FRAME IMAGE
 	if (img && parent)
 	{
-		ei_copy_surface(surface, *img, &base.top_left, EI_TRUE);
+		ei_copy_surface(surface, *img, &getScreenLocation()->top_left, EI_TRUE);
 	}
 
 	// FRAME TEXT
@@ -68,6 +65,7 @@ void Frame::draw(surface_t surface,
         255
     };
 
+	Rect current = Rect(Point(getScreenLocation()->top_left), Size(getScreenLocation()->size));
 	// FRAME BORDER
 	if (border_width)
 	{
@@ -106,7 +104,6 @@ void Frame::configure(Size *requested_size,
 					  Rect **img_rect,
 					  anchor_t *img_anchor)
 {
-
 	if (color)
 		this->color = color;
 	else
@@ -149,9 +146,8 @@ void Frame::configure(Size *requested_size,
 			this->text_font = text_font;
 		else
 		{
-			font_t *font = new font_t();
-			*font = hw_text_font_create(default_font_filename, font_default_size);
-			this->text_font = font;
+			this->text_font = new font_t();
+			*(this->text_font )= hw_text_font_create(default_font_filename, font_default_size);
 		}
 	}
 
@@ -176,18 +172,18 @@ void Frame::configure(Size *requested_size,
 		this->requested_size = *requested_size;
 	else
 	{
-		Size *default_size = new Size();
+		Size default_size;
 
 		if (this->text)
 		{
-			hw_text_compute_size(*this->text, this->text_font, *default_size);
+			hw_text_compute_size(*(this->text), *(this->text_font), default_size);
 		}
 		else if (this->img)
 		{
-			*default_size = hw_surface_get_size(this->img);
+			default_size = hw_surface_get_size(this->img);
 		}
 
-		this->requested_size = *default_size;
+		this->requested_size = default_size;
 	}
 }
 
