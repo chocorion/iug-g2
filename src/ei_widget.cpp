@@ -87,7 +87,6 @@ namespace ei {
 		//If clipper is null, we use screen location
 		Rect where = (clipper)? limitRectToClipper(clipper) : screen_location;
 
-		//Vérifier que le clipper est bien géré dans le cas ou il n'est pas nul !
 		surface_t pick = hw_surface_create(pick_surface, &where.size);
 		fill(pick, &pick_color, EI_FALSE);
 		ei_copy_surface(pick_surface, pick, &where.top_left, EI_FALSE);
@@ -201,10 +200,11 @@ namespace ei {
 
 	bool_t Widget::focus(Widget* target, Event* event, void* user_param)
 	{
-
-		if(target->parent) {
+		if(target->parent)
+		{
 			// Refocus toplevel widgets only
-			if(target->name == "Toplevel") {
+			if(target->name == "Toplevel")
+			{
 				target->parent->children.remove(((Widget*) target));
 				target->parent->children.push_back(((Widget*) target));
 			}
@@ -214,6 +214,7 @@ namespace ei {
 			} 
 		}
 
+		//Event can by used for another callback
 		return EI_FALSE;
 	}
 }

@@ -37,7 +37,8 @@ bool_t ResizeButton::callback_move_button(Widget *widget, Event *event, void *us
 
     Rect newRect = *(resizeButton->getParent()->getScreenLocation());
 
-    switch(((Toplevel*)(resizeButton->getParent()))->getAxis()){
+    switch(((Toplevel*)(resizeButton->getParent()))->getAxis())
+    {
         case ei_axis_x:
             newRect.size = Size(newSize.width(), resizeButton->getParent()->getScreenLocation()->size.height());
             break;

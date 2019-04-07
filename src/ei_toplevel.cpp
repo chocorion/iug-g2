@@ -52,35 +52,39 @@ void Toplevel::configure(Size *requested_size,
     relief_t *none = new relief_t(ei_relief_none);
     
     // Use default font because no other parameter
-    font_t *font = new font_t();
-    *font = hw_text_font_create(default_font_filename, font_default_size);
+    font_t *font = new font_t(hw_text_font_create(default_font_filename, font_default_size));
 
-    anchor_t *topleft = new anchor_t;
-    *topleft = ei_anc_northwest;
+    anchor_t *topleft = new anchor_t(ei_anc_northwest);
 
     
     // CREATE MAIN TOPLEVEL FRAME
     main_frame = new Frame(this);
     //Use top-level color for the background
-    main_frame->configure(nullptr, color, new int(default_border_width), none, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
+    main_frame->configure(
+        nullptr, color, new int(default_border_width), none, nullptr, nullptr,
+        nullptr, nullptr, nullptr, nullptr, nullptr
+    );
 
     Placer *main_frame_placer = new Placer();
     main_frame_placer->configure(
         main_frame, nullptr, nullptr, nullptr, nullptr, nullptr,
-        nullptr, nullptr, new float(1.0), new float(1.0));
+        nullptr, nullptr, new float(1.0), new float(1.0)
+    );
 
-    // Temporaire !
+
+    // CREATE RESIZE BUTTON
     if (resizable && *resizable != ei_axis_none)
     {
-        cout << "Creating button" << endl;
         resizeButton = new ResizeButton(this);
         resizeButton->configure(
-            new Size(40.0, 40.0), &default_background_color, new int(2), nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr
+            new Size(40.0, 40.0), &default_background_color, new int(2), nullptr, nullptr, nullptr, nullptr,
+            nullptr, nullptr, nullptr, nullptr
         );
         
         Placer *resizeButtonPlacer = new Placer();
         resizeButtonPlacer->configure(
-            (Widget*)resizeButton, new anchor_t(ei_anc_southeast), nullptr, nullptr, new float(40.0), new float(40.0), new float(1.0), new float(1.0), nullptr, nullptr
+            (Widget*)resizeButton, new anchor_t(ei_anc_southeast), nullptr, nullptr, new float(40.0), new float(40.0),
+            new float(1.0), new float(1.0), nullptr, nullptr
         );
     }
     else
@@ -89,11 +93,12 @@ void Toplevel::configure(Size *requested_size,
     }
 
 
-    // CREATE PANEL FRAME
+    // CREATE TOPPANEL
     topPanel = new TopPanel(this);
 
     topPanel->configure(&default_background_color, new int(default_border_width), none, 
-        this->title, font, new color_t(default_font_color), nullptr, nullptr, nullptr, nullptr);
+        this->title, font, new color_t(default_font_color), nullptr, nullptr, nullptr, nullptr
+    );
 
     Placer* topPanelPlacer = new Placer();
     topPanelPlacer->configure(
