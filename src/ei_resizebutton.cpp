@@ -30,24 +30,47 @@ bool_t ResizeButton::callback_move_button(Widget *widget, Event *event, void *us
     MouseEvent *e = static_cast<MouseEvent *>(event);
     ResizeButton *resizeButton = static_cast<ResizeButton *>(user_param);
 
-    Size newSize = Size(
-        e->where.x() + resizeButton->click_offset.x() - resizeButton->getParent()->getScreenLocation()->top_left.x(),
-        e->where.y() + resizeButton->click_offset.y() - resizeButton->getParent()->getScreenLocation()->top_left.y()
+    const Rect* parentLocation = resizeButton->getParent()->getScreenLocation();
+    const Rect* containerLocation = resizeButton->getParent()->getParent()->getScreenLocation();
+
+    const Point bottom_right = Point(
+        e->where.x() + resizeButton->click_offset.x(),
+        e->where.y() + resizeButton->click_offset.y()
     );
 
-    Rect newRect = *(resizeButton->getParent()->getScreenLocation());
+    Size newSize = Size(
+        bottom_right.x() - parentLocation->top_left.x(),
+        bottom_right.y() - parentLocation->top_left.y()
+    );
+
+    Rect newRect = *(parentLocation);
 
     switch(((Toplevel*)(resizeButton->getParent()))->getAxis())
     {
         case ei_axis_x:
-            newRect.size = Size(newSize.width(), resizeButton->getParent()->getScreenLocation()->size.height());
+            newRect.size = Size(newSize.width(), parentLocation->size.height());
             break;
         case ei_axis_y:
-            newRect.size = Size(resizeButton->getParent()->getScreenLocation()->size.width(), newSize.height());
+            newRect.size = Size(parentLocation->size.width(), newSize.height());
             break;
         default:
             newRect.size = newSize;
             break;
+    }
+
+    if(bottom_right.x() > containerLocation->top_left.x() + containerLocation->size.width())
+    {
+        newRect.size = Size(
+            containerLocation->top_left.x() + containerLocation->size.width() - parentLocation->top_left.x(),
+            newRect.size.height()
+        );
+    }
+    if(bottom_right.y() > containerLocation->top_left.y() + containerLocation->size.height())
+    {
+        newRect.size = Size(
+            newRect.size.width(),
+            containerLocation->top_left.y() + containerLocation->size.height() - parentLocation->top_left.y()
+        );
     }
 
     resizeButton->getParent()->geomnotify(newRect);
