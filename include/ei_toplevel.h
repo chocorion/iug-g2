@@ -48,6 +48,7 @@ class Toplevel : public Widget
                    Size *min_size);
 
     axis_set_t getAxis();
+    Size* getMinimalSize();
 
   private: 
     color_t *color;

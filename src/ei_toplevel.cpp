@@ -110,4 +110,9 @@ void Toplevel::configure(Size *requested_size,
     this->content_rect = &screen_location;
 }
 
+Size* Toplevel::getMinimalSize()
+{
+    return min_size;
+}
+
 } // namespace ei
