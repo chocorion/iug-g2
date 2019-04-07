@@ -26,22 +26,21 @@ Application::Application(Size *main_window_size)
 {
     hw_init();
 
-    surface_t *img = new surface_t;
-    *img = hw_create_window(main_window_size, EI_FALSE);
+    surface_t *img = new surface_t(hw_create_window(main_window_size, EI_FALSE));
     _pick = hw_surface_create(*img, main_window_size);
 
     root->configure(
         main_window_size,
-        NULL,
-        NULL,
-        NULL,
-        NULL,
-        NULL,
-        NULL,
-        NULL,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
         img,
-        NULL,
-        NULL);
+        nullptr,
+        nullptr);
 
     root->geomnotify(*(new Rect(Point(),*main_window_size)));
 
@@ -54,6 +53,10 @@ Application::~Application()
     hw_quit();
 }
 
+/**
+ * @brief Represent the global type
+ *        of a mouse event
+ */
 typedef enum
 {
     MOUSE,
@@ -61,6 +64,12 @@ typedef enum
     OTHER
 } mouse_e;
 
+/**
+ * @brief Allow to know if an event is a mouse event.
+ * 
+ * @param event The event to treat.
+ * @return mouse_e The global type of this event.
+ */
 mouse_e need_picking(Event *event)
 {
     if (
@@ -77,10 +86,7 @@ mouse_e need_picking(Event *event)
     {
         return TOUCH;
     }
-    else
-    {
-        return OTHER;
-    }
+    return OTHER;
 }
 
 void Application::renderDisplayRec(Widget *widget)
@@ -107,8 +113,6 @@ void Application::renderDisplay()
     linked_rect_t rects = linked_rect_t();
     rects.push_back(hw_surface_get_rect(root_surface()));
     hw_surface_update_rects(rects);
-
-
 }
 
 void Application::run()
@@ -129,6 +133,7 @@ void Application::run()
     {
         event = hw_event_wait_next();
 
+        //Use a specific framerate for display.
         now = hw_now();
         if(now - last > (float) 1/FRAME_RATE) {
             renderDisplay();
@@ -137,7 +142,7 @@ void Application::run()
         
         concerned_widget = nullptr;
             
-        //Search the good widget
+        //Search the concerned widget if it's a mouse event
         if ((isMouseEvent = need_picking(event)) != OTHER)
         {
             if (isMouseEvent == MOUSE)
@@ -160,7 +165,6 @@ void Application::run()
             isEventHandled = EventManager::getInstance().execute(event, concerned_widget);
         }
 
-        //Something take a lot of memory at each handled event...
         delete event;
     }
 }
@@ -206,17 +210,11 @@ Widget *rec_widget_pick(const color_t color, Widget *widget)
     {
         return widget;
     }
-    std::list<Widget *> l = widget->getChildren();
-
-    if (l.size() == 0)
+    
+    Widget* result = nullptr;
+    for (Widget* w : widget->getChildren())
     {
-        return nullptr;
-    }
-
-    Widget *result;
-    for (std::list<Widget *>::iterator it = l.begin(); it != l.end(); ++it)
-    {
-        if ((result = rec_widget_pick(color, (*it))))
+        if ((result = rec_widget_pick(color, w)))
         {
             return result;
         }

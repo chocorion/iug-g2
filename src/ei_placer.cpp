@@ -71,8 +71,7 @@ Placer::Placer():
         }
 
         //First run for the widget
-        run(widget);
-        
+        run(widget);  
     }
 
     void Placer::run(Widget* widget)
@@ -113,7 +112,7 @@ Placer::Placer():
             widget->get_requested_size().height() :
             _rel_height * container->size.height() + _height;
         
-            //Calculate width and height 
+        //Calculate width and height 
         new_widget_location.size = Size(
             width,
             height
@@ -158,7 +157,6 @@ Placer::Placer():
                 break;
 
             case ei_anc_southeast:
-                cout << "SOUTHEAST" << endl;
                 new_widget_location.top_left = Point(
                     anchor.x() - new_widget_location.size.width(),
                     anchor.y() - new_widget_location.size.height()
@@ -189,7 +187,7 @@ Placer::Placer():
                 break;
         }
 
-            //Vérifier si newChildRect et oldChildRect son différent ou non
+        //Call run on child only if the position of the current widget has change
         if (
             new_widget_location.top_left.x() != current_widget_location->top_left.x() ||
             new_widget_location.top_left.y() != current_widget_location->top_left.y() ||
@@ -197,14 +195,12 @@ Placer::Placer():
             new_widget_location.size.height() != current_widget_location->size.height())
         {
             widget->geomnotify(new_widget_location);
-            std::list<Widget *> l;
-            for (std::list<Widget *>::iterator it = (l = widget->getChildren()).begin(); it != l.end(); ++it)
+            for (Widget* w : widget->getChildren())
             {
                 GeometryManager *child_manager;
-                if ((child_manager = (*it)->getGeometryManager()))
+                if ((child_manager = w->getGeometryManager()))
                 {
-                    //Use the manager of the child
-                    child_manager->run((*it));
+                    child_manager->run(w);
                 }
             }
         }

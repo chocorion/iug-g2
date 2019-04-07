@@ -15,9 +15,9 @@ namespace ei {
 
 	Button::Button(Widget* parent) : Widget("Button", parent)
 	{
-		text = NULL;
-		img  = NULL;
-		corner_radius = NULL;
+		text = nullptr;
+		img  = nullptr;
+		corner_radius = nullptr;
 	}
 
 	Button::~Button()
@@ -49,7 +49,7 @@ namespace ei {
 
         int color_coef = 50;
 
-        color_t dark_color = {
+        color_t dark_color ={
             (unsigned char)(color->red   * color_coef / 100),
             (unsigned char)(color->green * color_coef / 100),
             (unsigned char)(color->blue  * color_coef / 100),
@@ -77,13 +77,14 @@ namespace ei {
         //end shapes
 
         //  IMAGE
-		if(img && parent) {
+		if(img && parent)
+		{
 			ei_copy_surface(surface, img, &screen_location.top_left, EI_TRUE);
 		}
 
 		// TEXT
-		if(text) {
-
+		if(text)
+		{
 			Size text_size = Size();
 			hw_text_compute_size(*text, *text_font, text_size);
 			Rect textBox = Rect(Point(),text_size);
@@ -108,58 +109,20 @@ namespace ei {
                    Rect **img_rect,
                    anchor_t *img_anchor)
 	{
-		if (color)
-			this->color = color;
-		else
-			this->color = &default_background_color;
+		this->color 		= (color)? color : &default_background_color;
+		this->border_width  = (border_width)? border_width : new int(0);
+		this->corner_radius = (corner_radius)? corner_radius : new int(0);
+		this->relief 		= (relief)? relief : new relief_t(ei_relief_none);
 
-		if (border_width)
-			this->border_width = border_width;
-		else
-			this->border_width = new int(0);
-		
-		if (corner_radius)
-			this->corner_radius = corner_radius;
-		else
-			this->corner_radius = new int(0);
-		
-
-		if (relief)
-			this->relief = relief;
-		else
-		{
-			this->relief = new relief_t;
-			*this->relief = ei_relief_none;
-		}
-
-			if (!img)
+		if (!img)
 		{
 			if (text)
 				this->text = text;
-			if (text_color)
-				this->text_color = text_color;
-			else
-			{
-				this->text_color = new color_t;
-				*this->text_color = font_default_color;
-			}
+			
+			this->text_color = (text_color)? text_color : new color_t(font_default_color);
+			this->text_anchor = (text_anchor)? text_anchor : new anchor_t(ei_anc_center);
+			this->text_font = (text_font)? text_font : new font_t(hw_text_font_create(default_font_filename, font_default_size));
 
-			if (text_anchor)
-				this->text_anchor = text_anchor;
-			else
-			{
-				this->text_anchor = new anchor_t;
-				*this->text_anchor = ei_anc_center;
-			}
-
-			if (text_font)
-				this->text_font = text_font;
-			else
-			{
-				font_t *font = new font_t();
-				*font = hw_text_font_create(default_font_filename, font_default_size);
-				this->text_font = font;
-			}
 		}
 	
 		if (requested_size)

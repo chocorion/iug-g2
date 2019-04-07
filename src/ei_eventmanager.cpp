@@ -104,7 +104,6 @@ void BoundEventBank::remove(ei_eventtype_t event, Widget* widget,tag_t tag,
             ei_callback_t callback,
             void* user_param)
 {
-    cout << "\t\tIn banck remove : " << endl;
     std::list<BoundEvent*>* l = nullptr;
 
     l = get(event);
@@ -115,26 +114,23 @@ void BoundEventBank::remove(ei_eventtype_t event, Widget* widget,tag_t tag,
     }
     std::list<BoundEvent*>::iterator it_list;
 
-    cout << "\t\tLooking for : Widget -> " << widget << " Tag -> " << tag << " Callback -> " << &callback << " User param -> " << user_param << endl; 
-
     for (it_list = (*l).begin(); it_list != (*l).end(); )
     {
-        cout << "\t\tCompare with: Widget -> " << (*it_list)->_widget << " Tag -> " << (*it_list)->_tag << " Callback -> " << &(*it_list)->_callback << " User param -> " << (*it_list)->_user_param << endl;
         if (
             (
-                (widget != nullptr)?    // == was here. Bug I suppose
+                (widget != nullptr)?
                     (*it_list)->_widget == widget :
                     (*it_list)->_tag == tag
             ) &&
-            (*it_list)->_callback.target<ei_callback_t>() == callback.target<ei_callback_t>() &&    //Can't compare callback, we compare pointers
+            (*it_list)->_callback.target<ei_callback_t>() == callback.target<ei_callback_t>() && 
             (*it_list)->_user_param == user_param
         )
-        //param->callback.target<bool_t(Widget *, Event *, void *)>()
         {
-            cout << "\t\t EVENT FIND -> Remove it !" << endl;
             delete (*it_list);
             it_list = l->erase(it_list);
-        } else {
+        }
+        else
+        {
             ++it_list;
         }
     }
@@ -202,13 +198,8 @@ void EventManager::unbind (ei_eventtype_t eventtype,
                  ei_callback_t  callback,
                  void*          user_param)
 {
-    cout << "\tCalling bank remove..." << endl;
     _bank.remove(eventtype, widget, tag, callback, user_param);
 }
-
-
-
-
 
 bool EventManager::execute(Event *event, Widget* widget)
 {

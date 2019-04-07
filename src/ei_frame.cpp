@@ -16,8 +16,8 @@ namespace ei
 
 Frame::Frame(Widget *parent) : Widget("Frame", parent)
 {
-	img = NULL;
-	text = NULL;
+	img = nullptr;
+	text = nullptr;
 }
 
 Frame::~Frame()
@@ -28,8 +28,8 @@ void Frame::draw(surface_t surface,
 				 surface_t pick_surface,
 				 Rect *clipper) 
 {
-	drawOffscreen(pick_surface, clipper);
 	// PICK SURFACE
+	drawOffscreen(pick_surface, clipper);
 
 	// FRAME BACKGROUND
 	surface_t fill_background = hw_surface_create(surface, &getScreenLocation()->size);
@@ -104,54 +104,21 @@ void Frame::configure(Size *requested_size,
 					  Rect **img_rect,
 					  anchor_t *img_anchor)
 {
-	if (color)
-		this->color = color;
-	else
-		this->color = &default_background_color;
+	this->color 		= (color)? color : &default_background_color;
+	this->border_width  = (border_width)? border_width : new int(0);
+	this->relief 		= (relief)? relief : new relief_t(ei_relief_none);
 
-	if (border_width)
-		this->border_width = border_width;
-	else
-		this->border_width = 0;
-
-	if (relief)
-		this->relief = relief;
-	else
-	{
-		this->relief = new relief_t;
-		*this->relief = ei_relief_none;
-	}
-
-	if (text != NULL && img == NULL)
+	if (text != nullptr && img == nullptr)
 	{
 		if (text)
 			this->text = text;
-		if (text_color)
-			this->text_color = text_color;
-		else
-		{
-			this->text_color = new color_t;
-			*this->text_color = font_default_color;
-		}
 
-		if (text_anchor)
-			this->text_anchor = text_anchor;
-		else
-		{
-			this->text_anchor = new anchor_t;
-			*this->text_anchor = ei_anc_center;
-		}
-
-		if (text_font)
-			this->text_font = text_font;
-		else
-		{
-			this->text_font = new font_t();
-			*(this->text_font )= hw_text_font_create(default_font_filename, font_default_size);
-		}
+		this->text_color = (text_color)? text_color : new color_t(font_default_color);
+		this->text_anchor = (text_anchor)? text_anchor : new anchor_t(ei_anc_center);
+		this->text_font = (text_font)? text_font : new font_t(hw_text_font_create(default_font_filename, font_default_size));
 	}
 
-	if (text == NULL && img != NULL)
+	if (text == nullptr && img != nullptr)
 	{
 		if (img) {
 			this->img = img;
@@ -163,8 +130,7 @@ void Frame::configure(Size *requested_size,
 			this->img_anchor = img_anchor;
 		else
 		{
-			this->img_anchor = new anchor_t;
-			*this->img_anchor = ei_anc_center;
+			this->img_anchor = new anchor_t(ei_anc_center);
 		}
 	}
 
