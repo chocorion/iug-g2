@@ -27,6 +27,10 @@ bool_t ResizeButton::callback_on_click(Widget *widget, Event *event, void *user_
 
 bool_t ResizeButton::callback_move_button(Widget *widget, Event *event, void *user_param)
 {
+    //Minimum width and height for a widget. Maybe must be declare in widget...
+    static const int minimum_width  = 50;
+    static const int minimum_height = 60;
+
     MouseEvent *e = static_cast<MouseEvent *>(event);
     ResizeButton *resizeButton = static_cast<ResizeButton *>(user_param);
 
@@ -58,6 +62,8 @@ bool_t ResizeButton::callback_move_button(Widget *widget, Event *event, void *us
             break;
     }
 
+
+    //Verify that the new position of the widget still in the parent
     if(bottom_right.x() > containerLocation->top_left.x() + containerLocation->size.width())
     {
         newRect.size = Size(
@@ -70,6 +76,22 @@ bool_t ResizeButton::callback_move_button(Widget *widget, Event *event, void *us
         newRect.size = Size(
             newRect.size.width(),
             containerLocation->top_left.y() + containerLocation->size.height() - parentLocation->top_left.y()
+        );
+    }
+
+    //Verify that the widget isn't to small
+    if (newRect.size.width() < minimum_width)
+    {
+        newRect.size = Size(
+            minimum_width,
+            newRect.size.height()
+        );
+    }
+    if (newRect.size.height() < minimum_height)
+    {
+        newRect.size = Size(
+            newRect.size.width(),
+            minimum_height
         );
     }
 
