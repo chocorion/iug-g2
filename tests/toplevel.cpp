@@ -57,7 +57,7 @@ int ei_main(int argc, char* argv[])
 
     Size         window_size(400,400);
     const char*  window_title    = "Window";
-    color_t      window_color    = {0xA0,0xA0,0xA0, 0xff};
+    color_t      window_color    = {0xFF,0xFF,0xFF, 0xff};
     int          window_border_width    = 3;
     bool_t       closable        = EI_TRUE;
     axis_set_t   window_resizable = ei_axis_both;

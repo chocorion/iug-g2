@@ -38,7 +38,7 @@ void Toplevel::configure(Size *requested_size,
                          Size *min_size)
 {
     this->requested_size = (requested_size)? *requested_size : *(new Size(320, 240));
-    this->color          = (color)?          color           : new color_t(default_background_color);
+    this->color          = (color)?          color           : new color_t({0xFF, 0xFF, 0xFF, 0xff});
     this->border_width   = (border_width)?   border_width    : new int(4);
     this->title          = (title)?          title           : new const char*("Toplevel");
     this->closable       = (closable)?       closable        : new bool_t(EI_TRUE);
@@ -77,13 +77,13 @@ void Toplevel::configure(Size *requested_size,
     {
         resizeButton = new ResizeButton(this);
         resizeButton->configure(
-            new Size(40.0, 40.0), &default_background_color, new int(2), nullptr, nullptr, nullptr, nullptr,
+            new Size(20.0, 20.0), &default_background_color, new int(2), nullptr, nullptr, nullptr, nullptr,
             nullptr, nullptr, nullptr, nullptr
         );
         
         Placer *resizeButtonPlacer = new Placer();
         resizeButtonPlacer->configure(
-            (Widget*)resizeButton, new anchor_t(ei_anc_southeast), nullptr, nullptr, new float(40.0), new float(40.0),
+            (Widget*)resizeButton, new anchor_t(ei_anc_southeast), nullptr, nullptr, new float(20.0), new float(20.0),
             new float(1.0), new float(1.0), nullptr, nullptr
         );
     }
@@ -97,7 +97,7 @@ void Toplevel::configure(Size *requested_size,
     topPanel = new TopPanel(this);
 
     topPanel->configure(&default_background_color, new int(default_border_width), none, 
-        this->title, font, new color_t(default_font_color), nullptr, nullptr, nullptr, nullptr
+        this->title, font, new color_t({0x0,0x0,0x0,0xff}), nullptr, nullptr, nullptr, nullptr
     );
 
     Placer* topPanelPlacer = new Placer();
