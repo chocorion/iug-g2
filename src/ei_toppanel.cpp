@@ -2,6 +2,7 @@
 #include "ei_geometrymanager.h"
 #include "ei_event.h"
 #include <iostream>
+#include "ei_application.h"
 
 using namespace std;
 
@@ -94,6 +95,33 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
             e->where.x() - toppanel->click_offset.x(),
             e->where.y() - toppanel->click_offset.y()),
         toppanel->getParent()->getScreenLocation()->size);
+
+    Rect winPos = Rect(*(toppanel->getParent()->getParent()->getScreenLocation()));
+
+    if (ParentPos.top_left.x() < 0) {
+        ParentPos.top_left = Point(
+            0,
+            ParentPos.top_left.y()
+        );
+    } else if (ParentPos.top_left.x() + ParentPos.size.width() > winPos.size.width()) {
+        ParentPos.top_left = Point(
+            ParentPos.top_left.x() - ((ParentPos.top_left.x() + ParentPos.size.width()) - winPos.size.width()),
+            ParentPos.top_left.y()
+        );
+    }
+
+    if (ParentPos.top_left.y() < 0) {
+        ParentPos.top_left = Point(
+            ParentPos.top_left.x(),
+            0
+        );
+    } else if (ParentPos.top_left.y() + ParentPos.size.height() > winPos.size.height()) {
+        ParentPos.top_left = Point(
+            ParentPos.top_left.x(),
+            ParentPos.top_left.y() - ((ParentPos.top_left.y() + ParentPos.size.height()) - winPos.size.height())
+        );
+    }
+    
 
     toppanel->getParent()->geomnotify(ParentPos);
     //We had to do this because we bypass the normal use of geometryManager.

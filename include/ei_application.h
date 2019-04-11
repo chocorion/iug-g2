@@ -45,8 +45,7 @@ public:
      * @return the instance
      */
     static Application* getInstance() {
-        static Application instance;
-        return &instance;
+        return instance;
     }
 
     /**

@@ -44,7 +44,7 @@ bool_t ResizeButton::callback_move_button(Widget *widget, Event *event, void *us
     );
 
     Rect newRect = *(parentLocation);
-
+ 
     switch(((Toplevel*)(resizeButton->getParent()))->getAxis())
     {
         case ei_axis_x:
