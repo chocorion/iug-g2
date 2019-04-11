@@ -87,6 +87,9 @@ bool_t TopPanel::callback_on_click(Widget *widget, Event *event, void *user_para
 
 bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_param)
 {
+    static Rect oldPos;
+    static bool oldPosEnable = false;
+    
     MouseEvent *e = static_cast<MouseEvent *>(event);
     TopPanel *toppanel = static_cast<TopPanel *>(user_param);
 
@@ -98,16 +101,36 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
 
     Rect winPos = Rect(*(toppanel->getParent()->getParent()->getScreenLocation()));
 
-    if (ParentPos.top_left.x() < 0) {
-        ParentPos.top_left = Point(
-            0,
-            ParentPos.top_left.y()
+    if (ParentPos.top_left.x() <= 0) {
+        if (!oldPosEnable){
+            oldPos = Rect(
+                Point(
+                    0,
+                    ParentPos.top_left.y()
+                ),
+                ParentPos.size
+            );
+            oldPosEnable = true;
+
+        }
+        ParentPos = Rect(
+            Point(
+                0,
+                0
+            ),
+            Size(
+                winPos.size.width()/2,
+                winPos.size.height()
+            )
         );
     } else if (ParentPos.top_left.x() + ParentPos.size.width() > winPos.size.width()) {
         ParentPos.top_left = Point(
             ParentPos.top_left.x() - ((ParentPos.top_left.x() + ParentPos.size.width()) - winPos.size.width()),
             ParentPos.top_left.y()
         );
+    } else if (oldPosEnable) {
+        oldPosEnable = false;
+        ParentPos = oldPos;
     }
 
     if (ParentPos.top_left.y() < 0) {
