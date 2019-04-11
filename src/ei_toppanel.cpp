@@ -123,10 +123,28 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
                 winPos.size.height()
             )
         );
-    } else if (ParentPos.top_left.x() + ParentPos.size.width() > winPos.size.width()) {
-        ParentPos.top_left = Point(
-            ParentPos.top_left.x() - ((ParentPos.top_left.x() + ParentPos.size.width()) - winPos.size.width()),
-            ParentPos.top_left.y()
+    } else if (ParentPos.top_left.x() + ParentPos.size.width() >= winPos.size.width()) {
+        if (!oldPosEnable) {
+            oldPos = Rect(
+                Point(
+                    ParentPos.top_left.x() - ((ParentPos.top_left.x() + ParentPos.size.width()) - winPos.size.width()),
+                    ParentPos.top_left.y()
+                ),
+                ParentPos.size
+            );
+
+            oldPosEnable = true;
+        }
+
+        ParentPos = Rect(
+            Point(
+                winPos.size.width()/2,
+                0
+            ),
+            Size(
+                winPos.size.width()/2,
+                winPos.size.height()
+            )
         );
     } else if (oldPosEnable) {
         oldPosEnable = false;
