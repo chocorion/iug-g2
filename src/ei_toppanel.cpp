@@ -89,6 +89,8 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
 {
     static Rect oldPos;
     static bool oldPosEnable = false;
+    static bool x_expend = false;
+    static bool y_expend = false;
     
     MouseEvent *e = static_cast<MouseEvent *>(event);
     TopPanel *toppanel = static_cast<TopPanel *>(user_param);
@@ -101,7 +103,7 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
 
     Rect winPos = Rect(*(toppanel->getParent()->getParent()->getScreenLocation()));
 
-    if (ParentPos.top_left.x() <= 0) {
+    if (ParentPos.top_left.x() < 0 && !y_expend) {
         if (!oldPosEnable){
             oldPos = Rect(
                 Point(
@@ -111,6 +113,7 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
                 ParentPos.size
             );
             oldPosEnable = true;
+            x_expend = true;
 
         }
         ParentPos = Rect(
@@ -123,7 +126,7 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
                 winPos.size.height()
             )
         );
-    } else if (ParentPos.top_left.x() + ParentPos.size.width() >= winPos.size.width()) {
+    } else if (ParentPos.top_left.x() + ParentPos.size.width() > winPos.size.width() && !y_expend) {
         if (!oldPosEnable) {
             oldPos = Rect(
                 Point(
@@ -133,6 +136,7 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
                 ParentPos.size
             );
 
+            x_expend = true;
             oldPosEnable = true;
         }
 
@@ -146,23 +150,63 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
                 winPos.size.height()
             )
         );
-    } else if (oldPosEnable) {
+    } else if (oldPosEnable && !y_expend)
+    {
         oldPosEnable = false;
+        x_expend = false;
         ParentPos = oldPos;
     }
 
-    if (ParentPos.top_left.y() < 0) {
-        ParentPos.top_left = Point(
-            ParentPos.top_left.x(),
-            0
+    if (ParentPos.top_left.y() < 0 && !x_expend) {
+        if (!oldPosEnable) {
+            oldPos = Rect(
+                Point(
+                    0,
+                    0
+                ),
+                ParentPos.size
+            );
+            oldPosEnable = true;
+            y_expend = true;
+        }
+        ParentPos = Rect(
+            Point(
+                0,
+                0
+            ),
+            Size(
+                winPos.size.width(),
+                winPos.size.height()/2
+            )
+        );  
+            
+    } else if (ParentPos.top_left.y() + ParentPos.size.height() > winPos.size.height() && !x_expend) {
+        if (!oldPosEnable) {
+            oldPos = Rect(
+                Point(
+                    0,
+                    ParentPos.top_left.y() - ((ParentPos.top_left.y() + ParentPos.size.height()) - winPos.size.height())
+                ),
+                ParentPos.size
+            );
+            oldPosEnable = true;
+            y_expend = true;
+        }
+        ParentPos = Rect(
+            Point(
+                0,
+                winPos.size.height()/2
+            ),
+            Size(
+                winPos.size.width(),
+                winPos.size.height()/2
+            )
         );
-    } else if (ParentPos.top_left.y() + ParentPos.size.height() > winPos.size.height()) {
-        ParentPos.top_left = Point(
-            ParentPos.top_left.x(),
-            ParentPos.top_left.y() - ((ParentPos.top_left.y() + ParentPos.size.height()) - winPos.size.height())
-        );
+    } else if (oldPosEnable && ! x_expend) {
+        oldPosEnable = false;
+        y_expend = false;
+        ParentPos = oldPos;
     }
-    
 
     toppanel->getParent()->geomnotify(ParentPos);
     //We had to do this because we bypass the normal use of geometryManager.
