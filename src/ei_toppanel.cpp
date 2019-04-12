@@ -106,10 +106,7 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
     if (ParentPos.top_left.x() < 0 && !y_expend) {
         if (!oldPosEnable){
             oldPos = Rect(
-                Point(
-                    0,
-                    ParentPos.top_left.y()
-                ),
+                Point(0, ParentPos.top_left.y()),
                 ParentPos.size
             );
             oldPosEnable = true;
@@ -117,10 +114,7 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
 
         }
         ParentPos = Rect(
-            Point(
-                0,
-                0
-            ),
+            Point(0, 0),
             Size(
                 winPos.size.width()/2,
                 winPos.size.height()
@@ -135,20 +129,13 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
                 ),
                 ParentPos.size
             );
-
             x_expend = true;
             oldPosEnable = true;
         }
 
         ParentPos = Rect(
-            Point(
-                winPos.size.width()/2,
-                0
-            ),
-            Size(
-                winPos.size.width()/2,
-                winPos.size.height()
-            )
+            Point(winPos.size.width()/2, 0),
+            Size(winPos.size.width()/2, winPos.size.height())
         );
     } else if (oldPosEnable && !y_expend)
     {
@@ -160,20 +147,14 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
     if (ParentPos.top_left.y() < 0 && !x_expend) {
         if (!oldPosEnable) {
             oldPos = Rect(
-                Point(
-                    0,
-                    0
-                ),
+                Point(0, 0),
                 ParentPos.size
             );
             oldPosEnable = true;
             y_expend = true;
         }
         ParentPos = Rect(
-            Point(
-                0,
-                0
-            ),
+            Point(0, 0),
             Size(
                 winPos.size.width(),
                 winPos.size.height()/2
@@ -193,14 +174,8 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
             y_expend = true;
         }
         ParentPos = Rect(
-            Point(
-                0,
-                winPos.size.height()/2
-            ),
-            Size(
-                winPos.size.width(),
-                winPos.size.height()/2
-            )
+            Point(0, winPos.size.height()/2),
+            Size(winPos.size.width(), winPos.size.height()/2)
         );
     } else if (oldPosEnable && ! x_expend) {
         oldPosEnable = false;

@@ -29,10 +29,8 @@ namespace ei {
 	 * \brief   Abstract class representing a widget
 	 *          Every widget class specializes this base class by adding its own attributes.
 	 */
-	Widget::Widget(const widgetclass_name_t& class_name, Widget* parent) 
+	Widget::Widget(const widgetclass_name_t& class_name, Widget* parent): visibleState(true), name(class_name), parent(parent)
 	{		
-		name = class_name;
-		this->parent = parent; // null if root
 		geom_manager = nullptr;
 
 		pick_id = s_idGenerator;
@@ -216,5 +214,13 @@ namespace ei {
 
 		//Event can by used for another callback
 		return EI_FALSE;
+	}
+
+	bool Widget::getVisibleState() const {
+		return visibleState;
+	}
+
+	void Widget::setVisibleState(bool state) {
+		visibleState = state;
 	}
 }

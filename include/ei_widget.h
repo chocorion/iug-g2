@@ -97,6 +97,8 @@ public:
 
   void setGeometryManager(GeometryManager *geometryManager);
 
+   bool getVisibleState() const;
+   void setVisibleState(bool state);
 protected:
    virtual void drawOffscreen(surface_t pick_surface, Rect *clipper);
    Rect limitRectToClipper(Rect *clipper);
@@ -118,6 +120,8 @@ protected:
   Size requested_size;  ///< Size requested by the widget (big enough for its label, for example), or by the programmer. This can be different than its screen size defined by the placer.
   Rect screen_location; ///< Position and size of the widget expressed in the root window reference.
   Rect *content_rect;   ///< Where to place children, when this widget is used as a container. By defaults, points to the screen_location.
+
+  bool visibleState;
 };
 
 /**

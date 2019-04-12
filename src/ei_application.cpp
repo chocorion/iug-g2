@@ -91,6 +91,8 @@ mouse_e need_picking(Event *event)
 
 void Application::renderDisplayRec(Widget *widget)
 {
+    if (!widget->getVisibleState()) return;
+    
     if (widget->getParent())
     {
         widget->draw(root_surface(), pick_surface(), widget->getParent()->getContentRect());
