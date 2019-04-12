@@ -111,6 +111,7 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
 
     Rect winPos = Rect(*(toppanel->getParent()->getParent()->getScreenLocation()));
 
+
     if (ParentPos.top_left.x() < 0 && !y_expend) {
         if (!oldPosEnable){
             oldPos = Rect(
@@ -167,8 +168,7 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
                 winPos.size.width(),
                 winPos.size.height()/2
             )
-        );  
-            
+        );
     } else if (ParentPos.top_left.y() + ParentPos.size.height() > winPos.size.height() && !x_expend) {
         if (!oldPosEnable) {
             oldPos = Rect(
@@ -189,6 +189,11 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
         oldPosEnable = false;
         y_expend = false;
         ParentPos = oldPos;
+
+        toppanel->click_offset = Point(
+            oldPos.top_left.x() + oldPos.size.width()/2,
+            10
+        );
     }
 
     toppanel->getParent()->geomnotify(ParentPos);

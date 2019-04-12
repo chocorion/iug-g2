@@ -170,6 +170,7 @@ BoundEventBank::~BoundEventBank()
 
     for (it_bank = _bank.begin(); it_bank != _bank.end(); ++it_bank)
     {
+        cout << "First element in the bank for event : " <<  it_bank->first << endl;
         remove(it_bank->first);
     }
 }
