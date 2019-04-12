@@ -50,6 +50,11 @@ class TopPanel : public Frame, public MovableOnClick {
         static bool_t callback_on_click(Widget* widget, Event *event, void* user_param);
 
         /**
+         * @brief Overidden function
+         */
+        static bool_t resize_on_double_click(Widget *widget, Event *event, void *user_param);
+
+        /**
          * @brief Overridden function
          * 
          * @param closable Close button on the left-side of the panel

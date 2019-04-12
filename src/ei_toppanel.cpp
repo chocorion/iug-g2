@@ -3,6 +3,9 @@
 #include "ei_event.h"
 #include <iostream>
 #include "ei_application.h"
+#include <chrono>
+#include <ctime>
+
 
 using namespace std;
 
@@ -90,13 +93,71 @@ bool_t TopPanel::callback_on_click(Widget *widget, Event *event, void *user_para
         e->where.y() - toppanel->getScreenLocation()->top_left.y()
     );
 
+    static clock_t c_start = clock();
+    static bool already_clicked = false;
+
+    clock_t delta = clock()-c_start;
+    if(already_clicked && delta<180000){
+        already_clicked = false;
+        resize_on_double_click(widget,event,user_param);
+    }else{
+        c_start = clock();
+        already_clicked = true;
+    }
+
     return EI_TRUE;
 }
+
+
+
+
+bool_t TopPanel::resize_on_double_click(Widget *widget, Event *event, void *user_param){
+    static Rect oldPosition;
+    static bool oldPositionEnable = false;
+
+    MouseEvent *e = static_cast<MouseEvent *>(event);
+    TopPanel *toppanel = static_cast<TopPanel *>(widget);
+   
+    Rect ParentPos = Rect(
+        Point(
+            e->where.x() - toppanel->click_offset.x(),
+            e->where.y() - toppanel->click_offset.y()),
+        toppanel->getParent()->getScreenLocation()->size
+    );
+    Rect winPos = Rect(*(toppanel->getParent()->getParent()->getScreenLocation()));
+
+
+    if(oldPositionEnable && ParentPos.size.width() == winPos.size.width() && ParentPos.size.height() == winPos.size.height()) {
+        oldPositionEnable = false;
+        ParentPos = oldPosition;
+    }else{
+        oldPosition = ParentPos;
+        ParentPos = Rect(
+            Point(0, 0),
+            Size(
+                winPos.size.width(),
+                winPos.size.height()
+            )
+        );
+        oldPositionEnable = true;
+    }
+    
+    toppanel->getParent()->geomnotify(ParentPos);
+    for (Widget *w : toppanel->getParent()->getChildren())
+    {
+        if (w->getGeometryManager())
+            w->getGeometryManager()->run(w);
+    }
+    return EI_TRUE;
+}
+
+
 
 bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_param)
 {   
     MouseEvent *e = static_cast<MouseEvent *>(event);
     TopPanel *toppanel = static_cast<TopPanel *>(user_param);
+   
 
     Rect ParentPos = Rect(
         Point(
