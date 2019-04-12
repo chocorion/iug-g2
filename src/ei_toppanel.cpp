@@ -8,6 +8,12 @@ using namespace std;
 
 namespace ei {
 
+bool_t hideCallback(Widget* widget, Event* event, void* user_param)
+{
+    //The parent of the button is the topPanel, and the topPanel must has a parent
+    widget->getParent()->getParent()->setVisibleState(false);
+    return EI_TRUE;
+}
 
 TopPanel::TopPanel() {
     return;
@@ -60,6 +66,8 @@ void TopPanel::configure(const color_t *color,
             new float(15.0), new float(15.0),
             nullptr, nullptr, nullptr, nullptr
         );
+
+        EventManager::getInstance().bind(ei_ev_mouse_buttondown, CloseButton, "", hideCallback, nullptr);
     } else {
         CloseButton = nullptr;
     }
