@@ -64,7 +64,7 @@ int ei_main(int argc, char* argv[])
     Point        window_position(30, 10);
     Point        window_position2(30, 10);
 
-    const char*  background_toplevel = DATA_DIR"pika.png";
+    const char*  background_toplevel = DATA_DIR"pika.png"; 
 
     Application* app = new Application(&screen_size);
     app->root_widget()->configure(&screen_size, &root_bgcol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
