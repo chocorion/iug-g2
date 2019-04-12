@@ -7,6 +7,13 @@
  
 namespace ei
 {
+
+typedef struct {
+    Rect oldPos;
+    bool oldPosEnable;
+    bool x_expend;
+    bool y_expend;
+} MoveData;
 /**
  * @brief Represent the panel on the top of Toplevel (Can be used for every other widget)
  * 
@@ -19,6 +26,13 @@ class TopPanel : public Frame, public MovableOnClick {
         Widget *CloseButton;
         Widget *ReduceButton;
         Widget *ResizeButton;
+
+        MoveData moveData = {
+            Rect(),
+            false,
+            false,
+            false
+        };
 
 
     public:

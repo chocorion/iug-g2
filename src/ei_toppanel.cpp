@@ -94,12 +94,7 @@ bool_t TopPanel::callback_on_click(Widget *widget, Event *event, void *user_para
 }
 
 bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_param)
-{
-    static Rect oldPos;
-    static bool oldPosEnable = false;
-    static bool x_expend = false;
-    static bool y_expend = false;
-    
+{   
     MouseEvent *e = static_cast<MouseEvent *>(event);
     TopPanel *toppanel = static_cast<TopPanel *>(user_param);
 
@@ -112,14 +107,14 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
     Rect winPos = Rect(*(toppanel->getParent()->getParent()->getScreenLocation()));
 
 
-    if (ParentPos.top_left.x() < 0 && !y_expend) {
-        if (!oldPosEnable){
-            oldPos = Rect(
+    if (ParentPos.top_left.x() < 0 && !toppanel->moveData.y_expend) {
+        if (!toppanel->moveData.oldPosEnable){
+            toppanel->moveData.oldPos = Rect(
                 Point(0, ParentPos.top_left.y()),
                 ParentPos.size
             );
-            oldPosEnable = true;
-            x_expend = true;
+            toppanel->moveData.oldPosEnable = true;
+            toppanel->moveData.x_expend = true;
 
         }
         ParentPos = Rect(
@@ -129,38 +124,38 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
                 winPos.size.height()
             )
         );
-    } else if (ParentPos.top_left.x() + ParentPos.size.width() > winPos.size.width() && !y_expend) {
-        if (!oldPosEnable) {
-            oldPos = Rect(
+    } else if (ParentPos.top_left.x() + ParentPos.size.width() > winPos.size.width() && !toppanel->moveData.y_expend) {
+        if (!toppanel->moveData.oldPosEnable) {
+            toppanel->moveData.oldPos = Rect(
                 Point(
                     ParentPos.top_left.x() - ((ParentPos.top_left.x() + ParentPos.size.width()) - winPos.size.width()),
                     ParentPos.top_left.y()
                 ),
                 ParentPos.size
             );
-            x_expend = true;
-            oldPosEnable = true;
+            toppanel->moveData.x_expend = true;
+            toppanel->moveData.oldPosEnable = true;
         }
 
         ParentPos = Rect(
             Point(winPos.size.width()/2, 0),
             Size(winPos.size.width()/2, winPos.size.height())
         );
-    } else if (oldPosEnable && !y_expend)
+    } else if (toppanel->moveData.oldPosEnable && !toppanel->moveData.y_expend)
     {
-        oldPosEnable = false;
-        x_expend = false;
-        ParentPos = oldPos;
+        toppanel->moveData.oldPosEnable = false;
+        toppanel->moveData.x_expend = false;
+        ParentPos = toppanel->moveData.oldPos;
     }
 
-    if (ParentPos.top_left.y() < 0 && !x_expend) {
-        if (!oldPosEnable) {
-            oldPos = Rect(
+    if (ParentPos.top_left.y() < 0 && !toppanel->moveData.x_expend) {
+        if (!toppanel->moveData.oldPosEnable) {
+            toppanel->moveData.oldPos = Rect(
                 Point(0, 0),
                 ParentPos.size
             );
-            oldPosEnable = true;
-            y_expend = true;
+            toppanel->moveData.oldPosEnable = true;
+            toppanel->moveData.y_expend = true;
         }
         ParentPos = Rect(
             Point(0, 0),
@@ -169,29 +164,29 @@ bool_t TopPanel::callback_move_panel(Widget *widget, Event *event, void *user_pa
                 winPos.size.height()/2
             )
         );
-    } else if (ParentPos.top_left.y() + ParentPos.size.height() > winPos.size.height() && !x_expend) {
-        if (!oldPosEnable) {
-            oldPos = Rect(
+    } else if (ParentPos.top_left.y() + ParentPos.size.height() > winPos.size.height() && !toppanel->moveData.x_expend) {
+        if (!toppanel->moveData.oldPosEnable) {
+            toppanel->moveData.oldPos = Rect(
                 Point(
                     0,
                     ParentPos.top_left.y() - ((ParentPos.top_left.y() + ParentPos.size.height()) - winPos.size.height())
                 ),
                 ParentPos.size
             );
-            oldPosEnable = true;
-            y_expend = true;
+            toppanel->moveData.oldPosEnable = true;
+            toppanel->moveData.y_expend = true;
         }
         ParentPos = Rect(
             Point(0, winPos.size.height()/2),
             Size(winPos.size.width(), winPos.size.height()/2)
         );
-    } else if (oldPosEnable && ! x_expend) {
-        oldPosEnable = false;
-        y_expend = false;
-        ParentPos = oldPos;
+    } else if (toppanel->moveData.oldPosEnable && ! toppanel->moveData.x_expend) {
+        toppanel->moveData.oldPosEnable = false;
+        toppanel->moveData.y_expend = false;
+        ParentPos = toppanel->moveData.oldPos;
 
         toppanel->click_offset = Point(
-            oldPos.top_left.x() + oldPos.size.width()/2,
+            toppanel->moveData.oldPos.top_left.x() + toppanel->moveData.oldPos.size.width()/2,
             10
         );
     }
