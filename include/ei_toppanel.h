@@ -7,13 +7,17 @@
  
 namespace ei
 {
-
+/**
+ * @brief Little structure for storing information about position on the screen.
+ */
 typedef struct {
     Rect oldPos;
     bool oldPosEnable;
     bool x_expend;
     bool y_expend;
 } MoveData;
+
+
 /**
  * @brief Represent the panel on the top of Toplevel (Can be used for every other widget)
  * 

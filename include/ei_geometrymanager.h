@@ -23,7 +23,6 @@ namespace ei {
 class GeometryManager
 {
 public:
-    // Je ne vois pas pourquoi il y en aurait besoin maintenant
     // GeometryManager();
     // virtual ~GeometryManager();
 
@@ -56,6 +55,7 @@ public:
 class Placer : public GeometryManager
 {
 private:
+    //Save all the parameters for the placer.
     anchor_t _anchor;
     int _x, _y, _width, _height;
     float _rel_x, _rel_y, _rel_width, _rel_height;
@@ -104,6 +104,14 @@ public:
 
     virtual void run (Widget* widget);
     virtual void release (Widget* widget);
+
+    /**
+     * @brief Set the position with a specific anchor
+     * 
+     * @param object The current position.
+     * @param _anchor The anchor type.
+     * @param anchor The anchor coordinate.
+     */
     static void setPosFromAnchor(Rect object, anchor_t _anchor, Point anchor);
 
     Placer();

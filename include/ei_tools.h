@@ -1,13 +1,3 @@
-/**
- *  @file ei_eventmanager.h
- *  @brief  Manages event callbacks.
- *
- *  \author
- *  Created by François Bérard on 18.12.11.
- *  Modified by Pierre Bénard and Aurélie Bugeau
- *
- */
-
 #ifndef EI_TOOLS_H
 #define EI_TOOLS_H
 
@@ -16,11 +6,23 @@
 
 namespace ei {
 
+/**
+ * @brief Little class for storing usefull funcitons.
+ * 
+ */
 class Tools
 {   
     
     public :
 
+        /**
+         * @brief Find the anchor coordinate.
+         * 
+         * @param base The position of the target object.
+         * @param box The position of the base container.
+         * @param box_anchor The anchor type.
+         * @return Point* The anchor coordinate.
+         */
         static Point* findAnchor(Rect* base, Rect* box, anchor_t *box_anchor);
 
 

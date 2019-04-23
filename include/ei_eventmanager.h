@@ -63,6 +63,10 @@ class BoundEventBank
          * @brief Get event data. 
          */
         std::list<BoundEvent*>* get(ei_eventtype_t event);
+
+        /**
+         * @brief add data for event in the banck.
+         */
         void add(ei_eventtype_t event, BoundEvent* data);
 
         /**

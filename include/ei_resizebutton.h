@@ -9,6 +9,7 @@ namespace ei {
 
 class ResizeButton : public Frame, public MovableOnClick {
     private:
+        //Store the difference between where is the click and where is the bottom right corner. 
         Point click_offset;
 
     public:
