@@ -62,16 +62,20 @@ int ei_main(int argc, char* argv[])
     bool_t       closable        = EI_TRUE;
     axis_set_t   window_resizable = ei_axis_both;
     Point        window_position(30, 10);
-    Point        window_position2(50, 10);
+    Point        window_position2(30, 10);
+
+    const char*  background_toplevel = DATA_DIR"pika.png"; 
 
     Application* app = new Application(&screen_size);
     app->root_widget()->configure(&screen_size, &root_bgcol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
+    surface_t toplevel_bg = hw_image_load(background_toplevel);
+
     Toplevel* toplevel = new Toplevel(app->root_widget());
-    toplevel->configure(&window_size, &window_color, &window_border_width, &window_title, &closable, &window_resizable, NULL);
+    toplevel->configure(&window_size, &window_color, &window_border_width, &window_title, &closable, &window_resizable, NULL, &toplevel_bg, NULL, NULL);
 
     Toplevel* toplevel2 = new Toplevel(app->root_widget());
-    toplevel2->configure(&window_size, &window_color, &window_border_width, &window_title, &closable, &window_resizable, NULL);
+    toplevel2->configure(&window_size, &window_color, &window_border_width, &window_title, &closable, &window_resizable, NULL, NULL, NULL, NULL);
 
     Button* button_ok = new Button(toplevel);
     button_ok->configure (&button_size, &button_color, &button_border_width, NULL, &relief, &button_title_ok, NULL, &text_color, NULL, NULL, NULL, NULL);

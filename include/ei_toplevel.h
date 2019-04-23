@@ -45,7 +45,10 @@ class Toplevel : public Widget
                    const char **title,
                    bool_t *closable,
                    axis_set_t *resizable,
-                   Size *min_size);
+                   Size *min_size,
+                 surface_t *img,
+                 Rect **img_rect,
+                 anchor_t *img_anchor);
 
     axis_set_t getAxis();
     Size* getMinimalSize();

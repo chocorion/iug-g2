@@ -35,7 +35,10 @@ void Toplevel::configure(Size *requested_size,
                          const char **title,
                          bool_t *closable,
                          axis_set_t *resizable,
-                         Size *min_size)
+                         Size *min_size,
+                        surface_t *img,
+                        Rect **img_rect,
+                        anchor_t *img_anchor)
 {
     this->requested_size = (requested_size)? *requested_size : *(new Size(320, 240));
     this->color          = (color)?          color           : new color_t({0xFF, 0xFF, 0xFF, 0xff});
@@ -62,7 +65,7 @@ void Toplevel::configure(Size *requested_size,
     //Use top-level color for the background
     main_frame->configure(
         nullptr, color, new int(default_border_width), none, nullptr, nullptr,
-        nullptr, nullptr, nullptr, nullptr, nullptr
+        nullptr, nullptr, img, img_rect, img_anchor
     );
 
     Placer *main_frame_placer = new Placer();
