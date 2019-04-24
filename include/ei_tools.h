@@ -7,7 +7,7 @@
 namespace ei {
 
 /**
- * @brief Little class for storing usefull funcitons.
+ * @brief Little class for storing useful functions.
  * 
  */
 class Tools
